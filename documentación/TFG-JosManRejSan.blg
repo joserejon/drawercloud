@@ -1,0 +1,51 @@
+This is BibTeX, Version 0.99d (TeX Live 2015/Debian)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: TFG-JosManRejSan.aux
+The style file: ieeetr.bst
+Database file #1: citas.bib
+Warning--I didn't find a database entry for "citadropbox"
+Warning--I didn't find a database entry for "cita11"
+Warning--I didn't find a database entry for "cita12"
+Warning--I didn't find a database entry for "cita13"
+You've used 13 entries,
+            1876 wiz_defined-function locations,
+            508 strings with 4374 characters,
+and the built_in function-call counts, 1337 in all, are:
+= -- 117
+> -- 13
+< -- 0
++ -- 13
+- -- 0
+* -- 41
+:= -- 130
+add.period$ -- 13
+call.type$ -- 13
+change.case$ -- 13
+chr.to.int$ -- 0
+cite$ -- 13
+duplicate$ -- 52
+empty$ -- 235
+format.name$ -- 0
+if$ -- 378
+int.to.chr$ -- 0
+int.to.str$ -- 13
+missing$ -- 0
+newline$ -- 42
+num.names$ -- 0
+pop$ -- 104
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 51
+stack$ -- 0
+substring$ -- 0
+swap$ -- 0
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 0
+while$ -- 0
+width$ -- 15
+write$ -- 80
+(There were 4 warnings)

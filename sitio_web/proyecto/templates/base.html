@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!--
+
+            ************** EN CASO DE QUERER QUE NO SE PUEDA HACER EN ZOOM EN LAS PÁGINAS **************
+            <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"> 
+            ********************************************************************************************
+        -->
+
+
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <!--<link rel="icon" href="images/icon.png">-->
+
+        <title>DrawerCloud</title>
+
+        <!-- Bootstrap core CSS -->
+        <!--<link href="../../../dist/css/bootstrap.min.css" rel="stylesheet">-->
+        <link rel="stylesheet" href="/static/dist/css/bootstrap.min.css" type="text/css">
+
+        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+        <!--<link href="../../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">-->
+        <link rel="stylesheet" href="/static/assets/css/ie10-viewport-bug-workaround.css" type="text/css">
+
+        <!-- Custom styles for this template -->
+        <link rel="stylesheet" href="/static/css/dashboard.css" type="text/css">
+
+        <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+        <!--[if lt IE 9]><script src="../../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+        <!--<script src="../../../assets/js/ie-emulation-modes-warning.js"></script>-->
+        <script src="/static/assets/js/ie-emulation-modes-warning.js"></script>
+
+        <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+
+        <script>
+            $(document).ready(function(){
+                $("#mostrarmodal").modal("show");
+            });
+        </script>
+
+        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    </head>
+
+    <body>
+
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="{% url 'index' %}">DrawerCloud</a>
+                </div>
+                <div id="navbar" class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        {% block cabecera %}
+                        <li class="active"><a href="">Documentos</a></li>
+                        <li><a href="{% url 'multimedia' %}">Multimedia</a></li>
+                        <li><a href="{% url 'compartido' %}">Compartido</a></li>
+                        <li><a href="{% url 'favoritos' %}">Favoritos</a></li>
+                        <li><a href="{% url 'grupoTrabajo' %}">Grupo de trabajo</a></li>
+                        {% endblock %}
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="">Usuario</a></li>
+                        <!-- DENTRO DE USUARIO
+                            <li><a href="{% url 'registroHistorico' %}">Registro histórico</a></li>
+                            <li><a href="{% url 'ayuda' %}">Ayuda</a></li>
+                        -->
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container-fluid">
+            <!-- Menú izquierda -->
+            <div class="row">
+                <div class="col-sm-3 col-md-2 sidebar">
+                    <ul class="nav nav-sidebar">
+                    <li><a href="#">Añadir archivo</a></li>
+                    <li><a href="#">Nueva carpeta</a></li>
+                    <li><a href="#">....</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- Menú botón derecho sobre lista -->
+            <div id="menu">
+                <ul>
+                <li id="descargar"><a href="#">Descargar</a></li>
+                <li id="copiar"><a href="#">Copiar</a></li>
+                <li id="mover"><a href="#">Mover</a></li>
+                <li id="addfavoritos"><a href="#">Añadir a favoritos</a></li>
+                <li id="eliminar"><a href="#">Eliminar</a></li>
+                </ul>
+            </div>
+            <!-- Lista de carpetas y archivos -->
+            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                <h1 class="page-header">Página actual</h1>
+                <ol class="breadcrumb">
+                    <li><a href="#">Carpeta</a></li>
+                    <li><a href="#">Carpeta 1</a></li>
+                    <li class="active">Carpeta 1.1</li>
+                </ol>
+                <span id="vista_cuadricula" class="glyphicon glyphicon-th-large"></span>
+                <span id="vista_lista" class="glyphicon glyphicon-th-list"></span>
+
+                <div id="vista_documentos">
+
+                    <div class="table-responsive">
+                        <table id="tabla" class="table">
+                            <thead>
+                                <tr>
+                                    <th>Nombre archivo</th>
+                                    <th>Tamaño</th>
+                                    <th>Última modificación</th>
+                                    <th>Disponible para</th>
+                                    <th class="hidden-xs">Opciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr id="1">
+                                    <td><img src="/static/images/folder_lista.png" class="img-rounded img_lista">Carpeta</td>
+                                    <td class="center">1GB</td>
+                                    <td class="center">07/04/2017</td>
+                                    <td class="center">Solo yo</td>
+                                    <td class="hidden-xs">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                                            Más <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu" role="menu">
+                                                <li><a href="#">Descargar</a></li>
+                                                <li><a href="#">Copiar</a></li>
+                                                <li><a href="#">Mover</a></li>
+                                                <li><a href="#">Añadir a favoritos</a></li>
+                                                <li><a href="#">Eliminar</a></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr id="2">
+                                    <td><img src="/static/images/folder_lista.png" class="img-rounded img_lista">Carpeta</td>
+                                    <td>1GB</td>
+                                    <td>07/04/2017</td>
+                                    <td>Solo yo</td>
+                                    <td class="hidden-xs">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                                            Más <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu" role="menu">
+                                                <li><a href="#">Descargar</a></li>
+                                                <li><a href="#">Copiar</a></li>
+                                                <li><a href="#">Mover</a></li>
+                                                <li><a href="#">Añadir a favoritos</a></li>
+                                                <li><a href="#">Eliminar</a></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr id="3">
+                                    <td><img src="/static/images/folder_lista.png" class="img-rounded img_lista">Carpeta</td>
+                                    <td>1GB</td>
+                                    <td>07/04/2017</td>
+                                    <td>Solo yo</td>
+                                    <td class="hidden-xs">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                                            Más <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu" role="menu">
+                                                <li><a href="#">Descargar</a></li>
+                                                <li><a href="#">Copiar</a></li>
+                                                <li><a href="#">Mover</a></li>
+                                                <li><a href="#">Añadir a favoritos</a></li>
+                                                <li><a href="#">Eliminar</a></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div> <!-- table-responsive -->
+
+
+                    <!--
+                    <div class="container-fluid cuadricula">
+                        <div class="row">
+                            <div id="archivo_vista_cuadricula" class="col-xs-4 col-md-3 col-lg-2">
+                                <img src="/static/images/folder.png">
+                                <h5>Donec id elit non mi porta gravida at eget metus</h5>
+                            </div>
+                            <div id="archivo_vista_cuadricula" class="col-xs-4 col-md-3 col-lg-2">
+                                <img src="/static/images/folder.png">
+                                <h5>Nombre archivo</h5>
+                            </div>
+                            <div id="archivo_vista_cuadricula" class="col-xs-4 col-md-3 col-lg-2">
+                                <img src="/static/images/folder.png">
+                                <h5>Donec id elit non mi porta gravida at eget metus</h5>
+                            </div>
+                            <div id="archivo_vista_cuadricula" class="col-xs-4 col-md-3 col-lg-2">
+                                <img src="/static/images/folder.png">
+                                <h5>Donec id elit non mi porta gravida at eget metus</h5>
+                            </div>
+                            <div id="archivo_vista_cuadricula" class="col-xs-4 col-md-3 col-lg-2">
+                                <img src="/static/images/folder.png">
+                                <h5>Donec id elit</h5>
+                            </div>
+                            <div id="archivo_vista_cuadricula" class="col-xs-4 col-md-3 col-lg-2">
+                                <img src="/static/images/folder.png">
+                                <h5>Donec id elit non mi porta gravida at eget metus</h5>
+                            </div>
+                            <div id="archivo_vista_cuadricula" class="col-xs-4 col-md-3 col-lg-2">
+                                <img src="/static/images/folder.png">
+                                <h5>Nombre archivo</h5>
+                            </div>
+                            <div id="archivo_vista_cuadricula" class="col-xs-4 col-md-3 col-lg-2">
+                                <img src="/static/images/folder.png">
+                                <h5>Donec id elit non mi porta gravida at eget metus</h5>
+                            </div>
+                            <div id="archivo_vista_cuadricula" class="col-xs-4 col-md-3 col-lg-2">
+                                <img src="/static/images/folder.png">
+                                <h5>Donec id elit non mi porta gravida at eget metus</h5>
+                            </div>
+                            <div id="archivo_vista_cuadricula" class="col-xs-4 col-md-3 col-lg-2">
+                                <img src="/static/images/folder.png">
+                                <h5>Donec id elit non mi porta gravida at eget metus</h5>
+                            </div>
+                        </div>
+                    </div> <!--> <!-- container -->
+
+                </div> <!-- vista_documentos -->
+            </div>
+        </div> <!-- container-fluid -->
+
+        <!--
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2">
+            <footer>
+                <p class="pull-right"><a href="#">Back to top</a></p>
+                <p>&copy; 2017 DrawerCloud, Sitio web desarrollado por José Manuel Rejón. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+            </footer>
+        </div>
+        -->
+
+        <!-- CÓDIGO JAVASCRIPT 
+        <script src="/static/jquery.js"></script>
+        <script>
+            $( document ).ready(function() {
+                var bt_opciones_pulsado = 0;
+                //Acción al pulsar sobre el botón de opciones en la fila
+                $(".btn-group").click(function( event ) {
+                    event.preventDefault();
+                    bt_opciones_pulsado = 1;
+                })
+                //Acción al pulsar sobre una fila
+                $("#tabla tr").click(function( event ) {
+                    event.preventDefault();
+                    if((!bt_opciones_pulsado) && (this.id != 0))
+                        alert("Fila " + this.id);
+                    bt_opciones_pulsado = 0;
+                })
+                /******************* OPCIONES DE BOTÓN DERECHO EN LA LISTA *******************/
+                //Ocultamos el menú al cargar la página
+                $("#menu").hide();
+                //Mostramos el menú si hacemos click derecho con el ratón
+                $(document).bind("contextmenu", function(e){
+                    $("#menu").css({'display':'block', 'left':e.pageX, 'top':e.pageY});
+                    return false;
+                });
+                //Cuando hagamos click, el menú desaparecerá
+                $(document).click(function(e){
+                    if(e.button == 0){
+                        $("#menu").css("display", "none");
+                    }
+                });
+                //Si pulsamos esc, el menú desaparecerá
+                $(document).keydown(function(e){
+                    if(e.keyCode == 27){
+                        $("#menu").css("display", "none");
+                    }
+                });
+                //Acciones de los botones del menú
+                $("#menu").click(function(e){
+                    //El switch utiliza los IDs de los <li> del menú
+                    switch(e.target.id){
+                        case "descargar":
+                            alert("Descargando");
+                            break;
+                        case "copiar":
+                            alert("Copiado");
+                            break;
+                        case "mover":
+                            alert("Movido");
+                            break;
+                        case "addfavoritos":
+                            alert("Añadido a favoritos");
+                            break;
+                        case "eliminar":
+                            alert("Eliminado");
+                            break;
+                    }
+                });
+            });
+        </script>-->
+
+
+        <!-- Bootstrap core JavaScript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="../../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+        <!--<script src="../../../dist/js/bootstrap.min.js"></script>-->
+        <!--<script src="/static/dist/js/bootstrap.min.js"></script>-->
+        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+        <!--<script src="../../../assets/js/ie10-viewport-bug-workaround.js"></script>-->
+        <script src="/static/assets/js/ie10-viewport-bug-workaround.js"></script>
+        <script src="/static/jquery.js"></script>
+        <script src="/static/codigo.js"></script>
+        
+    </body>
+</html>

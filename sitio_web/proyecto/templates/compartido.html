@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block cabecera %}
+    <li><a href="{% url 'index' %}">Documentos</a></li>
+    <li><a href="{% url 'multimedia' %}">Multimedia</a></li>
+    <li class="active"><a href="">Compartido</a></li>
+    <li><a href="{% url 'favoritos' %}">Favoritos</a></li>
+    <li><a href="{% url 'grupoTrabajo' %}">Grupo de trabajo</a></li>
+{% endblock %}
