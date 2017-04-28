@@ -171,12 +171,12 @@ body {
     margin-top: 2px;
 }
 
-#archivo_vista_cuadricula:hover{
+#documento_vista_cuadricula:hover{
     cursor:pointer;
     color: #72A7CF;
 }
 
-#archivo_vista_cuadricula{
+#documento_vista_cuadricula{
     height: 120px;
     overflow: hidden;
     text-overflow: ellipsis;

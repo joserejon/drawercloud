@@ -1,28 +1,10 @@
 $( document ).ready(function() {
 
-    var bt_opciones_pulsado = 0;
-    //Acción al pulsar sobre el botón de opciones en la fila
-    $(".btn-group").click(function( event ) {
-        event.preventDefault();
-        bt_opciones_pulsado = 1;
-    })
-    //Acción al pulsar sobre una fila
-    $("#tabla tr").click(function( event ) {
-        event.preventDefault();
-        if((!bt_opciones_pulsado) && (this.id != 0))
-            alert("Fila " + this.id);
-        bt_opciones_pulsado = 0;
-    })
-
     /******************* OPCIONES DE BOTÓN DERECHO EN LA LISTA *******************/
     //Ocultamos el menú al cargar la página
     $("#menu").hide();
-    //Mostramos el menú si hacemos click derecho con el ratón
     
-    $("#archivo_vista_cuadricula").bind("contextmenu", function(e){
-        $("#menu").css({'display':'block', 'left':e.pageX, 'top':e.pageY});
-        return false;
-    });
+    //El código referente a mostrar el menú emergente se encuentra en cada modo de vista
 
     //Cuando hagamos click, el menú desaparecerá
     $(document).click(function(e){
@@ -72,66 +54,76 @@ $( document ).ready(function() {
         var html = "" +
             "<div class='container-fluid cuadricula'>" +
                 "<div class='row'>" +
-                    "<div id='archivo_vista_cuadricula' class='col-xs-4 col-md-3 col-lg-2' title='Donec id elit non mi porta gravida at eget metusDonec id elit non mi porta gravida at eget metusDonec id elit non mi porta gravida at eget metusDonec id elit non mi porta gravida at eget metusDonec id elit non mi porta gravida at eget metus'>" +
-                        "<img src='/static/images/folder.png'>" +
-                        "<h5>Donec id elit non mi porta gravida at eget metusDonec id elit non mi porta gravida at eget metusDonec id elit non mi porta gravida at eget metusDonec id elit non mi porta gravida at eget metusDonec id elit non mi porta gravida at eget metus</h5>" +
+                    "<div id='documento_vista_cuadricula' class='col-xs-4 col-md-3 col-lg-2'>" +
+                        "<div id='archivo_1' title='Donec id elit non mi porta gravida at eget metusDonec id elit non mi porta gravida at eget metusDonec id elit non mi porta gravida at eget metusDonec id elit non mi porta gravida at eget metusDonec id elit non mi porta gravida at eget metus'>" +
+                            "<img src='/static/images/folder.png'>" +
+                            "<h5>Donec id elit non mi porta gravida at eget metusDonec id elit non mi porta gravida at eget metusDonec id elit non mi porta gravida at eget metusDonec id elit non mi porta gravida at eget metusDonec id elit non mi porta gravida at eget metus</h5>" +
+                        "</div>" +
                     "</div>" +
-                    "<div id='archivo_vista_cuadricula' class='col-xs-4 col-md-3 col-lg-2'>" +
-                        "<img src='/static/images/folder.png'>" +
-                        "<h5>Nombre archivo</h5>" +
+                    "<div id='documento_vista_cuadricula' class='col-xs-4 col-md-3 col-lg-2'>" +
+                        "<div id='archivo_2'>" +
+                            "<img src='/static/images/folder.png'>" +
+                            "<h5>Nombre archivo</h5>" +
+                        "</div>" +
                     "</div>" +
-                    "<div id='archivo_vista_cuadricula' class='col-xs-4 col-md-3 col-lg-2'>" +
-                        "<img src='/static/images/folder.png'>" +
-                        "<h5>Donec id elit non mi porta gravida at eget metus</h5>" +
+                    "<div id='documento_vista_cuadricula' class='col-xs-4 col-md-3 col-lg-2'>" +
+                        "<div id='archivo_3'>" +
+                            "<img src='/static/images/folder.png'>" +
+                            "<h5>Donec id elit non mi porta gravida at eget metus</h5>" +
+                        "</div>" +
                     "</div>" +
-                    "<div id='archivo_vista_cuadricula' class='col-xs-4 col-md-3 col-lg-2'>" +
-                        "<img src='/static/images/folder.png'>" +
-                        "<h5>Nombre archivo</h5>" +
+                    "<div id='documento_vista_cuadricula' class='col-xs-4 col-md-3 col-lg-2'>" +
+                        "<div id='archivo_4'>" +
+                            "<img src='/static/images/folder.png'>" +
+                            "<h5>Nombre archivo</h5>" +
+                        "</div>" +
                     "</div>" +
-                    "<div id='archivo_vista_cuadricula' class='col-xs-4 col-md-3 col-lg-2'>" +
-                        "<img src='/static/images/folder.png'>" +
-                        "<h5>Donec id elit non mi porta gravida at eget metus</h5>" +
+                    "<div id='documento_vista_cuadricula' class='col-xs-4 col-md-3 col-lg-2'>" +
+                        "<div id='archivo_5'>" +
+                            "<img src='/static/images/folder.png'>" +
+                            "<h5>Donec id elit non mi porta gravida at eget metus</h5>" +
+                        "</div>" +
                     "</div>" +
-                    "<div id='archivo_vista_cuadricula' class='col-xs-4 col-md-3 col-lg-2'>" +
-                        "<img src='/static/images/folder.png'>" +
-                        "<h5>Nombre archivo</h5>" +
+                    "<div id='documento_vista_cuadricula' class='col-xs-4 col-md-3 col-lg-2'>" +
+                        "<div id='archivo_6'>" +
+                            "<img src='/static/images/folder.png'>" +
+                            "<h5>Nombre archivo</h5>" +
+                        "</div>" +
                     "</div>" +
-                    "<div id='archivo_vista_cuadricula' class='col-xs-4 col-md-3 col-lg-2'>" +
-                        "<img src='/static/images/folder.png'>" +
-                        "<h5>Donec id elit non mi porta gravida at eget metus</h5>" +
+                    "<div id='documento_vista_cuadricula' class='col-xs-4 col-md-3 col-lg-2'>" +
+                        "<div id='archivo_7'>" +
+                            "<img src='/static/images/folder.png'>" +
+                            "<h5>Donec id elit non mi porta gravida at eget metus</h5>" +
+                        "</div>" +
                     "</div>" +
-                    "<div id='archivo_vista_cuadricula' class='col-xs-4 col-md-3 col-lg-2'>" +
-                        "<img src='/static/images/folder.png'>" +
-                        "<h5>Nombre archivo</h5>" +
+                    "<div id='documento_vista_cuadricula' class='col-xs-4 col-md-3 col-lg-2'>" +
+                        "<div id='archivo_8'>" +
+                            "<img src='/static/images/folder.png'>" +
+                            "<h5>Nombre archivo</h5>" +
+                        "</div>" +
                     "</div>" +
-                    "<div id='archivo_vista_cuadricula' class='col-xs-4 col-md-3 col-lg-2'>" +
-                        "<img src='/static/images/folder.png'>" +
-                        "<h5>Donec id elit non mi porta gravida at eget metus</h5>" +
-                    "</div>" +
-                    "<div id='archivo_vista_cuadricula' class='col-xs-4 col-md-3 col-lg-2'>" +
-                        "<img src='/static/images/folder.png'>" +
-                        "<h5>Nombre archivo</h5>" +
-                    "</div>" +
-                    "<div id='archivo_vista_cuadricula' class='col-xs-4 col-md-3 col-lg-2'>" +
-                        "<img src='/static/images/folder.png'>" +
-                        "<h5>Donec id elit non mi porta gravida at eget metus</h5>" +
-                    "</div>" +
-                    "<div id='archivo_vista_cuadricula' class='col-xs-4 col-md-3 col-lg-2'>" +
-                        "<img src='/static/images/folder.png'>" +
-                        "<h5>Nombre archivo</h5>" +
-                    "</div>" +
-                    "<div id='archivo_vista_cuadricula' class='col-xs-4 col-md-3 col-lg-2'>" +
-                        "<img src='/static/images/folder.png'>" +
-                        "<h5>Donec id elit non mi porta gravida at eget metus</h5>" +
-                    "</div>" +
-                    "<div id='archivo_vista_cuadricula' class='col-xs-4 col-md-3 col-lg-2'>" +
-                        "<img src='/static/images/folder.png'>" +
-                        "<h5>Nombre archivo</h5>" +
+                    "<div id='documento_vista_cuadricula' class='col-xs-4 col-md-3 col-lg-2'>" +
+                        "<div id='archivo_vista_cuadricula'>" +
+                            "<img src='/static/images/folder.png'>" +
+                            "<h5>Donec id elit non mi porta gravida at eget metus</h5>" +
+                        "</div>" +
                     "</div>" +
                 "</div>" +
             "</div> <!--> <!-- container -->";
 
         document.getElementById('vista_documentos').innerHTML = html;
+        
+        //Mostramos el menú si hacemos click derecho con el ratón
+        $("div.row div").bind("contextmenu", function(e){
+            $("#menu").css({'display':'block', 'left':e.pageX, 'top':e.pageY});
+            return false;
+        });
+
+        //Acción al pulsar sobre un documento
+        $("#documento_vista_cuadricula div").click(function( event ) {
+            event.preventDefault();
+            alert("Fila " + this.id);
+        })
     }
 
     function vistaLista(){
@@ -213,5 +205,26 @@ $( document ).ready(function() {
             "</div> <!-- table-responsive -->";
 
         document.getElementById('vista_documentos').innerHTML = html;
+
+        //Mostramos el menú si hacemos click derecho con el ratón
+        $("tbody tr").bind("contextmenu", function(e){
+            $("#menu").css({'display':'block', 'left':e.pageX, 'top':e.pageY});
+            return false;
+        });
+
+        var bt_opciones_pulsado = 0;
+        //Acción al pulsar sobre el botón de opciones en la fila
+        $(".btn-group").click(function( event ) {
+            event.preventDefault();
+            bt_opciones_pulsado = 1;
+        })
+
+        //Acción al pulsar sobre una fila
+        $("#tabla tr").click(function( event ) {
+            event.preventDefault();
+            if((!bt_opciones_pulsado) && (this.id != 0))
+                alert("Fila " + this.id);
+            bt_opciones_pulsado = 0;
+        })
     }
 });
