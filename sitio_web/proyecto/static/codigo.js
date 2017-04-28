@@ -18,10 +18,12 @@ $( document ).ready(function() {
     //Ocultamos el menú al cargar la página
     $("#menu").hide();
     //Mostramos el menú si hacemos click derecho con el ratón
-    $(document).bind("contextmenu", function(e){
+    
+    $("#archivo_vista_cuadricula").bind("contextmenu", function(e){
         $("#menu").css({'display':'block', 'left':e.pageX, 'top':e.pageY});
         return false;
     });
+
     //Cuando hagamos click, el menú desaparecerá
     $(document).click(function(e){
         if(e.button == 0){

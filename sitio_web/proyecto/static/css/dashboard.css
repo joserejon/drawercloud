@@ -173,6 +173,7 @@ body {
 
 #archivo_vista_cuadricula:hover{
     cursor:pointer;
+    color: #72A7CF;
 }
 
 #archivo_vista_cuadricula{
