@@ -41,14 +41,47 @@ $( document ).ready(function() {
     });
 
     /******************* VISTA DE DOCUMENTOS *******************/
-    $('#vista_cuadricula').click(function(event){
+
+    //localStorage.setItem("modo_vista", "lista");
+    //localStorage.getItem("modo_vista");
+    actualizaVista();
+    
+    
+    $("#cambiar_vista").on("click","#vista_cuadricula", function(){
+        localStorage.setItem("modo_vista", "cuadricula");
+        actualizaVista();
+    });
+
+    $("#cambiar_vista").on("click","#vista_lista", function(){
+        localStorage.setItem("modo_vista", "lista");
+        actualizaVista();
+    });
+
+    /*$('#vista_cuadricula').click(function(event){
         event.preventDefault();
-        vistaCuadricula();
+        localStorage.setItem("modo_vista", "cuadricula");
+        actualizaVista();
     });
     $('#vista_lista').click(function(event){
         event.preventDefault();
-        vistaLista();
-    });
+        localStorage.setItem("modo_vista", "lista");
+        actualizaVista();
+    });*/
+
+    function actualizaVista(){
+        var html = "";
+
+        if (localStorage.getItem("modo_vista") == "cuadricula"){
+            html = "<span id='vista_lista' title='ver lista' class='glyphicon glyphicon-th-list'></span>";
+            vistaCuadricula();
+        }
+        else{ 
+            html = "<span id='vista_cuadricula' title='ver iconos' class='glyphicon glyphicon-th-large'></span>";
+            vistaLista();
+        }
+
+        document.getElementById('cambiar_vista').innerHTML = html;
+    }
 
     function vistaCuadricula(){
         var html = "" +
@@ -115,6 +148,7 @@ $( document ).ready(function() {
         
         //Mostramos el menú si hacemos click derecho con el ratón
         $("div.row div").bind("contextmenu", function(e){
+            event.preventDefault();
             $("#menu").css({'display':'block', 'left':e.pageX, 'top':e.pageY});
             return false;
         });
@@ -208,6 +242,7 @@ $( document ).ready(function() {
 
         //Mostramos el menú si hacemos click derecho con el ratón
         $("tbody tr").bind("contextmenu", function(e){
+            event.preventDefault();
             $("#menu").css({'display':'block', 'left':e.pageX, 'top':e.pageY});
             return false;
         });
@@ -227,4 +262,5 @@ $( document ).ready(function() {
             bt_opciones_pulsado = 0;
         })
     }
+    //localStorage.clear();
 });

@@ -41,6 +41,7 @@
 
         <script>
             $(document).ready(function(){
+                //localStorage.setItem("modo_vista", "lista");
                 $("#mostrarmodal").modal("show");
             });
         </script>
@@ -114,8 +115,11 @@
                     <li><a href="#">Carpeta 1</a></li>
                     <li class="active">Carpeta 1.1</li>
                 </ol>
-                <span id="vista_cuadricula" class="glyphicon glyphicon-th-large"></span>
-                <span id="vista_lista" class="glyphicon glyphicon-th-list"></span>
+
+                <!-- Añadir el botón para cambiar a vista lista/cuadricula -->
+                <div id="cambiar_vista">
+                    <!-- Código insertado desde javascript  -->
+                </div>
 
                 <div id="vista_documentos">
                     <!-- Código insertado desde javascript  -->
@@ -131,68 +135,6 @@
             </footer>
         </div>
         -->
-
-        <!-- CÓDIGO JAVASCRIPT 
-        <script src="/static/jquery.js"></script>
-        <script>
-            $( document ).ready(function() {
-                var bt_opciones_pulsado = 0;
-                //Acción al pulsar sobre el botón de opciones en la fila
-                $(".btn-group").click(function( event ) {
-                    event.preventDefault();
-                    bt_opciones_pulsado = 1;
-                })
-                //Acción al pulsar sobre una fila
-                $("#tabla tr").click(function( event ) {
-                    event.preventDefault();
-                    if((!bt_opciones_pulsado) && (this.id != 0))
-                        alert("Fila " + this.id);
-                    bt_opciones_pulsado = 0;
-                })
-                /******************* OPCIONES DE BOTÓN DERECHO EN LA LISTA *******************/
-                //Ocultamos el menú al cargar la página
-                $("#menu").hide();
-                //Mostramos el menú si hacemos click derecho con el ratón
-                $(document).bind("contextmenu", function(e){
-                    $("#menu").css({'display':'block', 'left':e.pageX, 'top':e.pageY});
-                    return false;
-                });
-                //Cuando hagamos click, el menú desaparecerá
-                $(document).click(function(e){
-                    if(e.button == 0){
-                        $("#menu").css("display", "none");
-                    }
-                });
-                //Si pulsamos esc, el menú desaparecerá
-                $(document).keydown(function(e){
-                    if(e.keyCode == 27){
-                        $("#menu").css("display", "none");
-                    }
-                });
-                //Acciones de los botones del menú
-                $("#menu").click(function(e){
-                    //El switch utiliza los IDs de los <li> del menú
-                    switch(e.target.id){
-                        case "descargar":
-                            alert("Descargando");
-                            break;
-                        case "copiar":
-                            alert("Copiado");
-                            break;
-                        case "mover":
-                            alert("Movido");
-                            break;
-                        case "addfavoritos":
-                            alert("Añadido a favoritos");
-                            break;
-                        case "eliminar":
-                            alert("Eliminado");
-                            break;
-                    }
-                });
-            });
-        </script>-->
-
 
         <!-- Bootstrap core JavaScript
         ================================================== -->
