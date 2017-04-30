@@ -46,7 +46,6 @@ $( document ).ready(function() {
     //localStorage.getItem("modo_vista");
     actualizaVista();
     
-    
     $("#cambiar_vista").on("click","#vista_cuadricula", function(){
         localStorage.setItem("modo_vista", "cuadricula");
         actualizaVista();
@@ -56,17 +55,6 @@ $( document ).ready(function() {
         localStorage.setItem("modo_vista", "lista");
         actualizaVista();
     });
-
-    /*$('#vista_cuadricula').click(function(event){
-        event.preventDefault();
-        localStorage.setItem("modo_vista", "cuadricula");
-        actualizaVista();
-    });
-    $('#vista_lista').click(function(event){
-        event.preventDefault();
-        localStorage.setItem("modo_vista", "lista");
-        actualizaVista();
-    });*/
 
     function actualizaVista(){
         var html = "";
@@ -148,16 +136,14 @@ $( document ).ready(function() {
         
         //Mostramos el menú si hacemos click derecho con el ratón
         $("div.row div").bind("contextmenu", function(e){
-            event.preventDefault();
             $("#menu").css({'display':'block', 'left':e.pageX, 'top':e.pageY});
             return false;
         });
 
         //Acción al pulsar sobre un documento
         $("#documento_vista_cuadricula div").click(function( event ) {
-            event.preventDefault();
             alert("Fila " + this.id);
-        })
+        });
     }
 
     function vistaLista(){
@@ -242,7 +228,6 @@ $( document ).ready(function() {
 
         //Mostramos el menú si hacemos click derecho con el ratón
         $("tbody tr").bind("contextmenu", function(e){
-            event.preventDefault();
             $("#menu").css({'display':'block', 'left':e.pageX, 'top':e.pageY});
             return false;
         });
@@ -250,9 +235,8 @@ $( document ).ready(function() {
         var bt_opciones_pulsado = 0;
         //Acción al pulsar sobre el botón de opciones en la fila
         $(".btn-group").click(function( event ) {
-            event.preventDefault();
             bt_opciones_pulsado = 1;
-        })
+        });
 
         //Acción al pulsar sobre una fila
         $("#tabla tr").click(function( event ) {
@@ -260,7 +244,7 @@ $( document ).ready(function() {
             if((!bt_opciones_pulsado) && (this.id != 0))
                 alert("Fila " + this.id);
             bt_opciones_pulsado = 0;
-        })
+        });
     }
     //localStorage.clear();
 });
