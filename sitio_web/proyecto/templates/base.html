@@ -77,11 +77,17 @@
                         {% endblock %}
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="">Usuario</a></li>
-                        <!-- DENTRO DE USUARIO
-                            <li><a href="{% url 'registroHistorico' %}">Registro histórico</a></li>
-                            <li><a href="{% url 'ayuda' %}">Ayuda</a></li>
-                        -->
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <img src='/static/images/user.png'> <b class="caret"></b></a>
+                            <ul class="dropdown-menu multi-level">
+                                <li><a href="#">Usuario</a></li>
+                                <li class="divider"></li>
+                                <li><a href="{% url 'registroHistorico' %}">Registro histórico</a></li>
+                                <li><a href="{% url 'ayuda' %}">Ayuda</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#">Salir</a></li>
+                            </ul>
+                        </li>
                     </ul>
                 </div>
             </div>

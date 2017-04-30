@@ -143,6 +143,14 @@ body {
 }
 
 /* Botones de cambiar vista de documentos */
+#vista_cuadricula{
+    margin-left: 2px;
+}
+
+#vista_lista{
+    margin-left: 2px;
+}
+
 #vista_cuadricula:hover{
     cursor:pointer;
 }
@@ -180,4 +188,16 @@ body {
     height: 120px;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+/* Imagen usuario navbar */
+.navbar-right img{
+    border-radius: 50%;
+    margin-right: 2px; 
+    margin-bottom: -10px;
+    margin-top: -10px;
+}
+
+.navbar-right .caret{
+    color: #8c949b;
 }
