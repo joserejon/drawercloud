@@ -1,0 +1,101 @@
+{% block body %}
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{% url 'index' %}">DrawerCloud</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                {% block cabecera %}
+                <li class="active"><a href="">Documentos</a></li>
+                <li><a href="{% url 'multimedia' %}">Multimedia</a></li>
+                <li><a href="{% url 'compartido' %}">Compartido</a></li>
+                <li><a href="{% url 'favoritos' %}">Favoritos</a></li>
+                <li><a href="{% url 'grupoTrabajo' %}">Grupo de trabajo</a></li>
+                {% endblock %}
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <img src='/static/images/user.png'> <b class="caret"></b></a>
+                    <ul class="dropdown-menu multi-level">
+                        <li><a href="#">Usuario</a></li>
+                        <li class="divider"></li>
+                        <li><a href="{% url 'registroHistorico' %}">Registro histórico</a></li>
+                        <li><a href="{% url 'ayuda' %}">Ayuda</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Salir</a></li>
+                        <!--{% if user.is_authenticated %}
+                        <li><a href="{% url 'auth_logout' %}"> Log out </a></li>
+                        {% else %}
+                        <li><a href="{% url 'auth_login' %}"> Log in </a></li>
+                        {% endif %}-->
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container-fluid">
+    <!-- Menú izquierda -->
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav nav-sidebar">
+            <li><a href="#">Añadir archivo</a></li>
+            <li><a href="#">Nueva carpeta</a></li>
+            <li><a href="#">....</a></li>
+            </ul>
+        </div>
+    </div>
+    <!-- Menú botón derecho sobre archivos -->
+    <div id="menu">
+        <ul>
+        <li id="descargar"><a href="#">Descargar</a></li>
+        <li id="copiar"><a href="#">Copiar</a></li>
+        <li id="mover"><a href="#">Mover</a></li>
+        <li id="addfavoritos"><a href="#">Añadir a favoritos</a></li>
+        <li id="eliminar"><a href="#">Eliminar</a></li>
+        </ul>
+    </div>
+    <!-- Breadcrumb -->
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <h1 class="page-header">{{ pagina_actual }}</h1>
+        <ol class="breadcrumb">
+            <li><a href="#">Carpeta</a></li>
+            <li><a href="#">Carpeta 1</a></li>
+            <li class="active">Carpeta 1.1</li>
+        </ol>
+
+        {% block contenido_body %}
+        <h1>Contenido en obras</h1>
+        {% endblock %}
+    </div>
+</div> <!-- container-fluid -->
+
+<!--
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2">
+    <footer>
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>&copy; 2017 DrawerCloud, Sitio web desarrollado por José Manuel Rejón. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+    </footer>
+</div>
+-->
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="../../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+<!--<script src="../../../dist/js/bootstrap.min.js"></script>-->
+<!--<script src="/static/dist/js/bootstrap.min.js"></script>-->
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<!--<script src="../../../assets/js/ie10-viewport-bug-workaround.js"></script>-->
+<script src="/static/assets/js/ie10-viewport-bug-workaround.js"></script>
+<script src="/static/jquery.js"></script>
+<script src="/static/codigo.js"></script>
+{% endblock %}

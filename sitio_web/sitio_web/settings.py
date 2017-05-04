@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
+from pymongo import MongoClient
+
+CLIENT = MongoClient('mongodb://localhost:27017/')
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -38,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'proyecto',
+    'registration',
 ]
 
 MIDDLEWARE = [
@@ -68,7 +72,7 @@ TEMPLATES = [
     },
 ]
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'proyecto/static')]
 
 WSGI_APPLICATION = 'sitio_web.wsgi.application'
 
@@ -121,3 +125,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
+REGISTRATION_OPEN = True # If True, users can register
+LOGIN_REDIRECT_URL = '/proyecto/' # The page you want users to arrive at after they successful log in
+LOGIN_URL = '/accounts/login/' # The page users are directed to if they are not logged in and are trying to access pages requiring authentication
+REGISTRATION_AUTO_LOGIN = True

@@ -54,7 +54,6 @@
     </head>
 
     <body>
-
         <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container-fluid">
                 <div class="navbar-header">
@@ -74,6 +73,11 @@
                         <li><a href="{% url 'compartido' %}">Compartido</a></li>
                         <li><a href="{% url 'favoritos' %}">Favoritos</a></li>
                         <li><a href="{% url 'grupoTrabajo' %}">Grupo de trabajo</a></li>
+                        {% if user.is_authenticated %}
+                            <li><a href="{% url 'auth_logout' %}"> Log out </a></li>
+                        {% else %}
+                            <li><a href="{% url 'auth_login' %}"> Log in </a></li>
+                        {% endif %}
                         {% endblock %}
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
@@ -86,6 +90,11 @@
                                 <li><a href="{% url 'ayuda' %}">Ayuda</a></li>
                                 <li class="divider"></li>
                                 <li><a href="#">Salir</a></li>
+                                <!--{% if user.is_authenticated %}
+                                <li><a href="{% url 'auth_logout' %}"> Log out </a></li>
+                                {% else %}
+                                <li><a href="{% url 'auth_login' %}"> Log in </a></li>
+                                {% endif %}-->
                             </ul>
                         </li>
                     </ul>
@@ -103,7 +112,7 @@
                     </ul>
                 </div>
             </div>
-            <!-- Menú botón derecho sobre lista -->
+            <!-- Menú botón derecho sobre archivos -->
             <div id="menu">
                 <ul>
                 <li id="descargar"><a href="#">Descargar</a></li>
@@ -113,23 +122,18 @@
                 <li id="eliminar"><a href="#">Eliminar</a></li>
                 </ul>
             </div>
-            <!-- Lista de carpetas y archivos -->
+            <!-- Breadcrumb -->
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                <h1 class="page-header">Página actual</h1>
+                <h1 class="page-header">{{ pagina_actual }}</h1>
                 <ol class="breadcrumb">
                     <li><a href="#">Carpeta</a></li>
                     <li><a href="#">Carpeta 1</a></li>
                     <li class="active">Carpeta 1.1</li>
                 </ol>
 
-                <!-- Añadir el botón para cambiar a vista lista/cuadricula -->
-                <div id="cambiar_vista">
-                    <!-- Código insertado desde javascript  -->
-                </div>
-
-                <div id="vista_documentos">
-                    <!-- Código insertado desde javascript  -->
-                </div> <!-- vista_documentos -->
+                {% block contenido_body %}
+                <h1>Contenido en obras</h1>
+                {% endblock %}
             </div>
         </div> <!-- container-fluid -->
 
@@ -154,6 +158,5 @@
         <script src="/static/assets/js/ie10-viewport-bug-workaround.js"></script>
         <script src="/static/jquery.js"></script>
         <script src="/static/codigo.js"></script>
-        
     </body>
 </html>

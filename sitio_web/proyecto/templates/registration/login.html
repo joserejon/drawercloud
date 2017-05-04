@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block contenido_body %}
+
+	<div class="center_div">
+		<h1>Inicia sesión</h1>
+	    <form method="post" action="." class="form_log_in">
+	        {% csrf_token %}
+	        {{ form.as_p }}
+
+	        <input type="submit" value="Log in" class="btn btn-primary"/>
+	        <input type="hidden" name="next" value="{{ next }}" />
+	    </form>
+
+	    <p>¿No estás registrado? <a href="{% url 'registration_register' %}">Regístrate</a>!</p>
+	    <br>
+	</div>
+{% endblock %}
