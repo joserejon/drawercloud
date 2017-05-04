@@ -73,11 +73,6 @@
                         <li><a href="{% url 'compartido' %}">Compartido</a></li>
                         <li><a href="{% url 'favoritos' %}">Favoritos</a></li>
                         <li><a href="{% url 'grupoTrabajo' %}">Grupo de trabajo</a></li>
-                        {% if user.is_authenticated %}
-                            <li><a href="{% url 'auth_logout' %}"> Log out </a></li>
-                        {% else %}
-                            <li><a href="{% url 'auth_login' %}"> Log in </a></li>
-                        {% endif %}
                         {% endblock %}
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
@@ -89,7 +84,7 @@
                                 <li><a href="{% url 'registroHistorico' %}">Registro histórico</a></li>
                                 <li><a href="{% url 'ayuda' %}">Ayuda</a></li>
                                 <li class="divider"></li>
-                                <li><a href="#">Salir</a></li>
+                                <li><a href="{% url 'auth_logout' %}">Salir</a></li>
                                 <!--{% if user.is_authenticated %}
                                 <li><a href="{% url 'auth_logout' %}"> Log out </a></li>
                                 {% else %}
