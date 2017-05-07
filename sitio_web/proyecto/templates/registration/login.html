@@ -1,10 +1,12 @@
 {% extends "base_registracion.html" %}
+{% load i18n %}
 
 {% block contenido %}
 
-	<div class="center_div">
-		<h1>Inicia sesión</h1>
-	    <form method="post" action="." class="form_log_in">
+	<div class="contenido_login">
+		<h1>Bienvenido a DrawerCloud</h1>
+		<h2>Inicia sesión</h2>
+	    <form method="post" action="." class="form-group">
 	        {% csrf_token %}
 	        {{ form.as_p }}
 
