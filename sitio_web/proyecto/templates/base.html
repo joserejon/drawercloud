@@ -79,7 +79,7 @@
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <img src='/static/images/user.png'> <b class="caret"></b></a>
                             <ul class="dropdown-menu multi-level">
-                                <li><a href="#">Usuario</a></li>
+                                <li><a href="{% url 'usuario' %}">Usuario</a></li>
                                 <li class="divider"></li>
                                 <li><a href="{% url 'registroHistorico' %}">Registro histórico</a></li>
                                 <li><a href="{% url 'ayuda' %}">Ayuda</a></li>
@@ -117,14 +117,15 @@
                 <li id="eliminar"><a href="#">Eliminar</a></li>
                 </ul>
             </div>
-            <!-- Breadcrumb -->
+            <!-- contenido_body -->
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                 <h1 class="page-header">{{ pagina_actual }}</h1>
+                <!-- Breadcrumb
                 <ol class="breadcrumb">
                     <li><a href="#">Carpeta</a></li>
                     <li><a href="#">Carpeta 1</a></li>
                     <li class="active">Carpeta 1.1</li>
-                </ol>
+                </ol>-->
 
                 {% block contenido_body %}
                 <h1>Contenido en obras</h1>

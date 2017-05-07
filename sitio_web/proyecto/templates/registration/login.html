@@ -2,13 +2,16 @@
 {% load i18n %}
 
 {% block contenido %}
-
 	<div class="contenido_login">
 		<h1>Bienvenido a DrawerCloud</h1>
 		<h2>Inicia sesión</h2>
 	    <form method="post" action="." class="form-group">
 	        {% csrf_token %}
-	        {{ form.as_p }}
+	        
+	        <p><label for="id_username"></label>
+	        <input id="id_username" type="text" name="username" placeholder="Username" maxlength="100" required /></p>
+	        <p><label for="id_password"></label>
+	        <input id="id_password" type="password" name="password" placeholder="Password" maxlength="100" required /></p>
 
 	        <input type="submit" value="Log in" class="btn btn-primary"/>
 	        <input type="hidden" name="next" value="{{ next }}" />

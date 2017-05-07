@@ -2,7 +2,6 @@
 
 from django.shortcuts import render, HttpResponse
 from django.conf import settings
-import json
 from django.contrib.auth.decorators import login_required
 
 cliente_mongo = settings.CLIENT
@@ -47,3 +46,8 @@ def registroHistorico(request):
 @login_required(login_url='/accounts/login/')
 def ayuda(request):
 	return render(request, 'ayuda.html', {'pagina_actual':'Ayuda'})
+
+#Mostrar ayuda
+@login_required(login_url='/accounts/login/')
+def usuario(request):
+	return render(request, 'usuario.html', {'pagina_actual':'Mi perfil'})

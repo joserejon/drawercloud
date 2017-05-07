@@ -4,7 +4,15 @@
 	<h1>Regístrate aquí</h1>
 	<form method="post" action="." class="form_log_in">
 		{% csrf_token %}
-		{{ form.as_p }}
+		
+		<p><label for="id_username"></label>
+        <input id="id_username" type="text" name="username" placeholder="Username" maxlength="100" required /></p>
+		<p><label for="id_email"></label>
+        <input id="id_email" type="email" name="email" placeholder="email" maxlength="100" required /></p>
+        <p><label for="id_password"></label>
+        <input id="id_password" type="password" name="password" placeholder="Contraseña" maxlength="100" required /></p>
+        <p><label for="id_r_password"></label>
+        <input id="id_r_password" type="password" name="r_password" placeholder="Repita la contraseña anterior" maxlength="100" required /></p>
 
 		<input type="submit" value="Submit" class="btn btn-primary"//>
 	</form>
