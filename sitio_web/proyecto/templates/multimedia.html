@@ -6,3 +6,27 @@
     <li><a href="{% url 'favoritos' %}">Favoritos</a></li>
     <li><a href="{% url 'grupoTrabajo' %}">Grupo de trabajo</a></li>
 {% endblock %}
+{% block contenido_body %}
+<div class='container-fluid'>
+	<div class='row'>
+		<div id='documento_vista_multimedia' class='col-xs-4 col-md-3 col-lg-2'>
+			<div id='archivo_1' title='Música'>
+				<img src='/static/images/big_folder.png'>
+				<h3>Música</h3>
+			</div>
+		</div>
+		<div id='documento_vista_multimedia' class='col-xs-4 col-md-3 col-lg-2'>
+			<div id='archivo_2' title='Imágenes'>
+				<img src='/static/images/big_folder.png'>
+				<h3>Imágenes</h3>
+			</div>
+		</div>
+		<div id='documento_vista_multimedia' class='col-xs-4 col-md-3 col-lg-2'>
+			<div id='archivo_3' title='Vídeo'>
+				<img src='/static/images/big_folder.png'>
+				<h3>Vídeo</h3>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

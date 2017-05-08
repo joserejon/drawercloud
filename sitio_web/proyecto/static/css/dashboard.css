@@ -71,6 +71,10 @@ body {
  * Main content
  */
 
+.letra_azul{
+    color: #72A7CF;
+}
+
 .main {
     padding: 20px;
 }
@@ -200,4 +204,51 @@ body {
 
 .navbar-right .caret{
     color: #8C949B;
+}
+
+
+/* Vista Multimedia */
+#documento_vista_multimedia{
+    text-align: center;
+    height: 250px;
+    width: 250px;
+    border-radius: 50%;
+    border-style: solid;
+    border-width: 5px;
+    border-color: #72A7CF;
+    margin-left: 50px;
+    margin-top: 80px;
+}
+
+#documento_vista_multimedia:hover{
+    border-radius: 50%;
+    border-style: solid;
+    border-width: 5px;
+    border-color: #72A7CF;
+    background-color: #222222;
+    color: white;
+    cursor:pointer;
+}
+
+#documento_vista_multimedia img{
+    margin-top: 18px;
+    margin-left: 16px;
+}
+
+#documento_vista_multimedia h3{
+    margin-top: -18px;
+}
+
+/* Vista Usuario */
+#img_perfil{
+    border-style: solid;
+    border-width: 1px;
+}
+
+#img_perfil:hover{
+    cursor:pointer;
+}
+
+.info_usuario{
+    padding-top: 30px;
 }
