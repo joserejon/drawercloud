@@ -1,5 +1,9 @@
 $( document ).ready(function() {
 
+    $("#bt_offcanvas").click(function(e){
+        $('.row-offcanvas').toggleClass('active')
+    });
+    
     /******************* OPCIONES DE BOTÓN DERECHO EN LA LISTA *******************/
     //Ocultamos el menú al cargar la página
     $("#menu").hide();
@@ -39,6 +43,10 @@ $( document ).ready(function() {
                 break;
         }
     });
+
+    /******************* SIDEBAR *******************/
+
+    
 
     /******************* VISTA DE DOCUMENTOS *******************/
 
@@ -107,25 +115,25 @@ $( document ).ready(function() {
                     "</div>" +
                     "<div id='documento_vista_cuadricula' class='col-xs-4 col-md-3 col-lg-2'>" +
                         "<div id='archivo_6'>" +
-                            "<img src='/static/images/folder.png'>" +
+                            "<img src='/static/images/files_icons/icon_folder_mp3.png'>" +
                             "<h5>Nombre archivo</h5>" +
                         "</div>" +
                     "</div>" +
                     "<div id='documento_vista_cuadricula' class='col-xs-4 col-md-3 col-lg-2'>" +
                         "<div id='archivo_7'>" +
-                            "<img src='/static/images/folder.png'>" +
+                            "<img src='/static/images/files_icons/icon_folder_png.png'>" +
                             "<h5>Donec id elit non mi porta gravida at eget metus</h5>" +
                         "</div>" +
                     "</div>" +
                     "<div id='documento_vista_cuadricula' class='col-xs-4 col-md-3 col-lg-2'>" +
                         "<div id='archivo_8'>" +
-                            "<img src='/static/images/folder.png'>" +
+                            "<img src='/static/images/files_icons/icon_folder_txt.png'>" +
                             "<h5>Nombre archivo</h5>" +
                         "</div>" +
                     "</div>" +
                     "<div id='documento_vista_cuadricula' class='col-xs-4 col-md-3 col-lg-2'>" +
                         "<div id='archivo_vista_cuadricula'>" +
-                            "<img src='/static/images/folder.png'>" +
+                            "<img src='/static/images/files_icons/icon_folder_doc.png'>" +
                             "<h5>Donec id elit non mi porta gravida at eget metus</h5>" +
                         "</div>" +
                     "</div>" +
@@ -202,6 +210,246 @@ $( document ).ready(function() {
                         "</tr>" +
                         "<tr id='3'>" +
                             "<td><img src='/static/images/folder_lista.png' class='img-rounded img_lista'>Carpeta</td>" +
+                            "<td class='center'>1GB</td>" +
+                            "<td class='center'>07/04/2017</td>" +
+                            "<td class='center'>Solo yo</td>" +
+                            "<td class='hidden-xs'>" +
+                                "<div class='btn-group'>" +
+                                    "<button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>" +
+                                    "Más <span class='caret'></span>" +
+                                    "</button>" +
+                                    "<ul class='dropdown-menu' role='menu'>" +
+                                        "<li><a href='#''>Descargar</a></li>" +
+                                        "<li><a href='#''>Copiar</a></li>" +
+                                        "<li><a href='#''>Mover</a></li>" +
+                                        "<li><a href='#''>Añadir a favoritos</a></li>" +
+                                        "<li><a href='#'>Eliminar</a></li>" +
+                                    "</ul>" +
+                                "</div>" +
+                            "</td>" +
+                        "</tr>" +
+                        "<tr id='4'>" +
+                            "<td><img src='/static/images/files_icons/icon_folder_doc_lista.png' class='img-rounded img_lista'>apuntes.doc</td>" +
+                            "<td class='center'>1GB</td>" +
+                            "<td class='center'>07/04/2017</td>" +
+                            "<td class='center'>Solo yo</td>" +
+                            "<td class='hidden-xs'>" +
+                                "<div class='btn-group'>" +
+                                    "<button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>" +
+                                    "Más <span class='caret'></span>" +
+                                    "</button>" +
+                                    "<ul class='dropdown-menu' role='menu'>" +
+                                        "<li><a href='#''>Descargar</a></li>" +
+                                        "<li><a href='#''>Copiar</a></li>" +
+                                        "<li><a href='#''>Mover</a></li>" +
+                                        "<li><a href='#''>Añadir a favoritos</a></li>" +
+                                        "<li><a href='#'>Eliminar</a></li>" +
+                                    "</ul>" +
+                                "</div>" +
+                            "</td>" +
+                        "</tr>" +
+                        "<tr id='5'>" +
+                            "<td><img src='/static/images/files_icons/icon_folder_mp3_lista.png' class='img-rounded img_lista'>cancion.mp3</td>" +
+                            "<td class='center'>1GB</td>" +
+                            "<td class='center'>07/04/2017</td>" +
+                            "<td class='center'>Solo yo</td>" +
+                            "<td class='hidden-xs'>" +
+                                "<div class='btn-group'>" +
+                                    "<button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>" +
+                                    "Más <span class='caret'></span>" +
+                                    "</button>" +
+                                    "<ul class='dropdown-menu' role='menu'>" +
+                                        "<li><a href='#''>Descargar</a></li>" +
+                                        "<li><a href='#''>Copiar</a></li>" +
+                                        "<li><a href='#''>Mover</a></li>" +
+                                        "<li><a href='#''>Añadir a favoritos</a></li>" +
+                                        "<li><a href='#'>Eliminar</a></li>" +
+                                    "</ul>" +
+                                "</div>" +
+                            "</td>" +
+                        "</tr>" +
+                        "<tr id='5'>" +
+                            "<td><img src='/static/images/files_icons/icon_folder_mp3_lista.png' class='img-rounded img_lista'>cancion.mp3</td>" +
+                            "<td class='center'>1GB</td>" +
+                            "<td class='center'>07/04/2017</td>" +
+                            "<td class='center'>Solo yo</td>" +
+                            "<td class='hidden-xs'>" +
+                                "<div class='btn-group'>" +
+                                    "<button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>" +
+                                    "Más <span class='caret'></span>" +
+                                    "</button>" +
+                                    "<ul class='dropdown-menu' role='menu'>" +
+                                        "<li><a href='#''>Descargar</a></li>" +
+                                        "<li><a href='#''>Copiar</a></li>" +
+                                        "<li><a href='#''>Mover</a></li>" +
+                                        "<li><a href='#''>Añadir a favoritos</a></li>" +
+                                        "<li><a href='#'>Eliminar</a></li>" +
+                                    "</ul>" +
+                                "</div>" +
+                            "</td>" +
+                        "</tr>" +
+                        "<tr id='5'>" +
+                            "<td><img src='/static/images/files_icons/icon_folder_mp3_lista.png' class='img-rounded img_lista'>cancion.mp3</td>" +
+                            "<td class='center'>1GB</td>" +
+                            "<td class='center'>07/04/2017</td>" +
+                            "<td class='center'>Solo yo</td>" +
+                            "<td class='hidden-xs'>" +
+                                "<div class='btn-group'>" +
+                                    "<button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>" +
+                                    "Más <span class='caret'></span>" +
+                                    "</button>" +
+                                    "<ul class='dropdown-menu' role='menu'>" +
+                                        "<li><a href='#''>Descargar</a></li>" +
+                                        "<li><a href='#''>Copiar</a></li>" +
+                                        "<li><a href='#''>Mover</a></li>" +
+                                        "<li><a href='#''>Añadir a favoritos</a></li>" +
+                                        "<li><a href='#'>Eliminar</a></li>" +
+                                    "</ul>" +
+                                "</div>" +
+                            "</td>" +
+                        "</tr>" +
+                        "<tr id='5'>" +
+                            "<td><img src='/static/images/files_icons/icon_folder_mp3_lista.png' class='img-rounded img_lista'>cancion.mp3</td>" +
+                            "<td class='center'>1GB</td>" +
+                            "<td class='center'>07/04/2017</td>" +
+                            "<td class='center'>Solo yo</td>" +
+                            "<td class='hidden-xs'>" +
+                                "<div class='btn-group'>" +
+                                    "<button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>" +
+                                    "Más <span class='caret'></span>" +
+                                    "</button>" +
+                                    "<ul class='dropdown-menu' role='menu'>" +
+                                        "<li><a href='#''>Descargar</a></li>" +
+                                        "<li><a href='#''>Copiar</a></li>" +
+                                        "<li><a href='#''>Mover</a></li>" +
+                                        "<li><a href='#''>Añadir a favoritos</a></li>" +
+                                        "<li><a href='#'>Eliminar</a></li>" +
+                                    "</ul>" +
+                                "</div>" +
+                            "</td>" +
+                        "</tr>" +
+                        "<tr id='5'>" +
+                            "<td><img src='/static/images/files_icons/icon_folder_mp3_lista.png' class='img-rounded img_lista'>cancion.mp3</td>" +
+                            "<td class='center'>1GB</td>" +
+                            "<td class='center'>07/04/2017</td>" +
+                            "<td class='center'>Solo yo</td>" +
+                            "<td class='hidden-xs'>" +
+                                "<div class='btn-group'>" +
+                                    "<button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>" +
+                                    "Más <span class='caret'></span>" +
+                                    "</button>" +
+                                    "<ul class='dropdown-menu' role='menu'>" +
+                                        "<li><a href='#''>Descargar</a></li>" +
+                                        "<li><a href='#''>Copiar</a></li>" +
+                                        "<li><a href='#''>Mover</a></li>" +
+                                        "<li><a href='#''>Añadir a favoritos</a></li>" +
+                                        "<li><a href='#'>Eliminar</a></li>" +
+                                    "</ul>" +
+                                "</div>" +
+                            "</td>" +
+                        "</tr>" +
+                        "<tr id='5'>" +
+                            "<td><img src='/static/images/files_icons/icon_folder_mp3_lista.png' class='img-rounded img_lista'>cancion.mp3</td>" +
+                            "<td class='center'>1GB</td>" +
+                            "<td class='center'>07/04/2017</td>" +
+                            "<td class='center'>Solo yo</td>" +
+                            "<td class='hidden-xs'>" +
+                                "<div class='btn-group'>" +
+                                    "<button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>" +
+                                    "Más <span class='caret'></span>" +
+                                    "</button>" +
+                                    "<ul class='dropdown-menu' role='menu'>" +
+                                        "<li><a href='#''>Descargar</a></li>" +
+                                        "<li><a href='#''>Copiar</a></li>" +
+                                        "<li><a href='#''>Mover</a></li>" +
+                                        "<li><a href='#''>Añadir a favoritos</a></li>" +
+                                        "<li><a href='#'>Eliminar</a></li>" +
+                                    "</ul>" +
+                                "</div>" +
+                            "</td>" +
+                        "</tr>" +
+                        "<tr id='5'>" +
+                            "<td><img src='/static/images/files_icons/icon_folder_mp3_lista.png' class='img-rounded img_lista'>cancion.mp3</td>" +
+                            "<td class='center'>1GB</td>" +
+                            "<td class='center'>07/04/2017</td>" +
+                            "<td class='center'>Solo yo</td>" +
+                            "<td class='hidden-xs'>" +
+                                "<div class='btn-group'>" +
+                                    "<button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>" +
+                                    "Más <span class='caret'></span>" +
+                                    "</button>" +
+                                    "<ul class='dropdown-menu' role='menu'>" +
+                                        "<li><a href='#''>Descargar</a></li>" +
+                                        "<li><a href='#''>Copiar</a></li>" +
+                                        "<li><a href='#''>Mover</a></li>" +
+                                        "<li><a href='#''>Añadir a favoritos</a></li>" +
+                                        "<li><a href='#'>Eliminar</a></li>" +
+                                    "</ul>" +
+                                "</div>" +
+                            "</td>" +
+                        "</tr>" +
+                        "<tr id='5'>" +
+                            "<td><img src='/static/images/files_icons/icon_folder_mp3_lista.png' class='img-rounded img_lista'>cancion.mp3</td>" +
+                            "<td class='center'>1GB</td>" +
+                            "<td class='center'>07/04/2017</td>" +
+                            "<td class='center'>Solo yo</td>" +
+                            "<td class='hidden-xs'>" +
+                                "<div class='btn-group'>" +
+                                    "<button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>" +
+                                    "Más <span class='caret'></span>" +
+                                    "</button>" +
+                                    "<ul class='dropdown-menu' role='menu'>" +
+                                        "<li><a href='#''>Descargar</a></li>" +
+                                        "<li><a href='#''>Copiar</a></li>" +
+                                        "<li><a href='#''>Mover</a></li>" +
+                                        "<li><a href='#''>Añadir a favoritos</a></li>" +
+                                        "<li><a href='#'>Eliminar</a></li>" +
+                                    "</ul>" +
+                                "</div>" +
+                            "</td>" +
+                        "</tr>" +
+                        "<tr id='5'>" +
+                            "<td><img src='/static/images/files_icons/icon_folder_mp3_lista.png' class='img-rounded img_lista'>cancion.mp3</td>" +
+                            "<td class='center'>1GB</td>" +
+                            "<td class='center'>07/04/2017</td>" +
+                            "<td class='center'>Solo yo</td>" +
+                            "<td class='hidden-xs'>" +
+                                "<div class='btn-group'>" +
+                                    "<button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>" +
+                                    "Más <span class='caret'></span>" +
+                                    "</button>" +
+                                    "<ul class='dropdown-menu' role='menu'>" +
+                                        "<li><a href='#''>Descargar</a></li>" +
+                                        "<li><a href='#''>Copiar</a></li>" +
+                                        "<li><a href='#''>Mover</a></li>" +
+                                        "<li><a href='#''>Añadir a favoritos</a></li>" +
+                                        "<li><a href='#'>Eliminar</a></li>" +
+                                    "</ul>" +
+                                "</div>" +
+                            "</td>" +
+                        "</tr>" +
+                        "<tr id='5'>" +
+                            "<td><img src='/static/images/files_icons/icon_folder_mp3_lista.png' class='img-rounded img_lista'>cancion.mp3</td>" +
+                            "<td class='center'>1GB</td>" +
+                            "<td class='center'>07/04/2017</td>" +
+                            "<td class='center'>Solo yo</td>" +
+                            "<td class='hidden-xs'>" +
+                                "<div class='btn-group'>" +
+                                    "<button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>" +
+                                    "Más <span class='caret'></span>" +
+                                    "</button>" +
+                                    "<ul class='dropdown-menu' role='menu'>" +
+                                        "<li><a href='#''>Descargar</a></li>" +
+                                        "<li><a href='#''>Copiar</a></li>" +
+                                        "<li><a href='#''>Mover</a></li>" +
+                                        "<li><a href='#''>Añadir a favoritos</a></li>" +
+                                        "<li><a href='#'>Eliminar</a></li>" +
+                                    "</ul>" +
+                                "</div>" +
+                            "</td>" +
+                        "</tr>" +
+                        "<tr id='5'>" +
+                            "<td><img src='/static/images/files_icons/icon_folder_mp3_lista.png' class='img-rounded img_lista'>cancion.mp3</td>" +
                             "<td class='center'>1GB</td>" +
                             "<td class='center'>07/04/2017</td>" +
                             "<td class='center'>Solo yo</td>" +

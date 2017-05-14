@@ -2,22 +2,24 @@
 {% load i18n %}
 
 {% block contenido %}
-	<div class="contenido_login">
-		<h1>Bienvenido a DrawerCloud</h1>
-		<h2>Inicia sesión</h2>
-	    <form method="post" action="." class="form-group">
-	        {% csrf_token %}
-	        
-	        <p><label for="id_username"></label>
-	        <input id="id_username" type="text" name="username" placeholder="Username" maxlength="100" required /></p>
-	        <p><label for="id_password"></label>
-	        <input id="id_password" type="password" name="password" placeholder="Password" maxlength="100" required /></p>
+	<div class="container-fluid">
+		<div class="contenido_login">
+			<h1>Bienvenido a DrawerCloud</h1>
+			<h2>Inicia sesión</h2>
+		    <form method="post" action="." class="form-group">
+		        {% csrf_token %}
+		        
+		        <p><label for="id_username"></label>
+		        <input id="id_username" type="text" name="username" placeholder="Username" maxlength="100" required /></p>
+		        <p><label for="id_password"></label>
+		        <input id="id_password" type="password" name="password" placeholder="Password" maxlength="100" required /></p>
 
-	        <input type="submit" value="Log in" class="btn btn-primary"/>
-	        <input type="hidden" name="next" value="{{ next }}" />
-	    </form>
+		        <input type="submit" value="Log in" class="btn btn-primary"/>
+		        <input type="hidden" name="next" value="{{ next }}" />
+		    </form>
 
-	    <p>¿No estás registrado? <a href="{% url 'registration_register' %}">Regístrate</a>!</p>
-	    <br>
+		    <p>¿No estás registrado? <a href="{% url 'registration_register' %}">Regístrate</a>!</p>
+		    <br>
+		</div>
 	</div>
 {% endblock %}

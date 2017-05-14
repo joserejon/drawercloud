@@ -17,7 +17,7 @@
         <meta name="author" content="">
         <!--<link rel="icon" href="images/icon.png">-->
 
-        <title>DrawerCloud</title>
+        <title>drawercloud</title>
 
         <!-- Bootstrap core CSS -->
         <!--<link href="../../../dist/css/bootstrap.min.css" rel="stylesheet">-->
@@ -29,6 +29,7 @@
 
         <!-- Custom styles for this template -->
         <link rel="stylesheet" href="/static/css/dashboard.css" type="text/css">
+        <link rel="stylesheet" href="/static/css/offcanvas.css" type="text/css">
 
         <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
         <!--[if lt IE 9]><script src="../../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -63,7 +64,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="{% url 'index' %}">DrawerCloud</a>
+                    <a class="navbar-brand" href="{% url 'index' %}"><b>drawercloud</b></a>
                 </div>
                 <div id="navbar" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
@@ -97,16 +98,6 @@
             </div>
         </nav>
         <div class="container-fluid">
-            <!-- Menú izquierda -->
-            <div class="row">
-                <div class="col-sm-3 col-md-2 sidebar">
-                    <ul class="nav nav-sidebar">
-                    <li><a href="#">Añadir archivo</a></li>
-                    <li><a href="#">Nueva carpeta</a></li>
-                    <li><a href="#">....</a></li>
-                    </ul>
-                </div>
-            </div>
             <!-- Menú botón derecho sobre archivos -->
             <div id="menu">
                 <ul>
@@ -118,8 +109,9 @@
                 </ul>
             </div>
             <!-- contenido_body -->
-            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                <h1 class="page-header">{{ pagina_actual }}</h1>
+            <div class="main">
+            <img id="logo" src="/static/images/navbar_logo.png">  
+                <h1 class="page-header"><b>{{ pagina_actual }}</b></h1>
                 <!-- Breadcrumb
                 <ol class="breadcrumb">
                     <li><a href="#">Carpeta</a></li>
@@ -137,7 +129,7 @@
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2">
             <footer>
                 <p class="pull-right"><a href="#">Back to top</a></p>
-                <p>&copy; 2017 DrawerCloud, Sitio web desarrollado por José Manuel Rejón. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+                <p>&copy; 2017 drawercloud, Sitio web desarrollado por José Manuel Rejón. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
             </footer>
         </div>
         -->

@@ -1,11 +1,25 @@
 {% extends "base.html" %}
 {% block contenido_body %}
+
 <!-- Añadir el botón para cambiar a vista lista/cuadricula -->
+<p class="pull-right visible-xs">
+    <button id="bt_offcanvas" type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Mostrar opciones</button>
+</p>
 <div id="cambiar_vista">
     <!-- Código insertado desde javascript  -->
 </div>
 
-<div id="vista_documentos">
+<div id="vista_documentos" class="col-xs-10 col-md-10 col-lg-10">
     <!-- Código insertado desde javascript  -->
 </div> <!-- vista_documentos -->
-{% endblock %}
+<div class="row row-offcanvas row-offcanvas-right">
+    <div class="col-xs-6 col-sm-2 sidebar-offcanvas" id="sidebar">
+        <div class="list-group">
+            <a href="#" class="list-group-item active" onclick='return false;'>Opciones</a>
+            <a href="#" class="list-group-item">Subir archivo</a>
+            <a href="#" class="list-group-item">Crear carpeta</a>
+        </div>
+    </div><!--/.sidebar-offcanvas-->
+</div> <!-- row row-offcanvas row-offcanvas-right -->
+
+{% endblock %}	

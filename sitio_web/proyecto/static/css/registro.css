@@ -1,8 +1,26 @@
+@font-face {
+    font-family: yugothic;
+    src: url("/static/css/yugothic.ttf");
+}
+
+body {
+    font-family: yugothic;
+}
+
 .contenido_login{
 	text-align: center;
-	margin-top: 50px;
+	margin-top: 160px;
 }
 
 h2{
 	margin-top: 30px;
+}
+
+.navbar-fixed-top{
+	text-align: center;
+	height: 105px;
+}
+
+.navbar-fixed-top img{
+	margin-top: -25px;
 }
