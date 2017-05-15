@@ -12,14 +12,29 @@
 <div id="vista_documentos" class="col-xs-10 col-md-10 col-lg-10">
     <!-- Código insertado desde javascript  -->
 </div> <!-- vista_documentos -->
-<div class="row row-offcanvas row-offcanvas-right">
-    <div class="col-xs-6 col-sm-2 sidebar-offcanvas" id="sidebar">
-        <div class="list-group">
-            <a href="#" class="list-group-item active" onclick='return false;'>Opciones</a>
-            <a href="#" class="list-group-item">Subir archivo</a>
-            <a href="#" class="list-group-item">Crear carpeta</a>
-        </div>
-    </div><!--/.sidebar-offcanvas-->
-</div> <!-- row row-offcanvas row-offcanvas-right -->
+
+
+<div class="col-xs-6 col-sm-2" id="sidebar">
+	<ul class="nav nav-pills nav-stacked row-offcanvas row-offcanvas-right sidebar-offcanvas">
+		<li class="active"><a href="#">Opciones</a></li>
+		<li class="barra"><a href="#">Subir archivo</a></li>
+		<li class="barra"><a href="#">Crear carpeta</a></li>
+	</ul>
+</div>
+
+<script type="text/javascript">
+	
+		var altura = $('#bt_offcanvas').offset().top;
+
+		$(document).scroll(function(){
+			if($(window).scrollTop() > altura - 50){
+				$('#bt_offcanvas').addClass('fijar_boton');
+			}
+			else{
+				$('#bt_offcanvas').removeClass('fijar_boton');
+			}
+		});
+	
+</script>
 
 {% endblock %}	
