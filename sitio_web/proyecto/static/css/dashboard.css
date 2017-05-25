@@ -227,3 +227,32 @@ body {
 .info_usuario{
     padding-top: 30px;
 }
+
+/* Vista Compartido */
+.nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
+    color: white;
+    background-color: #72A7CF;
+}
+
+
+/* Vista Grupo de trabajo */
+.dropdown-menu > li{
+    margin-left: 10px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+.dropdown-menu > li:hover{
+    cursor:pointer;
+    color: #72A7CF;
+}
+
+.btn-group > button{
+    color: white;
+    background-color: #72A7CF;
+}
+
+.btn-group > button:hover{
+    color: white;
+    background-color: #72A7FF;
+}

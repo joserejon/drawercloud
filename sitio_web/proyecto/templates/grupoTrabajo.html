@@ -6,3 +6,37 @@
     <li><a href="{% url 'favoritos' %}">Favoritos</a></li>
     <li class="active"><a href="">Grupo de trabajo</a></li>
 {% endblock %}
+{% block contenido_body %}
+	<div class="btn-group">
+		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+		Seleccione grupo de trabajo <span class="caret"></span>
+		</button>
+
+		<ul class="dropdown-menu" role="menu">
+			<li data-toggle="tab" data-target="#universidad">Universidad</li>
+			<li data-toggle="tab" data-target="#proyecto">Proyecto</a></li>
+			<li data-toggle="tab" data-target="#curso_italiano">Curso de italiano</a></li>
+		</ul>
+	</div>
+
+	<br>
+	<div class="tab-content">
+		<div id="universidad" class="tab-pane fade in active">
+			<h3>Contenido del grupo <span class="letra_azul"><b>Universidad</b></span></h3>
+			<!-- Añadir el botón para cambiar a vista lista/cuadricula -->
+			<div id="cambiar_vista">
+			    <!-- Código insertado desde javascript  -->
+			</div>
+
+			<div id="vista_documentos" class="col-xs-12 col-md-12 col-lg-12">
+			    <!-- Código insertado desde javascript  -->
+			</div> <!-- vista_documentos -->
+		</div>
+		<div id="proyecto" class="tab-pane fade">
+			<h3>Contenido del grupo <span class="letra_azul"><b>Proyecto</b></span></h3>
+		</div>
+		<div id="curso_italiano" class="tab-pane fade">
+			<h3>Contenido del grupo <span class="letra_azul"><b>Curso de italiano</b></span></h3>
+		</div>
+	</div>
+{% endblock %}

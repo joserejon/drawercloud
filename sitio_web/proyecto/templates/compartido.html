@@ -6,3 +6,26 @@
     <li><a href="{% url 'favoritos' %}">Favoritos</a></li>
     <li><a href="{% url 'grupoTrabajo' %}">Grupo de trabajo</a></li>
 {% endblock %}
+{% block contenido_body %}
+	<ul class="nav nav-pills nav-justified">
+		<li class="active"><a data-toggle="pill" href="#compartido_por_mi">Compartido por mi</a></li>
+		<li><a data-toggle="pill" href="#compartido_conmigo">Compartido conmigo</a></li>
+	</ul>
+
+	<div class="tab-content contenido compartido">
+		<div id="compartido_por_mi" class="tab-pane fade in active">
+			<!-- Añadir el botón para cambiar a vista lista/cuadricula -->
+			<br>
+			<div id="cambiar_vista">
+			<!-- Código insertado desde javascript  -->
+			</div>
+
+			<div id="vista_documentos" class="col-xs-12 col-md-12 col-lg-12">
+			<!-- Código insertado desde javascript  -->
+			</div> <!-- vista_documentos -->
+		</div>
+		<div id="compartido_conmigo" class="tab-pane fade">
+			<h3>Vacío</h3>
+		</div>
+	</div>
+{% endblock %}

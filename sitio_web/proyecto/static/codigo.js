@@ -180,6 +180,7 @@ $( document ).ready(function() {
                                     "</button>" +
                                     "<ul class='dropdown-menu' role='menu'>" +
                                         "<li><a href='#''>Descargar</a></li>" +
+                                        "<li><a href='#''>Compartir</a></li>" +
                                         "<li><a href='#''>Copiar</a></li>" +
                                         "<li><a href='#''>Mover</a></li>" +
                                         "<li><a href='#''>Añadir a favoritos</a></li>" +
@@ -200,6 +201,7 @@ $( document ).ready(function() {
                                     "</button>" +
                                     "<ul class='dropdown-menu' role='menu'>" +
                                         "<li><a href='#''>Descargar</a></li>" +
+                                        "<li><a href='#''>Compartir</a></li>" +
                                         "<li><a href='#''>Copiar</a></li>" +
                                         "<li><a href='#''>Mover</a></li>" +
                                         "<li><a href='#''>Añadir a favoritos</a></li>" +
@@ -220,6 +222,7 @@ $( document ).ready(function() {
                                     "</button>" +
                                     "<ul class='dropdown-menu' role='menu'>" +
                                         "<li><a href='#''>Descargar</a></li>" +
+                                        "<li><a href='#''>Compartir</a></li>" +
                                         "<li><a href='#''>Copiar</a></li>" +
                                         "<li><a href='#''>Mover</a></li>" +
                                         "<li><a href='#''>Añadir a favoritos</a></li>" +
@@ -240,6 +243,7 @@ $( document ).ready(function() {
                                     "</button>" +
                                     "<ul class='dropdown-menu' role='menu'>" +
                                         "<li><a href='#''>Descargar</a></li>" +
+                                        "<li><a href='#''>Compartir</a></li>" +
                                         "<li><a href='#''>Copiar</a></li>" +
                                         "<li><a href='#''>Mover</a></li>" +
                                         "<li><a href='#''>Añadir a favoritos</a></li>" +
@@ -260,6 +264,7 @@ $( document ).ready(function() {
                                     "</button>" +
                                     "<ul class='dropdown-menu' role='menu'>" +
                                         "<li><a href='#''>Descargar</a></li>" +
+                                        "<li><a href='#''>Compartir</a></li>" +
                                         "<li><a href='#''>Copiar</a></li>" +
                                         "<li><a href='#''>Mover</a></li>" +
                                         "<li><a href='#''>Añadir a favoritos</a></li>" +
@@ -280,6 +285,7 @@ $( document ).ready(function() {
                                     "</button>" +
                                     "<ul class='dropdown-menu' role='menu'>" +
                                         "<li><a href='#''>Descargar</a></li>" +
+                                        "<li><a href='#''>Compartir</a></li>" +
                                         "<li><a href='#''>Copiar</a></li>" +
                                         "<li><a href='#''>Mover</a></li>" +
                                         "<li><a href='#''>Añadir a favoritos</a></li>" +
@@ -300,6 +306,7 @@ $( document ).ready(function() {
                                     "</button>" +
                                     "<ul class='dropdown-menu' role='menu'>" +
                                         "<li><a href='#''>Descargar</a></li>" +
+                                        "<li><a href='#''>Compartir</a></li>" +
                                         "<li><a href='#''>Copiar</a></li>" +
                                         "<li><a href='#''>Mover</a></li>" +
                                         "<li><a href='#''>Añadir a favoritos</a></li>" +
@@ -320,6 +327,7 @@ $( document ).ready(function() {
                                     "</button>" +
                                     "<ul class='dropdown-menu' role='menu'>" +
                                         "<li><a href='#''>Descargar</a></li>" +
+                                        "<li><a href='#''>Compartir</a></li>" +
                                         "<li><a href='#''>Copiar</a></li>" +
                                         "<li><a href='#''>Mover</a></li>" +
                                         "<li><a href='#''>Añadir a favoritos</a></li>" +
@@ -340,6 +348,7 @@ $( document ).ready(function() {
                                     "</button>" +
                                     "<ul class='dropdown-menu' role='menu'>" +
                                         "<li><a href='#''>Descargar</a></li>" +
+                                        "<li><a href='#''>Compartir</a></li>" +
                                         "<li><a href='#''>Copiar</a></li>" +
                                         "<li><a href='#''>Mover</a></li>" +
                                         "<li><a href='#''>Añadir a favoritos</a></li>" +
@@ -360,6 +369,7 @@ $( document ).ready(function() {
                                     "</button>" +
                                     "<ul class='dropdown-menu' role='menu'>" +
                                         "<li><a href='#''>Descargar</a></li>" +
+                                        "<li><a href='#''>Compartir</a></li>" +
                                         "<li><a href='#''>Copiar</a></li>" +
                                         "<li><a href='#''>Mover</a></li>" +
                                         "<li><a href='#''>Añadir a favoritos</a></li>" +
@@ -380,6 +390,7 @@ $( document ).ready(function() {
                                     "</button>" +
                                     "<ul class='dropdown-menu' role='menu'>" +
                                         "<li><a href='#''>Descargar</a></li>" +
+                                        "<li><a href='#''>Compartir</a></li>" +
                                         "<li><a href='#''>Copiar</a></li>" +
                                         "<li><a href='#''>Mover</a></li>" +
                                         "<li><a href='#''>Añadir a favoritos</a></li>" +
@@ -400,6 +411,7 @@ $( document ).ready(function() {
                                     "</button>" +
                                     "<ul class='dropdown-menu' role='menu'>" +
                                         "<li><a href='#''>Descargar</a></li>" +
+                                        "<li><a href='#''>Compartir</a></li>" +
                                         "<li><a href='#''>Copiar</a></li>" +
                                         "<li><a href='#''>Mover</a></li>" +
                                         "<li><a href='#''>Añadir a favoritos</a></li>" +
@@ -420,6 +432,7 @@ $( document ).ready(function() {
                                     "</button>" +
                                     "<ul class='dropdown-menu' role='menu'>" +
                                         "<li><a href='#''>Descargar</a></li>" +
+                                        "<li><a href='#''>Compartir</a></li>" +
                                         "<li><a href='#''>Copiar</a></li>" +
                                         "<li><a href='#''>Mover</a></li>" +
                                         "<li><a href='#''>Añadir a favoritos</a></li>" +
@@ -440,6 +453,7 @@ $( document ).ready(function() {
                                     "</button>" +
                                     "<ul class='dropdown-menu' role='menu'>" +
                                         "<li><a href='#''>Descargar</a></li>" +
+                                        "<li><a href='#''>Compartir</a></li>" +
                                         "<li><a href='#''>Copiar</a></li>" +
                                         "<li><a href='#''>Mover</a></li>" +
                                         "<li><a href='#''>Añadir a favoritos</a></li>" +
@@ -460,6 +474,7 @@ $( document ).ready(function() {
                                     "</button>" +
                                     "<ul class='dropdown-menu' role='menu'>" +
                                         "<li><a href='#''>Descargar</a></li>" +
+                                        "<li><a href='#''>Compartir</a></li>" +
                                         "<li><a href='#''>Copiar</a></li>" +
                                         "<li><a href='#''>Mover</a></li>" +
                                         "<li><a href='#''>Añadir a favoritos</a></li>" +
