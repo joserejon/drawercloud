@@ -84,57 +84,57 @@ $( document ).ready(function() {
             "<div class='container-fluid cuadricula'>" +
                 "<div class='row'>" +
                     "<div id='documento_vista_cuadricula' class='col-xs-4 col-md-3 col-lg-2'>" +
-                        "<div id='archivo_1' title='Donec id elit non mi porta gravida at eget metusDonec id elit non mi porta gravida at eget metusDonec id elit non mi porta gravida at eget metusDonec id elit non mi porta gravida at eget metusDonec id elit non mi porta gravida at eget metus'>" +
+                        "<div id='archivo_1' title='Carpeta 1'>" +
                             "<img src='/static/images/folder.png'>" +
-                            "<h5>Donec id elit non mi porta gravida at eget metusDonec id elit non mi porta gravida at eget metusDonec id elit non mi porta gravida at eget metusDonec id elit non mi porta gravida at eget metusDonec id elit non mi porta gravida at eget metus</h5>" +
+                            "<h5>Carpeta 1</h5>" +
                         "</div>" +
                     "</div>" +
                     "<div id='documento_vista_cuadricula' class='col-xs-4 col-md-3 col-lg-2'>" +
                         "<div id='archivo_2'>" +
                             "<img src='/static/images/folder.png'>" +
-                            "<h5>Nombre archivo</h5>" +
+                            "<h5>Carpeta 2<span class='glyphicon glyphicon-star'></h5>" +
                         "</div>" +
                     "</div>" +
                     "<div id='documento_vista_cuadricula' class='col-xs-4 col-md-3 col-lg-2'>" +
                         "<div id='archivo_3'>" +
                             "<img src='/static/images/folder.png'>" +
-                            "<h5>Donec id elit non mi porta gravida at eget metus</h5>" +
+                            "<h5>Carpeta 3</h5>" +
                         "</div>" +
                     "</div>" +
                     "<div id='documento_vista_cuadricula' class='col-xs-4 col-md-3 col-lg-2'>" +
                         "<div id='archivo_4'>" +
                             "<img src='/static/images/folder.png'>" +
-                            "<h5>Nombre archivo</h5>" +
+                            "<h5>Carpeta 4</h5>" +
                         "</div>" +
                     "</div>" +
                     "<div id='documento_vista_cuadricula' class='col-xs-4 col-md-3 col-lg-2'>" +
                         "<div id='archivo_5'>" +
                             "<img src='/static/images/folder.png'>" +
-                            "<h5>Donec id elit non mi porta gravida at eget metus</h5>" +
+                            "<h5>Carpeta 5</h5>" +
                         "</div>" +
                     "</div>" +
                     "<div id='documento_vista_cuadricula' class='col-xs-4 col-md-3 col-lg-2'>" +
                         "<div id='archivo_6'>" +
-                            "<img src='/static/images/files_icons/icon_folder_mp3.png'>" +
-                            "<h5>Nombre archivo</h5>" +
+                            "<img src='/static/images/files_icons/icon_file_music.png'>" +
+                            "<h5>cancion.mp3<span class='glyphicon glyphicon-star'></h5>" +
                         "</div>" +
                     "</div>" +
                     "<div id='documento_vista_cuadricula' class='col-xs-4 col-md-3 col-lg-2'>" +
                         "<div id='archivo_7'>" +
-                            "<img src='/static/images/files_icons/icon_folder_png.png'>" +
-                            "<h5>Donec id elit non mi porta gravida at eget metus</h5>" +
+                            "<img src='/static/images/files_icons/icon_file_img.png'>" +
+                            "<h5>imagen.png</h5>" +
                         "</div>" +
                     "</div>" +
                     "<div id='documento_vista_cuadricula' class='col-xs-4 col-md-3 col-lg-2'>" +
                         "<div id='archivo_8'>" +
-                            "<img src='/static/images/files_icons/icon_folder_txt.png'>" +
-                            "<h5>Nombre archivo</h5>" +
+                            "<img src='/static/images/files_icons/icon_file_txt.png'>" +
+                            "<h5>documento.txt<span class='glyphicon glyphicon-star'></h5>" +
                         "</div>" +
                     "</div>" +
                     "<div id='documento_vista_cuadricula' class='col-xs-4 col-md-3 col-lg-2'>" +
                         "<div id='archivo_vista_cuadricula'>" +
-                            "<img src='/static/images/files_icons/icon_folder_doc.png'>" +
-                            "<h5>Donec id elit non mi porta gravida at eget metus</h5>" +
+                            "<img src='/static/images/files_icons/icon_file_presentation.png'>" +
+                            "<h5>presentacion.ppsx</h5>" +
                         "</div>" +
                     "</div>" +
                 "</div>" +
@@ -211,7 +211,7 @@ $( document ).ready(function() {
                             "</td>" +
                         "</tr>" +
                         "<tr id='3'>" +
-                            "<td><img src='/static/images/folder_lista.png' class='img-rounded img_lista'>Carpeta</td>" +
+                            "<td><img src='/static/images/folder_lista.png' class='img-rounded img_lista'>Carpeta<span class='glyphicon glyphicon-star'></span></td>" +
                             "<td class='center'>1GB</td>" +
                             "<td class='center'>07/04/2017</td>" +
                             "<td class='center'>Solo yo</td>" +
@@ -232,7 +232,7 @@ $( document ).ready(function() {
                             "</td>" +
                         "</tr>" +
                         "<tr id='4'>" +
-                            "<td><img src='/static/images/files_icons/icon_folder_doc_lista.png' class='img-rounded img_lista'>apuntes.doc</td>" +
+                            "<td><img src='/static/images/files_icons/icon_file_txt_lista.png' class='img-rounded img_lista'>apuntes.doc<span class='glyphicon glyphicon-star'></span></td>" +
                             "<td class='center'>1GB</td>" +
                             "<td class='center'>07/04/2017</td>" +
                             "<td class='center'>Solo yo</td>" +
@@ -253,7 +253,7 @@ $( document ).ready(function() {
                             "</td>" +
                         "</tr>" +
                         "<tr id='5'>" +
-                            "<td><img src='/static/images/files_icons/icon_folder_mp3_lista.png' class='img-rounded img_lista'>cancion.mp3</td>" +
+                            "<td><img src='/static/images/files_icons/icon_file_music_lista.png' class='img-rounded img_lista'>cancion.mp3<span class='glyphicon glyphicon-star'></span></td>" +
                             "<td class='center'>1GB</td>" +
                             "<td class='center'>07/04/2017</td>" +
                             "<td class='center'>Solo yo</td>" +
@@ -274,7 +274,7 @@ $( document ).ready(function() {
                             "</td>" +
                         "</tr>" +
                         "<tr id='5'>" +
-                            "<td><img src='/static/images/files_icons/icon_folder_mp3_lista.png' class='img-rounded img_lista'>cancion.mp3</td>" +
+                            "<td><img src='/static/images/files_icons/icon_file_presentation_lista.png' class='img-rounded img_lista'>presentation.ppsx</td>" +
                             "<td class='center'>1GB</td>" +
                             "<td class='center'>07/04/2017</td>" +
                             "<td class='center'>Solo yo</td>" +
@@ -295,7 +295,7 @@ $( document ).ready(function() {
                             "</td>" +
                         "</tr>" +
                         "<tr id='5'>" +
-                            "<td><img src='/static/images/files_icons/icon_folder_mp3_lista.png' class='img-rounded img_lista'>cancion.mp3</td>" +
+                            "<td><img src='/static/images/files_icons/icon_file_video_lista.png' class='img-rounded img_lista'>video.mp4</td>" +
                             "<td class='center'>1GB</td>" +
                             "<td class='center'>07/04/2017</td>" +
                             "<td class='center'>Solo yo</td>" +
@@ -316,7 +316,7 @@ $( document ).ready(function() {
                             "</td>" +
                         "</tr>" +
                         "<tr id='5'>" +
-                            "<td><img src='/static/images/files_icons/icon_folder_mp3_lista.png' class='img-rounded img_lista'>cancion.mp3</td>" +
+                            "<td><img src='/static/images/files_icons/icon_file_music_lista.png' class='img-rounded img_lista'>foto.png<span class='glyphicon glyphicon-star'></span></td>" +
                             "<td class='center'>1GB</td>" +
                             "<td class='center'>07/04/2017</td>" +
                             "<td class='center'>Solo yo</td>" +
@@ -337,7 +337,7 @@ $( document ).ready(function() {
                             "</td>" +
                         "</tr>" +
                         "<tr id='5'>" +
-                            "<td><img src='/static/images/files_icons/icon_folder_mp3_lista.png' class='img-rounded img_lista'>cancion.mp3</td>" +
+                            "<td><img src='/static/images/files_icons/icon_file_music_lista.png' class='img-rounded img_lista'>cancion.mp3</td>" +
                             "<td class='center'>1GB</td>" +
                             "<td class='center'>07/04/2017</td>" +
                             "<td class='center'>Solo yo</td>" +
@@ -358,7 +358,7 @@ $( document ).ready(function() {
                             "</td>" +
                         "</tr>" +
                         "<tr id='5'>" +
-                            "<td><img src='/static/images/files_icons/icon_folder_mp3_lista.png' class='img-rounded img_lista'>cancion.mp3</td>" +
+                            "<td><img src='/static/images/files_icons/icon_file_music_lista.png' class='img-rounded img_lista'>cancion.mp3</td>" +
                             "<td class='center'>1GB</td>" +
                             "<td class='center'>07/04/2017</td>" +
                             "<td class='center'>Solo yo</td>" +
@@ -379,7 +379,7 @@ $( document ).ready(function() {
                             "</td>" +
                         "</tr>" +
                         "<tr id='5'>" +
-                            "<td><img src='/static/images/files_icons/icon_folder_mp3_lista.png' class='img-rounded img_lista'>cancion.mp3</td>" +
+                            "<td><img src='/static/images/files_icons/icon_file_music_lista.png' class='img-rounded img_lista'>cancion.mp3</td>" +
                             "<td class='center'>1GB</td>" +
                             "<td class='center'>07/04/2017</td>" +
                             "<td class='center'>Solo yo</td>" +
@@ -400,7 +400,7 @@ $( document ).ready(function() {
                             "</td>" +
                         "</tr>" +
                         "<tr id='5'>" +
-                            "<td><img src='/static/images/files_icons/icon_folder_mp3_lista.png' class='img-rounded img_lista'>cancion.mp3</td>" +
+                            "<td><img src='/static/images/files_icons/icon_file_music_lista.png' class='img-rounded img_lista'>cancion.mp3</td>" +
                             "<td class='center'>1GB</td>" +
                             "<td class='center'>07/04/2017</td>" +
                             "<td class='center'>Solo yo</td>" +
@@ -421,7 +421,7 @@ $( document ).ready(function() {
                             "</td>" +
                         "</tr>" +
                         "<tr id='5'>" +
-                            "<td><img src='/static/images/files_icons/icon_folder_mp3_lista.png' class='img-rounded img_lista'>cancion.mp3</td>" +
+                            "<td><img src='/static/images/files_icons/icon_file_music_lista.png' class='img-rounded img_lista'>cancion.mp3</td>" +
                             "<td class='center'>1GB</td>" +
                             "<td class='center'>07/04/2017</td>" +
                             "<td class='center'>Solo yo</td>" +
@@ -442,7 +442,7 @@ $( document ).ready(function() {
                             "</td>" +
                         "</tr>" +
                         "<tr id='5'>" +
-                            "<td><img src='/static/images/files_icons/icon_folder_mp3_lista.png' class='img-rounded img_lista'>cancion.mp3</td>" +
+                            "<td><img src='/static/images/files_icons/icon_file_music_lista.png' class='img-rounded img_lista'>cancion.mp3</td>" +
                             "<td class='center'>1GB</td>" +
                             "<td class='center'>07/04/2017</td>" +
                             "<td class='center'>Solo yo</td>" +
@@ -463,7 +463,7 @@ $( document ).ready(function() {
                             "</td>" +
                         "</tr>" +
                         "<tr id='5'>" +
-                            "<td><img src='/static/images/files_icons/icon_folder_mp3_lista.png' class='img-rounded img_lista'>cancion.mp3</td>" +
+                            "<td><img src='/static/images/files_icons/icon_file_music_lista.png' class='img-rounded img_lista'>cancion.mp3</td>" +
                             "<td class='center'>1GB</td>" +
                             "<td class='center'>07/04/2017</td>" +
                             "<td class='center'>Solo yo</td>" +

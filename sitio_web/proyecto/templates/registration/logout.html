@@ -2,11 +2,13 @@
 
 
 {% block contenido %}
-	<div class="contenido_login">
+	<meta http-equiv="refresh" content="0; url={% url 'auth_login' %}">
+
+	<!--<div class="contenido_login">
 		<h1>Logged Out</h1>
 		<p>Hasta pronto</p>
 		<form action="{% url 'auth_login' %}">
 			<button name="subject" type="submit" class="btn btn-primary">Volver al login</button>
 		</form>
-	</div>
+	</div>-->
 {% endblock %}

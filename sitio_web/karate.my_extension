@@ -1,0 +1,50 @@
+Creator "igraph version 0.7.1 Mon May 29 11:40:53 2017"
+Version 1
+graph
+[
+  directed 0
+  node
+  [
+    id 0
+    name "Jose"
+    label "Jose"
+  ]
+  node
+  [
+    id 1
+    name "Juan"
+    label "Juan"
+  ]
+  node
+  [
+    id 2
+    name "Pepe"
+    label "Pepe"
+  ]
+  node
+  [
+    id 3
+    name "Antonio"
+    label "Antonio"
+  ]
+  edge
+  [
+    source 1
+    target 0
+  ]
+  edge
+  [
+    source 2
+    target 0
+  ]
+  edge
+  [
+    source 2
+    target 1
+  ]
+  edge
+  [
+    source 3
+    target 0
+  ]
+]

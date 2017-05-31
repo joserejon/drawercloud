@@ -234,6 +234,9 @@ body {
     background-color: #72A7CF;
 }
 
+.centrar{
+    text-align: center;
+}
 
 /* Vista Grupo de trabajo */
 .dropdown-menu > li{
@@ -255,4 +258,9 @@ body {
 .btn-group > button:hover{
     color: white;
     background-color: #72A7FF;
+}
+
+.glyphicon-star{
+    margin-left: 10px;
+    color: #72A7CF;
 }

@@ -86,11 +86,6 @@
                                 <li><a href="{% url 'ayuda' %}">Ayuda</a></li>
                                 <li class="divider"></li>
                                 <li><a href="{% url 'auth_logout' %}">Salir</a></li>
-                                <!--{% if user.is_authenticated %}
-                                <li><a href="{% url 'auth_logout' %}"> Log out </a></li>
-                                {% else %}
-                                <li><a href="{% url 'auth_login' %}"> Log in </a></li>
-                                {% endif %}-->
                             </ul>
                         </li>
                     </ul>
@@ -109,9 +104,12 @@
                 <li id="eliminar"><a href="#">Eliminar</a></li>
                 </ul>
             </div>
+            <script type="text/javascript">
+                $("#menu").hide();
+            </script>
             <!-- contenido_body -->
             <div class="main">
-            <img id="logo" src="/static/images/navbar_logo.png">  
+            <img id="logo" src="/static/images/navbar_logo.png"> 
                 <h1 class="page-header"><b>{{ pagina_actual }}</b></h1>
                 <!-- Breadcrumb
                 <ol class="breadcrumb">
