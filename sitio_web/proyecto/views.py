@@ -26,19 +26,6 @@ def multimedia(request):
 #Mostrar compartido
 @login_required(login_url='/accounts/login/')
 def compartido(request):
-	g = Graph(directed=True)
-	g.add_vertices(4)
-	g.add_edges([(0,1), (0,2), (3,0)])
-	names = {"Jose": "red", "Juan":"#72A7CF", "Pepe":"#72A7CF", "Manu":"#72A7CF"}
-	g.vs["name"] = ["Jose", "Juan", "Pepe", "Manu"]
-	layout = g.layout("fr")
-	visual_style = {}
-	visual_style["vertex_color"] = [names[name] for name in g.vs["name"]]
-	#visual_style["vertex_color"] = "#72A7CF"
-	visual_style["vertex_size"] = 30
-	visual_style["edge_arrow_size"] = 1
-	visual_style["vertex_label"] = g.vs["name"]
-	plot(g, "proyecto/static/images/grafo.png", **visual_style)
 	return render(request, 'compartido.html', {'pagina_actual':'Compartido'})
 
 #Mostrar favoritos
