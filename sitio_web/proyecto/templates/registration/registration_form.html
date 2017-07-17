@@ -6,10 +6,16 @@
 		<form method="post" action="." class="form_log_in">
 			{% csrf_token %}
 			
+			<p><label for="id_nombre"></label>
+	        <input id="id_nombre" type="text" name="nombre" placeholder="Nombre" maxlength="150" required /></p>
+	        <p><label for="id_apellidos"></label>
+	        <input id="id_apellidos" type="text" name="apellidos" placeholder="Apellidos" maxlength="150" required /></p>
 			<p><label for="id_username"></label>
 	        <input id="id_username" type="text" name="username" placeholder="Username" maxlength="100" required /></p>
-			<p><label for="id_email"></label>
-	        <input id="id_email" type="email" name="email" placeholder="email" maxlength="100" required /></p>
+	        <p><label for="id_fecha_nacimiento"></label>
+	        <input id="id_fecha_nacimiento" type="date" name="fecha_nacimiento" placeholder="Fecha de nacimiento" required /></p>
+	        <p><label for="id_email"></label>
+	        <input id="id_email" type="email" name="email" placeholder="Email" maxlength="100" required /></p>
 	        <p><label for="id_password"></label>
 	        <input id="id_password" type="password" name="password" placeholder="Contraseña" maxlength="100" required /></p>
 	        <p><label for="id_r_password"></label>
@@ -20,4 +26,14 @@
 		</form>
 	</div>
 	<br>
+
+	<script>
+		$(function(){
+			$fecha=$('#id_fecha');
+			if ($fecha[0].type!="date"){
+				$fecha.datepicker();
+			}
+		});
+	</script>
+
 {% endblock %}

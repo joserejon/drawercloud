@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 import os
 from pymongo import MongoClient
 
+from mongoengine import connect
+connect('drawercloudDB')
+
 CLIENT = MongoClient('mongodb://localhost:27017/')
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
