@@ -3,14 +3,7 @@
 from django.shortcuts import render, HttpResponse
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-
-cliente_mongo = settings.CLIENT
-
-#Base de datos
-db = cliente_mongo['DrawerCloudDB']
-#Colección
-data = db.drawerclouddata
-
+from django.contrib.auth.models import User
 
 #Mostrar la página principal
 @login_required(login_url='/accounts/login/')
@@ -50,4 +43,5 @@ def ayuda(request):
 #Mostrar ayuda
 @login_required(login_url='/accounts/login/')
 def usuario(request):
-	return render(request, 'usuario.html', {'pagina_actual':'Mi perfil'})
+	return render(request, 'usuario.html', {'pagina_actual':'Mi perfil', 'username':request.user.username,
+		'email':request.user.email, 'nombre':request.user.first_name})

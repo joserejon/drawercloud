@@ -3,40 +3,36 @@ Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: TFG-JosManRejSan.aux
 The style file: ieeetr.bst
 Database file #1: citas.bib
-Warning--I didn't find a database entry for "citadropbox"
-Warning--I didn't find a database entry for "cita11"
-Warning--I didn't find a database entry for "cita12"
-Warning--I didn't find a database entry for "cita13"
-You've used 13 entries,
+You've used 16 entries,
             1876 wiz_defined-function locations,
-            508 strings with 4374 characters,
-and the built_in function-call counts, 1337 in all, are:
-= -- 117
-> -- 13
+            511 strings with 4848 characters,
+and the built_in function-call counts, 1640 in all, are:
+= -- 144
+> -- 16
 < -- 0
-+ -- 13
++ -- 16
 - -- 0
-* -- 41
-:= -- 130
-add.period$ -- 13
-call.type$ -- 13
-change.case$ -- 13
+* -- 50
+:= -- 157
+add.period$ -- 16
+call.type$ -- 16
+change.case$ -- 16
 chr.to.int$ -- 0
-cite$ -- 13
-duplicate$ -- 52
-empty$ -- 235
+cite$ -- 16
+duplicate$ -- 64
+empty$ -- 289
 format.name$ -- 0
-if$ -- 378
+if$ -- 465
 int.to.chr$ -- 0
-int.to.str$ -- 13
+int.to.str$ -- 16
 missing$ -- 0
-newline$ -- 42
+newline$ -- 51
 num.names$ -- 0
-pop$ -- 104
+pop$ -- 128
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 51
+skip$ -- 63
 stack$ -- 0
 substring$ -- 0
 swap$ -- 0
@@ -46,6 +42,5 @@ top$ -- 0
 type$ -- 0
 warning$ -- 0
 while$ -- 0
-width$ -- 15
-write$ -- 80
-(There were 4 warnings)
+width$ -- 18
+write$ -- 98
