@@ -3,11 +3,14 @@
 from django.shortcuts import render, HttpResponse
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from .forms import User
 
 #Mostrar la página principal
 @login_required(login_url='/accounts/login/')
 def index(request):
+	adduser = User()
+	if not adduser.usuarioExiste(request.user.username):
+		adduser.save(request.user.username)
 	return render(request, 'index.html', {'pagina_actual':'Documentos'})
 
 #Mostrar multimedia
@@ -45,15 +48,3 @@ def ayuda(request):
 def usuario(request):
 	return render(request, 'usuario.html', {'pagina_actual':'Mi perfil', 'username':request.user.username,
 		'email':request.user.email, 'nombre':request.user.first_name, 'apellidos':request.user.last_name})
-
-def registration_form(request):
-	if request.method == 'POST':
-		form = RegistrationForm(request.POST)
-		if form.is_valid():
-			form.save()
-			return redirect('/accounts/login/')
-	else:
-		form = RegistrationForm()
-
-		args = {'form':form}
-		return render(request, '/accounts/register/', args)

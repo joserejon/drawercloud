@@ -15,9 +15,7 @@ from pymongo import MongoClient
 from django.core.mail import send_mail
 
 from mongoengine import connect
-connect('drawercloudDB')
-
-CLIENT = MongoClient('mongodb://localhost:27017/')
+connect('DrawerCloudDB')
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

@@ -6,12 +6,8 @@ from mongoengine import *
 import datetime
 
 class Usuario(Document):
-    nombre = StringField()
-    apellidos = StringField()
-    username = StringField()
-    fecha_nacimiento = DateTimeField()
-    email = EmailField()
-    password = StringField()
+    id_username = IntField(required=True, unique=True)
+    username = StringField(required=True, unique=True)
     contenido = ListField() #Lista de directorios y archivos
     compartido_por_mi = ListField() #ID directorios y archivos
     compartido_conmigo = ListField() #ID directorios y archivos
