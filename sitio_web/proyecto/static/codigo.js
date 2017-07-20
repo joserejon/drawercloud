@@ -510,4 +510,40 @@ $( document ).ready(function() {
         });
     }
     //localStorage.clear();
+
+    /******************* MOVIMIENTO MENÚ DERECHA *******************/
+    var altura = $('#bt_offcanvas').offset().top;
+    $(document).scroll(function(){
+        if($(window).scrollTop() > altura - 50){
+            $('#bt_offcanvas').addClass('fijar_boton');
+        }
+        else{
+            $('#bt_offcanvas').removeClass('fijar_boton');
+        }
+    });
+
+    /******************* SUBIDA DE ARCHIVOS *******************/
+    //Obteber datos de los archivos
+    document.getElementById('upload').addEventListener('change', function(){
+        var html = "";
+        for(var i = 0; i<this.files.length; i++){
+            var file =  this.files[i];
+            html += "<p>" + file.name + "</p>";
+
+            //alert("name : " + file.name);
+            //console.log("size : " + file.size);
+            //console.log("type : " + file.type);
+            //console.log("date : " + file.lastModified);
+            
+        }
+        html += "<button class='btn btn-primary'>Hecho</button>";
+        myFunction(html);
+    }, false);
+
+    //Abrir popup
+    function myFunction(html) {
+        var popup = document.getElementById("myPopup");
+        popup.innerHTML = html;
+        popup.classList.toggle("show");
+    }
 });
