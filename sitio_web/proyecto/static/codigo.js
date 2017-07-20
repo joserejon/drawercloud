@@ -529,6 +529,14 @@ $( document ).ready(function() {
         for(var i = 0; i<this.files.length; i++){
             var file =  this.files[i];
             html += "<p>" + file.name + "</p>";
+            html += "" +
+                "<div class='progress progress-striped'>" +
+                    "<div class='progress-bar progress-bar-info' role='progressbar'" +
+                    "aria-valuenow='20' aria-valuemin='0' aria-valuemax='100'" +
+                    "style='width: 20%'>" +
+                    "<span class='sr-only'>20% completado</span>" +
+                    "</div>" +
+                "</div>";
 
             //alert("name : " + file.name);
             //console.log("size : " + file.size);
@@ -536,14 +544,24 @@ $( document ).ready(function() {
             //console.log("date : " + file.lastModified);
             
         }
-        html += "<button class='btn btn-primary'>Hecho</button>";
         myFunction(html);
+
     }, false);
 
+    
     //Abrir popup
     function myFunction(html) {
-        var popup = document.getElementById("myPopup");
+
+        html += "<button id='bt_hecho_popup' class='btn btn-primary'>Hecho</button>";
+        
+        popup = document.getElementById("myPopup");
         popup.innerHTML = html;
-        popup.classList.toggle("show");
+        popup.style.visibility = "visible";
+        
+        $(document).ready(function(){
+            $("#bt_hecho_popup").click(function(){
+                popup.style.visibility = "hidden";
+            });
+        });
     }
 });
