@@ -528,16 +528,18 @@ $( document ).ready(function() {
         var html = "";
         for(var i = 0; i<this.files.length; i++){
             var file =  this.files[i];
-            html += "<p>" + file.name + "</p>";
             html += "" +
-                "<div class='progress progress-striped'>" +
-                    "<div class='progress-bar progress-bar-info' role='progressbar'" +
-                    "aria-valuenow='20' aria-valuemin='0' aria-valuemax='100'" +
-                    "style='width: 20%'>" +
-                    "<span class='sr-only'>20% completado</span>" +
+                "<div id='contenido_popup'" +
+                    "<p>" + file.name + "</p>" +
+                    "<div id='barra_progreso' class='progress progress-striped'>" +
+                        "<div class='progress-bar progress-bar-info' role='progressbar'" +
+                        "aria-valuenow='20' aria-valuemin='0' aria-valuemax='100'" +
+                        "style='width: 20%'>" +
+                        "<span class='sr-only'>20% completado</span>" +
+                        "</div>" +
                     "</div>" +
                 "</div>";
-
+                
             //alert("name : " + file.name);
             //console.log("size : " + file.size);
             //console.log("type : " + file.type);
@@ -552,9 +554,9 @@ $( document ).ready(function() {
     //Abrir popup
     function myFunction(html) {
 
-        html += "<button id='bt_hecho_popup' class='btn btn-primary'>Hecho</button>";
+        html += "<button id='bt_hecho_popup' class='btn btn-default'>Hecho</button>";
         
-        popup = document.getElementById("myPopup");
+        popup = document.getElementById("div_popup");
         popup.innerHTML = html;
         popup.style.visibility = "visible";
         
