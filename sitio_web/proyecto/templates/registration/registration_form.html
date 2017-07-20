@@ -1,39 +1,93 @@
-{% extends "base_registracion.html" %}
+{% extends "base_registration.html" %}
+{% load i18n %}
+{% load crispy_forms_tags %}
 
 {% block contenido %}
-	<div class="contenido_login">
-		<h1>Regístrate aquí</h1>
-		<form method="post" action="." class="form_log_in">
-			{% csrf_token %}
-			
-			<p><label for="id_nombre"></label>
-	        <input id="id_nombre" type="text" name="nombre" placeholder="Nombre" maxlength="150" required /></p>
-	        <p><label for="id_apellidos"></label>
-	        <input id="id_apellidos" type="text" name="apellidos" placeholder="Apellidos" maxlength="150" required /></p>
-			<p><label for="id_username"></label>
-	        <input id="id_username" type="text" name="username" placeholder="Username" maxlength="100" required /></p>
-	        <p><label for="id_fecha_nacimiento"></label>
-	        <input id="id_fecha_nacimiento" type="date" name="fecha_nacimiento" placeholder="Fecha de nacimiento" required /></p>
-	        <p><label for="id_email"></label>
-	        <input id="id_email" type="email" name="email" placeholder="Email" maxlength="100" required /></p>
-	        <p><label for="id_password"></label>
-	        <input id="id_password" type="password" name="password" placeholder="Contraseña" maxlength="100" required /></p>
-	        <p><label for="id_r_password"></label>
-	        <input id="id_r_password" type="password" name="r_password" placeholder="Repita la contraseña anterior" maxlength="100" required /></p>
 
-			<input type="submit" value="Registrarme" class="btn btn-primary"//>
+	<!-- Carousel
+	================================================== -->
+	<div id="myCarousel" class="carousel slide" data-ride="carousel">
+		<!-- Indicators -->
+		<ol class="carousel-indicators">
+			<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+			<li data-target="#myCarousel" data-slide-to="1"></li>
+			<li data-target="#myCarousel" data-slide-to="2"></li>
+			<li data-target="#myCarousel" data-slide-to="3"></li>
+		</ol>
+		<div class="carousel-inner" role="listbox">
+			<div class="item active">
+				<div class="container">
+					<div class="carousel-caption">
+						<img class="first-slide" src="/static/images/logo_50.png" alt="First slide">
+						<h1>drawercloud</h1>
+						<p>La solución ideal para el almacenamiento de sus archivos en la nube</p>
+					</div>
+				</div>
+			</div>
+			<div class="item">
+				<div class="container">
+					<div class="carousel-caption">
+						<img class="second-slide" src="/static/images/logo_50.png" alt="Second slide">
+						<h1>Siempre conectado</h1>
+						<p>Acceda a la web desde cualquier dispositivo y gestione sus ficheros en el momento que desee, de forma remota o localmente</p>
+					</div>
+				</div>
+			</div>
+			<div class="item">
+				<div class="container">
+					<div class="carousel-caption">
+						<img class="third-slide" src="/static/images/logo_50.png" alt="Third slide">
+						<h1>Compartiendo archivos</h1>
+						<p>Comparta archivos con sus amigos o disfrute de las oportunidades que ofrecen los grupos de trabajo</p>
+					</div>
+				</div>
+			</div>
+			<div class="item">
+				<div class="container">
+					<div class="carousel-caption">
+						<img class="fourth-slide" src="/static/images/logo_50.png" alt="Fourth slide">
+						<h1>Multimedia</h1>
+						<p>Disponga de todo su material multimedia siempre ordenado y destaque sus ficheros con la opción de favoritos</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+		<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+		<span class="sr-only">Previous</span>
+		</a>
+		<a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+		<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+		<span class="sr-only">Next</span>
+		</a>
+	</div><!-- /.carousel -->
+
+
+	<div class="contenido_login">
+		<form method="post" action="." class="uniForm">
+			{% csrf_token %}
+		    {{ form|crispy }}
+		    <div class="alert alert-info">
+		    <p>Tras el registro recibirá un correo electrónico para activar su cuenta. Controle su correo entrante.</p>
+		    </div>
+		    <input type="submit" value="{% trans 'Registrarme' %}" class="btn btn-primary"//>
 			<a href="/accounts/login/" class="btn btn-primary">Atrás</a>
 		</form>
 	</div>
-	<br>
 
-	<script>
-		$(function(){
-			$fecha=$('#id_fecha');
-			if ($fecha[0].type!="date"){
-				$fecha.datepicker();
-			}
+	<script type="text/javascript" >
+		$(document).ready(function(){
+			$("#id_username").attr('placeholder', 'Username');
+			$("#id_email").attr('placeholder', 'E-mail');
+			$("#id_password1").attr('placeholder', 'Inserte una contraseña');
+			$("#id_password2").attr('placeholder', 'Repita la contraseña anterior');
+			$("#hint_id_username").text("");
+			$("#hint_id_password2").text("");
+			$("label[for='id_username']").text("");
+			$("label[for='id_email']").text("");
+			$("label[for='id_password1']").text("");
+			$("label[for='id_password2']").text("");
+			$("#error_1_id_password2").text("Error: las contraseñas no coinciden");
 		});
 	</script>
-
 {% endblock %}

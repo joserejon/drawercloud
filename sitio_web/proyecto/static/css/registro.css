@@ -10,7 +10,7 @@ body {
 
 .contenido_login{
 	text-align: center;
-	margin-top: 30px;
+	margin-top: 20px;
 }
 
 h1{
@@ -19,7 +19,7 @@ h1{
 
 h2{
 	color: #72A7CF;
-	margin-top: 30px;
+	margin-top: 10px;
 }
 
 .navbar-fixed-top{
@@ -31,16 +31,17 @@ h2{
 	margin-top: -25px;
 }
 
-.no_registrado{
+.opciones_login{
 	font-size: 16px;
+	margin-top: -10px;
 }
 
-.no_registrado a{
+.opciones_login a{
 	color: #72A7CF;
 	font-weight: bold;
 }
 
-.no_registrado p{
+.opciones_login p{
 	color: #72A7CF;
 }
 
@@ -61,4 +62,9 @@ h2{
 .carousel-inner > .item > img {
 	position: relative;
 	margin-top: 30px;
+}
+
+.msj_center{
+	margin-top: 30px;
+	text-align: center;
 }

@@ -44,4 +44,16 @@ def ayuda(request):
 @login_required(login_url='/accounts/login/')
 def usuario(request):
 	return render(request, 'usuario.html', {'pagina_actual':'Mi perfil', 'username':request.user.username,
-		'email':request.user.email, 'nombre':request.user.first_name})
+		'email':request.user.email, 'nombre':request.user.first_name, 'apellidos':request.user.last_name})
+
+def registration_form(request):
+	if request.method == 'POST':
+		form = RegistrationForm(request.POST)
+		if form.is_valid():
+			form.save()
+			return redirect('/accounts/login/')
+	else:
+		form = RegistrationForm()
+
+		args = {'form':form}
+		return render(request, '/accounts/register/', args)

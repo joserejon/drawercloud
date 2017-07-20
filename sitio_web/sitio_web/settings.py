@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 
 import os
 from pymongo import MongoClient
+from django.core.mail import send_mail
 
 from mongoengine import connect
 connect('drawercloudDB')
@@ -45,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'proyecto',
     'registration',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -133,3 +135,12 @@ REGISTRATION_OPEN = True # If True, users can register
 LOGIN_REDIRECT_URL = '/proyecto/' # The page you want users to arrive at after they successful log in
 LOGIN_URL = '/accounts/login/' # The page users are directed to if they are not logged in and are trying to access pages requiring authentication
 REGISTRATION_AUTO_LOGIN = True
+ACCOUNT_ACTIVATION_DAYS = 5
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'tfgdrawercloud@gmail.com'
+EMAIL_HOST_PASSWORD = 'ABC123456xyz;$'
+SERVER_EMAIL = 'tfgdrawercloud@gmail.com'
+DEFAULT_FROM_EMAIL = 'tfgdrawercloud'

@@ -1,6 +1,11 @@
-{% extends "base_registracion.html" %}
+{% extends "base_registration.html" %}
+{% load i18n %}
 
 {% block contenido %}
-	<h1>Registro completado</h1>
-	<p>Ya estás registrado</p>
+
+	<script type="text/javascript" >
+		$(document).ready(function(){
+			alert("E-mail de activación enviado. Compruebe su correo entrante.")
+		});
+	</script>
 {% endblock %}
