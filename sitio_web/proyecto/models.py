@@ -8,7 +8,8 @@ import datetime
 class Usuario(Document):
     id_username = IntField(required=True, unique=True)
     username = StringField(required=True, unique=True)
-    contenido = ListField() #Lista de directorios y archivos
+    mis_directorios = ListField() #Lista de IDs de directorios
+    mis_archivos = ListField() #Lista de IDs de archivos
     compartido_por_mi = ListField() #ID directorios y archivos
     compartido_conmigo = ListField() #ID directorios y archivos
 
@@ -21,4 +22,5 @@ class Archivo(Document):
 	id_archivo = DecimalField()
 	nombre = StringField()
 	tipo_archivo = StringField()
-	data = FileField()
+	archivo = FileField()
+	fecha_subida = models.DateTimeField(auto_now_add=True)

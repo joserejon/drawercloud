@@ -10,4 +10,6 @@ urlpatterns = [
 	url(r'^registroHistorico/$', views.registroHistorico, name='registroHistorico'),
 	url(r'^ayuda/$', views.ayuda, name='ayuda'),
 	url(r'^usuario/$', views.usuario, name='usuario'),
+	url(r'^subidaArchivo/$', views.subidaArchivo, name='subidaArchivo'),
+	url(r'^upload/', views.upload, name="upload"),
 ]

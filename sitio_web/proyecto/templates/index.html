@@ -1,4 +1,11 @@
 {% extends "base.html" %}
+
+{% block header %}
+	<script>
+		var my_var = "{{ usuario.username }}";
+	</script>
+{% endblock %}
+
 {% block contenido_body %}
 
 <!-- pop-up para la subida de archivos -->
@@ -27,6 +34,15 @@
 		<li class="barra"><a href="" onclick="document.getElementById('upload').click(); return false">Subir archivo</a></li>
 		<li class="barra"><a href="#">Crear carpeta</a></li>
 	</ul>
+
+	<form action="{{ request.build_absolute_uri }}upload/" method="POST" enctype="multipart/form-data">
+		{% csrf_token %} 
+		<input type="file" name="file"/>
+		<br />
+		<input type="submit" value="Upload File" />
+	</form>
 </div>
+
+<input type="hidden" id="django_var" value="{{ usuario.username }}" />
 
 {% endblock %}	
