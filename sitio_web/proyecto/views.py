@@ -86,7 +86,7 @@ def handle_uploaded_file(file, filename, request):
 			destination.write(chunk)
 
 		archivo = ArchivoForm()
-		archivo.save(filename, getTipoArchivo(filename), usuario, 'upload/' + filename)
+		archivo.save(filename, getTipoArchivo(filename), usuario.username, 'upload/' + filename)
 
 
 
@@ -98,3 +98,11 @@ def getTipoArchivo(nombre_archivo):
 			return nombre_archivo[(i+1):len(nombre_archivo)]
 
 	return ''
+
+#Obtener los archivos pertenecientes al usuario y mandarlos mediante Ajax
+def getArchivos(request):
+	a = ArchivoForm()
+
+	archivos = a.getArchivos(usuario.username)
+	
+	return HttpResponse(json.dumps(archivos), content_type="application/json")

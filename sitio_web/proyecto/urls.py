@@ -12,4 +12,5 @@ urlpatterns = [
 	url(r'^usuario/$', views.usuario, name='usuario'),
 	url(r'^subidaArchivo/$', views.subidaArchivo, name='subidaArchivo'),
 	url(r'^upload/', views.upload, name="upload"),
+	url(r'^getArchivos/$', views.getArchivos, name='getArchivos'),
 ]

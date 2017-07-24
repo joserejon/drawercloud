@@ -3,6 +3,9 @@ from mongoengine import *
 from requests import *
 import datetime
 from .models import *
+from django.forms.models import model_to_dict
+import json
+import datetime
 
 #Form para la clase Usuario
 class UsuarioForm():
@@ -13,8 +16,6 @@ class UsuarioForm():
 
 		u.username = _username
 		u.id_username = Usuario.objects.count() + 1
-		u.mis_directorios = []
-		u.mis_archivos = []
 		u.compartido_por_mi = []
 		u.compartido_conmigo = []
 
@@ -40,7 +41,7 @@ class UsuarioForm():
 class ArchivoForm():
 
 	#Guardar un nuevo archivo
-	def save(self, nombre_archivo, tipo_archivo, usuario, path):
+	def save(self, nombre_archivo, tipo_archivo, username, path):
 		a = Archivo()
 
 		a.id_archivo = Archivo.objects.count() + 1
@@ -48,8 +49,19 @@ class ArchivoForm():
 		a.tipo_archivo = tipo_archivo
 		data = open(path, 'wb+')
 		a.archivo.put(data)
-		a.fecha_subida = a.archivo.uploadDate
+		a.fecha_subida = str(datetime.datetime.now())
+		a.propietario = username
 		a.save()
-		#Actualizar la bd para el usuario
-		usuario.mis_archivos.append(a.id_archivo)
-		usuario.update(mis_archivos=usuario.mis_archivos)
+
+	#Devolver una lista con los archivos del usuario
+	def getArchivos(self, username):
+
+		archivos = list(Archivo.objects.filter(propietario=username))
+		archivos_dic = {}
+
+		for item in archivos:
+			archivos_dic[int(item.id_archivo)] = [int(item.id_archivo), item.nombre, item.tipo_archivo, str(item.fecha_subida)]
+
+
+		print archivos_dic
+		return archivos_dic

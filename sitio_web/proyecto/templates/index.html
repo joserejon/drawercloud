@@ -62,6 +62,8 @@
 
     function actualizaVista(){
         var html = "";
+        var username = "{{ usuario.username }}";
+		getArchivos(username);
 
         if (localStorage.getItem("modo_vista") == "cuadricula"){
             html = "<span id='vista_lista' title='ver lista' class='glyphicon glyphicon-th-list'></span>";
@@ -73,6 +75,27 @@
         }
 
         document.getElementById('cambiar_vista').innerHTML = html;
+    }
+
+    //Función que se encarga de pedir y recibir los archivos del usuario
+    function getArchivos(_username) {
+        $.ajax({
+            url : "{% url 'getArchivos' %}",
+            data : {
+                
+            },
+            type : 'GET',
+            dataType: 'json',
+            success : function(datos){
+                vistaLista(datos);
+            },
+            failure : function(datos){
+                alert("Error: no se pudo realizar la consulta");
+            },
+            complete : function(datos) {
+                console.log('Petición realizada');
+            }
+     	});
     }
 
     function vistaCuadricula(){
@@ -150,10 +173,9 @@
         });
     }
 
-    function vistaLista(){
+    function vistaLista(datos){
 
         var html = "" +
-            "{{ usuario.username }}" + 
             "<div class='table-responsive'>" +
                 "<table id='tabla' class='table'>" +
                     "<thead>" +
@@ -165,11 +187,12 @@
                             "<th class='hidden-xs'>Opciones</th>" +
                         "</tr>" +
                     "</thead>" +
-                    "<tbody>" +
-                        "<tr id='1'>" +
-                            "<td><img src='/static/images/folder_lista.png' class='img-rounded img_lista'>Carpeta</td>" +
+                    "<tbody>";
+                    for (var i in datos) {
+                        html += "<tr id='" + datos[i][0] + "'>" +
+                            "<td><img src='/static/images/folder_lista.png' class='img-rounded img_lista'>" + datos[i][1] + "</td>" +
                             "<td class='center'>1GB</td>" +
-                            "<td class='center'>07/04/2017</td>" +
+                            "<td class='center'>" + datos[i][3] + "</td>" +
                             "<td class='center'>Solo yo</td>" +
                             "<td class='hidden-xs'>" +
                                 "<div class='btn-group'>" +
@@ -186,8 +209,9 @@
                                     "</ul>" +
                                 "</div>" +
                             "</td>" +
-                        "</tr>" +
-                    "</tbody>" +
+                        "</tr>";
+                    }
+                    html += "</tbody>" +
                 "</table>" +
             "</div> <!-- table-responsive -->";
 
@@ -215,4 +239,4 @@
     }
     //localStorage.clear();
 </script>
-{% endblock %}	
+{% endblock %}
