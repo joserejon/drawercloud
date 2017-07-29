@@ -266,80 +266,54 @@ body {
 }
 
 /* POP - UP para subir archivos */
+.popUp{
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0,0,0,0.8);
+    z-index: 99999;
+    opacity:0;
+    -webkit-transition: opacity 400ms ease-in;
+    -moz-transition: opacity 400ms ease-in;
+    transition: opacity 400ms ease-in;
+    pointer-events: none;
+}
 
-/* Popup container */
-.popup {
-    width: 80%;
-    height: 100%;
+.popUp:target{
+    opacity:1;
+    pointer-events: auto;
+}
+
+.popUp > div{
+    width: 500px;
     position: relative;
-    display: inline-block;  
-}
-
-/* The actual popup (appears on top) */
-.popup .popuptext{
-    float: left;
-    visibility: hidden;
-    width: 50%;
-    background-color: #72A7CF;
-    border-style: solid;
-    border-width: 1px;
-    border-color: #DDDDDD;
-    color: black;
-    border-radius: 6px;
-    padding: 8px 0;
-    position: absolute;
-    z-index: 1;
-    left: 50%;
-    margin-left: -80px;
-    padding-top: 20px;
-}
-
-.popuptext button{
-    font-weight: bold;
-    float: right;
-    margin-top: 10px;
-    margin-right: 20px;
-    color: #72A7CF;
-}
-
-/* Toggle this class when clicking on the popup container (hide and show the popup) */
-.popup .show {
-    visibility: visible;
-    -webkit-animation: fadeIn 0.5s;
-    animation: fadeIn 0.5s
-}
-
-/* Add animation (fade in the popup) */
-@-webkit-keyframes fadeIn {
-    from {opacity: 0;} 
-    to {opacity: 1;}
-}
-
-@keyframes fadeIn {
-    from {opacity: 0;}
-    to {opacity:1 ;}
-}
-
-#contenido_popup{
-    color: #72A7CF;
-    font-weight: bold;
-    background-color: white;
-    border-style: solid;
-    border-width: 1px;
-    border-color:  #72A7CF;
-    margin-left: 20px;
-    margin-right: 20px;
-    border-radius: 6px;
+    margin: 10% auto;
     padding: 20px;
-    margin-bottom: 10px;
+    border-radius: 7px;
+    background-color: #72A7CF;
+    color: white;
+    font-weight: bold;
 }
 
-#contenido_popup p{
-    float: left;
+.close{
+    opacity: 2;
+    background: white;
+    color: #72A7CF;
+    line-height: 25px;
+    position: absolute;
+    right: 5px;
+    text-align: center;
+    top: 5px;
+    width: 24px;
+    text-decoration: none;
+    border-radius: 50%;
 }
 
-#barra_progreso{
-    float: right;
-    margin-right: 10px;
-    width: 50%;
+.close:hover { background: white; }
+
+.input_file{
+    color: #72A7CF;
+    font-weight: bold;
 }

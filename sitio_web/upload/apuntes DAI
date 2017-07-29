@@ -1,0 +1,16 @@
+gettext() o _() para llamar al fichero de traducciones.
+pip freeze -> para ver todas las versiones de las opciones instaladas con pip.
+
+pip install -r requeriments.txt -> Para instalar las mismas versiones sobre el servidor.
+
+En el servidor de producción se cambia lo siguiente (en settings.py): 
+	- DEBUG = False.
+	- ALLOWED_HOSTS = ['*']
+
+En admin:
+	- Permissions active => para el registro en dos pasos.
+	- Grupos => Permisos sobre las tablas (interesante para compartir archivos en el proyecto).
+	
+
+ssh -i "claveAmazonEC2.pem" ubuntu@ec2-13-58-188-121.us-east-2.compute.amazonaws.com
+scp -i claveAmazonEC2.pem TFG/drawercloud/requirements.txt ubuntu@ec2-13-58-188-121.us-east-2.compute.amazonaws.com:/home/ubuntu para copiar en server

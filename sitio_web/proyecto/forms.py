@@ -3,9 +3,6 @@ from mongoengine import *
 from requests import *
 import datetime
 from .models import *
-from django.forms.models import model_to_dict
-import json
-import datetime
 
 #Form para la clase Usuario
 class UsuarioForm():
@@ -32,7 +29,6 @@ class UsuarioForm():
 
 	#Devuelve el usuario actual
 	def getUsuario(self, _username):
-		u = Usuario()
 		datos_usuario = Usuario.objects(username=_username)
 
 		return datos_usuario[0]
@@ -47,10 +43,11 @@ class ArchivoForm():
 		a.id_archivo = Archivo.objects.count() + 1
 		a.nombre = nombre_archivo
 		a.tipo_archivo = tipo_archivo
-		data = open(path, 'wb+')
-		a.archivo.put(data)
-		a.fecha_subida = str(datetime.datetime.now())
+		a.fecha_subida = str(datetime.datetime.now().replace(microsecond=0))
 		a.propietario = username
+		data = open(path, 'rb')
+		ct = getContentType(tipo_archivo)
+		a.archivo.put(data, content_type = ct)
 		a.save()
 
 	#Devolver una lista con los archivos del usuario
@@ -62,6 +59,19 @@ class ArchivoForm():
 		for item in archivos:
 			archivos_dic[int(item.id_archivo)] = [int(item.id_archivo), item.nombre, item.tipo_archivo, str(item.fecha_subida)]
 
-
-		print archivos_dic
 		return archivos_dic
+
+def getContentType(tipo_archivo):
+	ct = ""
+	if tipo_archivo == 'odt':
+		ct = 'application/vnd.oasis.opendocument.text'
+	elif tipo_archivo == 'jpeg' or tipo_archivo == 'jpg':
+		ct = 'image/jpeg'
+	elif tipo_archivo == 'mp3':
+		ct = 'audio/mpeg'
+	elif tipo_archivo == 'txt':
+		ct = 'text/plain'
+	else:
+		ct = 'application/octet-stream'
+
+	return ct

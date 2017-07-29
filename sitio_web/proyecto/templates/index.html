@@ -31,19 +31,24 @@
 	<input type="file" id="upload" name="upload" style="visibility: hidden" multiple />
 	<ul class="nav nav-pills nav-stacked row-offcanvas row-offcanvas-right sidebar-offcanvas">
 		<li class="active"><a href="#">Opciones</a></li>
-		<li class="barra"><a href="" onclick="document.getElementById('upload').click(); return false">Subir archivo</a></li>
+		<li class="barra"><a href="#abrirPopUp">Subir archivo</a></li>
 		<li class="barra"><a href="#">Crear carpeta</a></li>
 	</ul>
 
-	<form action="{{ request.build_absolute_uri }}upload/" method="POST" enctype="multipart/form-data">
-		{% csrf_token %} 
-		<input type="file" name="file"/>
-		<br />
-		<input type="submit" value="Upload File" />
-	</form>
-</div>
+	<div id="abrirPopUp" class="popUp">
+		<div>
+			<a href="#close" title="Close" class="close">X</a>
+			<form action="{% url 'upload' %}" method="POST" enctype="multipart/form-data">
+				{% csrf_token %} 
+				<input type="file" name="file" class="input_file btn btn-default" />
+				<br />
+				<input type="submit" value="Upload File" class="input_file btn btn-default" />
+			</form>
+		</div>
+	</div>
 
 <script type="text/javascript">
+
 	/******************* VISTA DE DOCUMENTOS *******************/
 
     //localStorage.setItem("modo_vista", "lista");
@@ -64,17 +69,6 @@
         var html = "";
         var username = "{{ usuario.username }}";
 		getArchivos(username);
-
-        if (localStorage.getItem("modo_vista") == "cuadricula"){
-            html = "<span id='vista_lista' title='ver lista' class='glyphicon glyphicon-th-list'></span>";
-            vistaCuadricula();
-        }
-        else{ 
-            html = "<span id='vista_cuadricula' title='ver iconos' class='glyphicon glyphicon-th-large'></span>";
-            vistaLista();
-        }
-
-        document.getElementById('cambiar_vista').innerHTML = html;
     }
 
     //Función que se encarga de pedir y recibir los archivos del usuario
@@ -87,7 +81,16 @@
             type : 'GET',
             dataType: 'json',
             success : function(datos){
-                vistaLista(datos);
+				if (localStorage.getItem("modo_vista") == "cuadricula"){
+					html = "<span id='vista_lista' title='ver lista' class='glyphicon glyphicon-th-list'></span>";
+					vistaCuadricula(datos);
+				}
+				else{ 
+					html = "<span id='vista_cuadricula' title='ver iconos' class='glyphicon glyphicon-th-large'></span>";
+					vistaLista(datos);
+				}
+
+				document.getElementById('cambiar_vista').innerHTML = html;
             },
             failure : function(datos){
                 alert("Error: no se pudo realizar la consulta");
@@ -98,65 +101,20 @@
      	});
     }
 
-    function vistaCuadricula(){
+    function vistaCuadricula(datos){
         var html = "" +
             "<div class='container-fluid cuadricula'>" +
-                "<div class='row'>" +
-                    "<div id='documento_vista_cuadricula' class='col-xs-4 col-md-3 col-lg-2'>" +
-                        "<div id='archivo_1' title='Carpeta 1'>" +
-                            "<img src='/static/images/folder.png'>" +
-                            "<h5>Carpeta 1</h5>" +
+                "<div class='row'>";
+                for(var i in datos){
+                    var tipo_archivo = comprobarExtension(datos[i][2], "cuadricula");
+                    html += "<div id='documento_vista_cuadricula' class='col-xs-4 col-md-3 col-lg-2'>" +
+                        "<div id='" + datos[i][0] + "' title='" + datos[i][1] + "'>" +
+                            "<img src='" + tipo_archivo + "'>" +
+                            "<h5>" + datos[i][1] + "</h5>" +
                         "</div>" +
-                    "</div>" +
-                    "<div id='documento_vista_cuadricula' class='col-xs-4 col-md-3 col-lg-2'>" +
-                        "<div id='archivo_2'>" +
-                            "<img src='/static/images/folder.png'>" +
-                            "<h5>Carpeta 2<span class='glyphicon glyphicon-star'></h5>" +
-                        "</div>" +
-                    "</div>" +
-                    "<div id='documento_vista_cuadricula' class='col-xs-4 col-md-3 col-lg-2'>" +
-                        "<div id='archivo_3'>" +
-                            "<img src='/static/images/folder.png'>" +
-                            "<h5>Carpeta 3</h5>" +
-                        "</div>" +
-                    "</div>" +
-                    "<div id='documento_vista_cuadricula' class='col-xs-4 col-md-3 col-lg-2'>" +
-                        "<div id='archivo_4'>" +
-                            "<img src='/static/images/folder.png'>" +
-                            "<h5>Carpeta 4</h5>" +
-                        "</div>" +
-                    "</div>" +
-                    "<div id='documento_vista_cuadricula' class='col-xs-4 col-md-3 col-lg-2'>" +
-                        "<div id='archivo_5'>" +
-                            "<img src='/static/images/folder.png'>" +
-                            "<h5>Carpeta 5</h5>" +
-                        "</div>" +
-                    "</div>" +
-                    "<div id='documento_vista_cuadricula' class='col-xs-4 col-md-3 col-lg-2'>" +
-                        "<div id='archivo_6'>" +
-                            "<img src='/static/images/files_icons/icon_file_music.png'>" +
-                            "<h5>cancion.mp3<span class='glyphicon glyphicon-star'></h5>" +
-                        "</div>" +
-                    "</div>" +
-                    "<div id='documento_vista_cuadricula' class='col-xs-4 col-md-3 col-lg-2'>" +
-                        "<div id='archivo_7'>" +
-                            "<img src='/static/images/files_icons/icon_file_img.png'>" +
-                            "<h5>imagen.png</h5>" +
-                        "</div>" +
-                    "</div>" +
-                    "<div id='documento_vista_cuadricula' class='col-xs-4 col-md-3 col-lg-2'>" +
-                        "<div id='archivo_8'>" +
-                            "<img src='/static/images/files_icons/icon_file_txt.png'>" +
-                            "<h5>documento.txt<span class='glyphicon glyphicon-star'></h5>" +
-                        "</div>" +
-                    "</div>" +
-                    "<div id='documento_vista_cuadricula' class='col-xs-4 col-md-3 col-lg-2'>" +
-                        "<div id='archivo_vista_cuadricula'>" +
-                            "<img src='/static/images/files_icons/icon_file_presentation.png'>" +
-                            "<h5>presentacion.ppsx</h5>" +
-                        "</div>" +
-                    "</div>" +
-                "</div>" +
+                    "</div>";
+                }
+                html += "</div>" +
             "</div> <!--> <!-- container -->";
 
         document.getElementById('vista_documentos').innerHTML = html;
@@ -188,9 +146,10 @@
                         "</tr>" +
                     "</thead>" +
                     "<tbody>";
-                    for (var i in datos) {
+                    for(var i in datos){
+                    	var tipo_archivo = comprobarExtension(datos[i][2], "lista");
                         html += "<tr id='" + datos[i][0] + "'>" +
-                            "<td><img src='/static/images/folder_lista.png' class='img-rounded img_lista'>" + datos[i][1] + "</td>" +
+                            "<td><img src='" + tipo_archivo + "' class='img-rounded img_lista'>" + datos[i][1] + "</td>" +
                             "<td class='center'>1GB</td>" +
                             "<td class='center'>" + datos[i][3] + "</td>" +
                             "<td class='center'>Solo yo</td>" +
@@ -200,11 +159,11 @@
                                     "Más <span class='caret'></span>" +
                                     "</button>" +
                                     "<ul class='dropdown-menu' role='menu'>" +
-                                        "<li><a href='#''>Descargar</a></li>" +
-                                        "<li><a href='#''>Compartir</a></li>" +
-                                        "<li><a href='#''>Copiar</a></li>" +
-                                        "<li><a href='#''>Mover</a></li>" +
-                                        "<li><a href='#''>Añadir a favoritos</a></li>" +
+                                        "<li><a href='{% url 'descargarArchivo' %}?id_archivo=" + datos[i][0] + "'>Descargar</a></li>" +
+                                        "<li><a href='#'>Compartir</a></li>" +
+                                        "<li><a href='#'>Copiar</a></li>" +
+                                        "<li><a href='#'>Mover</a></li>" +
+                                        "<li><a href='#'>Añadir a favoritos</a></li>" +
                                         "<li><a href='#'>Eliminar</a></li>" +
                                     "</ul>" +
                                 "</div>" +
@@ -230,13 +189,56 @@
         });
 
         //Acción al pulsar sobre una fila
-        $("#tabla tr").click(function( event ) {
+        /*$("#tabla tr").click(function( event ) {
             event.preventDefault();
             if((!bt_opciones_pulsado) && (this.id != 0))
                 alert("Fila " + this.id);
             bt_opciones_pulsado = 0;
-        });
+        });*/
     }
     //localStorage.clear();
+
+    //Función para obtener la imagen según el tipo de documento
+    function comprobarExtension(extension, vista){
+    	resultado = "";
+    	if(vista == "lista"){
+    		if((extension == "txt") || (extension == "odt") || (extension == "doc"))
+    			resultado = "/static/images/files_icons/icon_file_txt_lista.png";
+    		else if((extension == "mp3") || (extension == "wma"))
+    			resultado = "/static/images/files_icons/icon_file_music_lista.png";
+    		else if((extension == "png") || (extension == "jpg") || (extension == "jpeg"))
+    			resultado = "/static/images/files_icons/icon_file_img_lista.png";
+    		else if((extension == "mp3") || (extension == "wma"))
+    			resultado = "/static/images/files_icons/icon_file_music_lista.png";
+    		else if((extension == "mp4") || (extension == "avi") || (extension == "mkv"))
+    			resultado = "/static/images/files_icons/icon_file_video_lista.png";
+    		else if((extension == "pptx") || (extension == "odp"))
+    			resultado = "/static/images/files_icons/icon_file_presentation_lista.png";
+    		else if(extension == "pdf")
+    			resultado = "/static/images/files_icons/icon_file_pdf_lista.png";
+    		else
+    			resultado = "/static/images/files_icons/icon_file_base_lista.png";
+    	}
+    	else{
+    		if((extension == "txt") || (extension == "odt") || (extension == "doc"))
+    			resultado = "/static/images/files_icons/icon_file_txt.png";
+    		else if((extension == "mp3") || (extension == "wma"))
+    			resultado = "/static/images/files_icons/icon_file_music.png";
+    		else if((extension == "png") || (extension == "jpg") || (extension == "jpeg"))
+    			resultado = "/static/images/files_icons/icon_file_img.png";
+    		else if((extension == "mp3") || (extension == "wma"))
+    			resultado = "/static/images/files_icons/icon_file_music.png";
+    		else if((extension == "mp4") || (extension == "avi") || (extension == "mkv"))
+    			resultado = "/static/images/files_icons/icon_file_video.png";
+    		else if((extension == "pptx") || (extension == "odp"))
+    			resultado = "/static/images/files_icons/icon_file_presentation.png";
+    		else if(extension == "pdf")
+    			resultado = "/static/images/files_icons/icon_file_pdf.png";
+    		else
+    			resultado = "/static/images/files_icons/icon_file_base.png";
+    	}
+
+    	return resultado;
+   	}
 </script>
 {% endblock %}

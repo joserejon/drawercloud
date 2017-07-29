@@ -13,6 +13,7 @@ usuario = None
 #Mostrar la página principal
 @login_required(login_url='/accounts/login/')
 def index(request):
+	print("********************************************************")
 	global usuario
 	usuario = UsuarioForm()
 	if not usuario.usuarioExiste(request.user.username):
@@ -52,35 +53,26 @@ def registroHistorico(request):
 def ayuda(request):
 	return render(request, 'ayuda.html', {'pagina_actual':'Ayuda'})
 
-#Mostrar ayuda
+#Mostrar datos usuario
 @login_required(login_url='/accounts/login/')
 def usuario(request):
 	return render(request, 'usuario.html', {'pagina_actual':'Mi perfil', 'username':request.user.username,
 		'email':request.user.email, 'nombre':request.user.first_name, 'apellidos':request.user.last_name})
 
 #Subir un archivo
-def subidaArchivo(request):
-	global usuario
-	usuario.getUsuario(request.user.username)
-
-	nombre_archivo = request.GET.get('filename', '')
-	archivo = ArchivoForm()
-	archivo.save(nombre_archivo, getTipoArchivo(nombre_archivo), usuario)
-
-	return HttpResponse(json.dumps(nombre_archivo + " subido"), content_type="application/json")
-
 
 def upload(request):
 	if request.method == 'POST':
-		handle_uploaded_file(request.FILES['file'], str(request.FILES['file']), request)
-		return render(request, 'index.html', {'pagina_actual':'Documentos'})
+		handle_uploaded_file(request.FILES['file'], request)
+		return render(request, 'index.html', {'pagina_actual':'Documentos', 'usuario':usuario})
 
-	return render(request, 'index.html', {'pagina_actual':'Documentos'})
+	return render(request, 'index.html', {'pagina_actual':'Documentos', 'usuario':usuario})
 
-def handle_uploaded_file(file, filename, request):
+def handle_uploaded_file(file, request):
 	if not os.path.exists('upload/'):
 		os.mkdir('upload/')
 
+	filename = str(file)
 	with open('upload/' + filename, 'wb+') as destination:
 		for chunk in file.chunks():
 			destination.write(chunk)
@@ -106,3 +98,22 @@ def getArchivos(request):
 	archivos = a.getArchivos(usuario.username)
 	
 	return HttpResponse(json.dumps(archivos), content_type="application/json")
+
+#Método para descargar un archivo
+@login_required(login_url='/accounts/login/')
+def descargarArchivo(request):
+	id_archivo = request.GET.get('id_archivo','')
+	archivo = Archivo.objects.filter(id_archivo=id_archivo)
+	file = archivo[0].archivo.read()
+	response = HttpResponse(file, content_type = 'application/force-download')
+	response['Content-Disposition'] = 'attachment; filename=%s' % archivo[0].nombre
+
+	return response
+
+#Método para ver/descargar un archivo
+#@login_required(login_url='/accounts/login/')
+#def descargarArchivo(request):
+#	id_archivo = request.GET.get('id_archivo','')
+#	archivo = Archivo.objects.filter(id_archivo=id_archivo)
+#	file = archivo[0].archivo.read()
+#	return HttpResponse(file, content_type = archivo[0].archivo.content_type)
