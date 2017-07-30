@@ -14,4 +14,6 @@ urlpatterns = [
 	url(r'^getArchivos/$', views.getArchivos, name='getArchivos'),
 	url(r'^descargarArchivo/$', views.descargarArchivo, name='descargarArchivo'),
 	url(r'^verArchivo/$', views.verArchivo, name='verArchivo'),
+	url(r'^contenidoMultimedia/$', views.contenidoMultimedia, name='contenidoMultimedia'),
+	url(r'^contenidoMultimediaAjax/$', views.contenidoMultimediaAjax, name='contenidoMultimediaAjax'),
 ]

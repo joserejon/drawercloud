@@ -10,23 +10,36 @@
 <div class='container-fluid'>
 	<div class='row'>
 		<div id='documento_vista_multimedia' class='col-xs-4 col-md-3 col-lg-2'>
-			<div id='archivo_1' title='Música'>
+			<div id='archivos_musica' title='Música'>
 				<img src='/static/images/big_folder.png'>
 				<h3>Música</h3>
 			</div>
 		</div>
 		<div id='documento_vista_multimedia' class='col-xs-4 col-md-3 col-lg-2'>
-			<div id='archivo_2' title='Imágenes'>
+			<div id='archivos_imagen' title='Imágenes'>
 				<img src='/static/images/big_folder.png'>
 				<h3>Imágenes</h3>
 			</div>
 		</div>
 		<div id='documento_vista_multimedia' class='col-xs-4 col-md-3 col-lg-2'>
-			<div id='archivo_3' title='Vídeos'>
+			<div id='archivos_video' title='Vídeos'>
 				<img src='/static/images/big_folder.png'>
 				<h3>Vídeos</h3>
 			</div>
 		</div>
 	</div>
 </div>
+
+<script type="text/javascript">
+	$("#archivos_musica").click(function( event ){
+    	window.location=document.getElementById(this.id).href = "{% url 'contenidoMultimedia' %}?tipo_contenido=archivos_musica";
+	});
+	$("#archivos_imagen").click(function( event ){
+    	window.location=document.getElementById(this.id).href = "{% url 'contenidoMultimedia' %}?tipo_contenido=archivos_imagen";
+	});
+	$("#archivos_video").click(function( event ){
+    	window.location=document.getElementById(this.id).href = "{% url 'contenidoMultimedia' %}?tipo_contenido=archivos_video";
+	});
+</script>
+
 {% endblock %}

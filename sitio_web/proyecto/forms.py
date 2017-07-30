@@ -62,6 +62,18 @@ class ArchivoForm():
 
 		return archivos_dic
 
+	def getArchivosPorExtension(self, username, extension):
+
+		archivos = list(Archivo.objects.filter(propietario=username, tipo_archivo__in=extension))
+		archivos_dic = {}
+
+		for item in archivos:
+			archivos_dic[int(item.id_archivo)] = [int(item.id_archivo), item.nombre, item.tipo_archivo, str(item.fecha_subida), str(item.tam_archivo)]
+
+		return archivos_dic
+
+
+
 def getContentType(tipo_archivo):
 	ct = ""
 	if tipo_archivo == 'odt':
@@ -72,6 +84,8 @@ def getContentType(tipo_archivo):
 		ct = 'audio/mpeg'
 	elif tipo_archivo == 'txt':
 		ct = 'text/plain'
+	elif tipo_archivo == 'pdf':
+		ct = 'application/pdf'
 	else:
 		ct = 'application/octet-stream'
 

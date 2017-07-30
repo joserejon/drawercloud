@@ -1,4 +1,11 @@
 {% extends "base.html" %}
+{% block cabecera %}
+    <li><a href="{% url 'index' %}">Documentos</a></li>
+    <li class="active"><a href="">Multimedia</a></li>
+    <li><a href="{% url 'compartido' %}">Compartido</a></li>
+    <li><a href="{% url 'favoritos' %}">Favoritos</a></li>
+    <li><a href="{% url 'grupoTrabajo' %}">Grupo de trabajo</a></li>
+{% endblock %}
 {% block contenido_body %}
 
 <!-- Añadir el botón para cambiar a vista lista/cuadricula -->
@@ -13,25 +20,6 @@
     <!-- Código insertado desde javascript  -->
 </div> <!-- vista_documentos -->
 
-<div class="col-xs-6 col-sm-2" id="sidebar">
-	<ul class="nav nav-pills nav-stacked row-offcanvas row-offcanvas-right sidebar-offcanvas">
-		<li class="active"><a href="#">Opciones</a></li>
-		<li class="barra"><a href="#abrirPopUp">Subir archivo</a></li>
-		<li class="barra"><a href="#">Crear carpeta</a></li>
-	</ul>
-
-	<div id="abrirPopUp" class="popUp">
-		<div>
-			<a href="#close" title="Close" class="close">X</a>
-			<form action="{% url 'upload' %}" method="POST" enctype="multipart/form-data">
-				{% csrf_token %} 
-				<input type="file" name="file" class="input_file btn btn-default" />
-				<br />
-				<input type="submit" value="Upload File" class="input_file btn btn-default" />
-			</form>
-		</div>
-	</div>
-</div>
 <script type="text/javascript">
 
 	/******************* VISTA DE DOCUMENTOS *******************/
@@ -60,10 +48,11 @@
 
     //Función que se encarga de pedir y recibir los archivos del usuario
     function getArchivos(_username) {
+    	var tipo_contenido = "{{ tipo_contenido }}";
         $.ajax({
-            url : "{% url 'getArchivos' %}",
+            url : "{% url 'contenidoMultimediaAjax' %}",
             data : {
-                
+                tipo_contenido: tipo_contenido
             },
             type : 'GET',
             dataType: 'json',

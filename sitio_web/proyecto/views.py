@@ -9,13 +9,15 @@ import json
 import os
 
 usuario = None
+g_archivo = None
 
 #Mostrar la página principal
 @login_required(login_url='/accounts/login/')
 def index(request):
 	print("********************************************************")
-	global usuario
+	global usuario, g_archivo
 	usuario = UsuarioForm()
+	g_archivo = ArchivoForm()
 	if not usuario.usuarioExiste(request.user.username):
 		usuario.save(request.user.username)
 	#Usuario actual
@@ -27,6 +29,38 @@ def index(request):
 @login_required(login_url='/accounts/login/')
 def multimedia(request):
 	return render(request, 'multimedia.html', {'pagina_actual':'Multimedia'})
+
+#Mostrar contenido multimedia
+@login_required(login_url='/accounts/login/')
+def contenidoMultimedia(request):
+	tipo_contenido = request.GET.get('tipo_contenido','')
+	extensiones = None
+	tipo_contenido_titulo = ""
+	
+	if tipo_contenido == "archivos_musica":
+		tipo_contenido_titulo = "Música"
+	elif tipo_contenido == "archivos_imagen":
+		tipo_contenido_titulo = "Imágenes"
+	else:
+		tipo_contenido_titulo = "Vídeos"
+
+
+	return render(request, 'contenidoMultimedia.html', {'pagina_actual':tipo_contenido_titulo, 'tipo_contenido':tipo_contenido})
+
+@login_required(login_url='/accounts/login/')
+def contenidoMultimediaAjax(request):
+	tipo_contenido = request.GET.get('tipo_contenido','')
+	g_archivo = ArchivoForm()
+
+	if tipo_contenido == "archivos_musica":
+		extensiones = ['mp3', 'wma']
+	elif tipo_contenido == "archivos_imagen":
+		extensiones = ['png', 'jpeg', 'jpg']
+	else:
+		extensiones = ['mp4', 'avi']
+
+	archivos = g_archivo.getArchivosPorExtension(usuario.username, extensiones)
+	return HttpResponse(json.dumps(archivos), content_type="application/json")
 
 #Mostrar compartido
 @login_required(login_url='/accounts/login/')
@@ -60,7 +94,6 @@ def usuario(request):
 		'email':request.user.email, 'nombre':request.user.first_name, 'apellidos':request.user.last_name})
 
 #Subir un archivo
-
 def upload(request):
 	if request.method == 'POST':
 		handle_uploaded_file(request.FILES['file'], request)
@@ -77,10 +110,7 @@ def handle_uploaded_file(file, request):
 		for chunk in file.chunks():
 			destination.write(chunk)
 
-		archivo = ArchivoForm()
-		archivo.save(filename, getTipoArchivo(filename), usuario.username, 'upload/' + filename)
-
-
+		g_archivo.save(filename, getTipoArchivo(filename), usuario.username, 'upload/' + filename)
 
 #Obtener la extensión de un archivo
 def getTipoArchivo(nombre_archivo):
@@ -93,9 +123,8 @@ def getTipoArchivo(nombre_archivo):
 
 #Obtener los archivos pertenecientes al usuario y mandarlos mediante Ajax
 def getArchivos(request):
-	a = ArchivoForm()
 
-	archivos = a.getArchivos(usuario.username)
+	archivos = g_archivo.getArchivos(usuario.username)
 	
 	return HttpResponse(json.dumps(archivos), content_type="application/json")
 
