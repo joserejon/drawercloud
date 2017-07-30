@@ -1,6 +1,5 @@
 from django import forms
 from mongoengine import *
-from requests import *
 import datetime
 from .models import *
 
@@ -48,6 +47,8 @@ class ArchivoForm():
 		data = open(path, 'rb')
 		ct = getContentType(tipo_archivo)
 		a.archivo.put(data, content_type = ct)
+		a.tam_archivo = a.archivo.length
+		a.favorito = False
 		a.save()
 
 	#Devolver una lista con los archivos del usuario
@@ -57,7 +58,7 @@ class ArchivoForm():
 		archivos_dic = {}
 
 		for item in archivos:
-			archivos_dic[int(item.id_archivo)] = [int(item.id_archivo), item.nombre, item.tipo_archivo, str(item.fecha_subida)]
+			archivos_dic[int(item.id_archivo)] = [int(item.id_archivo), item.nombre, item.tipo_archivo, str(item.fecha_subida), str(item.tam_archivo)]
 
 		return archivos_dic
 

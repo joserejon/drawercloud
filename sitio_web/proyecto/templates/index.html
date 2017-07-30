@@ -149,10 +149,10 @@
                     for(var i in datos){
                     	var tipo_archivo = comprobarExtension(datos[i][2], "lista");
                         html += "<tr id='" + datos[i][0] + "'>" +
-                            "<td><img src='" + tipo_archivo + "' class='img-rounded img_lista'>" + datos[i][1] + "</td>" +
-                            "<td class='center'>1GB</td>" +
-                            "<td class='center'>" + datos[i][3] + "</td>" +
-                            "<td class='center'>Solo yo</td>" +
+                            "<td id='" + datos[i][0] + "'><img src='" + tipo_archivo + "' class='img-rounded img_lista'>" + datos[i][1] + "</td>" +
+                            "<td id='" + datos[i][0] + "' class='center'>" + mostrarTam(datos[i][4]) + "</td>" +
+                            "<td id='" + datos[i][0] + "' class='center'>" + datos[i][3] + "</td>" +
+                            "<td id='" + datos[i][0] + "' class='center'>Solo yo</td>" +
                             "<td class='hidden-xs'>" +
                                 "<div class='btn-group'>" +
                                     "<button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>" +
@@ -182,14 +182,22 @@
             return false;
         });
 
-        var bt_opciones_pulsado = 0;
+        $("#tabla td").click(function( event ) {
+        	var id = this.id;
+        	if(id != 0){
+        		window.location=document.getElementById(id).href = "{% url 'verArchivo' %}?id_archivo=" + datos[id][0];
+        	}
+        });
+
+
+        /*var bt_opciones_pulsado = 0;
         //Acción al pulsar sobre el botón de opciones en la fila
         $(".btn-group").click(function( event ) {
             bt_opciones_pulsado = 1;
         });
 
         //Acción al pulsar sobre una fila
-        /*$("#tabla tr").click(function( event ) {
+        $("#tabla tr").click(function( event ) {
             event.preventDefault();
             if((!bt_opciones_pulsado) && (this.id != 0))
                 alert("Fila " + this.id);
@@ -197,6 +205,29 @@
         });*/
     }
     //localStorage.clear();
+
+    function mostrarTam(tam){
+    	n = parseInt(tam);
+    	if(n > (1204 * 1024 * 1024)){
+    		n = n / (1204 * 1024 * 1024)
+    		res = n.toString();
+    		return res.substring(0, 5) + " GB";
+    	}
+    	else if(n > (1204 * 1024)){
+    		n = n / (1204 * 1024)
+    		res = n.toString();
+    		return res.substring(0, 5) + " MB";
+    	}
+    	else if(n > 1204){
+    		n = n / 1204
+    		res = n.toString();
+    		return res.substring(0, 5) + " KB";
+    	}
+    	else{
+    		res = n.toString();
+    		return res.substring(0, 5) + " B";
+    	}
+    }
 
     //Función para obtener la imagen según el tipo de documento
     function comprobarExtension(extension, vista){

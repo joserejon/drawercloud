@@ -13,4 +13,5 @@ urlpatterns = [
 	url(r'^upload/', views.upload, name="upload"),
 	url(r'^getArchivos/$', views.getArchivos, name='getArchivos'),
 	url(r'^descargarArchivo/$', views.descargarArchivo, name='descargarArchivo'),
+	url(r'^verArchivo/$', views.verArchivo, name='verArchivo'),
 ]

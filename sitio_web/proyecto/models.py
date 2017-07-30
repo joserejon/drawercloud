@@ -23,3 +23,5 @@ class Archivo(Document):
 	archivo = FileField()
 	fecha_subida = StringField()
 	propietario = StringField(required=True)
+	tam_archivo = DecimalField()
+	favorito = BooleanField()

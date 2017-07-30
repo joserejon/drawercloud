@@ -111,9 +111,9 @@ def descargarArchivo(request):
 	return response
 
 #Método para ver/descargar un archivo
-#@login_required(login_url='/accounts/login/')
-#def descargarArchivo(request):
-#	id_archivo = request.GET.get('id_archivo','')
-#	archivo = Archivo.objects.filter(id_archivo=id_archivo)
-#	file = archivo[0].archivo.read()
-#	return HttpResponse(file, content_type = archivo[0].archivo.content_type)
+@login_required(login_url='/accounts/login/')
+def verArchivo(request):
+	id_archivo = request.GET.get('id_archivo','')
+	archivo = Archivo.objects.filter(id_archivo=id_archivo)
+	file = archivo[0].archivo.read()
+	return HttpResponse(file, content_type = archivo[0].archivo.content_type)
