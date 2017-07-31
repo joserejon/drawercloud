@@ -16,4 +16,7 @@ urlpatterns = [
 	url(r'^verArchivo/$', views.verArchivo, name='verArchivo'),
 	url(r'^contenidoMultimedia/$', views.contenidoMultimedia, name='contenidoMultimedia'),
 	url(r'^contenidoMultimediaAjax/$', views.contenidoMultimediaAjax, name='contenidoMultimediaAjax'),
+	url(r'^addFavoritos/$', views.addFavoritos, name='addFavoritos'),
+	url(r'^getArchivosFavoritos/$', views.getArchivosFavoritos, name='getArchivosFavoritos'),
+	url(r'^delFavoritos/$', views.delFavoritos, name='delFavoritos'),
 ]

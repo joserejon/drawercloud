@@ -34,7 +34,6 @@ def multimedia(request):
 @login_required(login_url='/accounts/login/')
 def contenidoMultimedia(request):
 	tipo_contenido = request.GET.get('tipo_contenido','')
-	extensiones = None
 	tipo_contenido_titulo = ""
 	
 	if tipo_contenido == "archivos_musica":
@@ -145,4 +144,66 @@ def verArchivo(request):
 	id_archivo = request.GET.get('id_archivo','')
 	archivo = Archivo.objects.filter(id_archivo=id_archivo)
 	file = archivo[0].archivo.read()
+	
 	return HttpResponse(file, content_type = archivo[0].archivo.content_type)
+
+#Añadir a favoritos
+@login_required(login_url='/accounts/login/')
+def addFavoritos(request):
+	id_archivo = request.GET.get('id_archivo','')
+	pag_actual = request.GET.get('pag_actual','')
+	g_archivo.addFavoritos(id_archivo)
+
+	#Si es llamado desde la página contenidoMultimedia.html
+	if pag_actual == "contenidoMultimedia.html":
+		tipo_contenido = request.GET.get('tipo_contenido','')
+		tipo_contenido_titulo = ""
+		
+		if tipo_contenido == "archivos_musica":
+			tipo_contenido_titulo = "Música"
+		elif tipo_contenido == "archivos_imagen":
+			tipo_contenido_titulo = "Imágenes"
+		else:
+			tipo_contenido_titulo = "Vídeos"
+
+		return render(request, 'contenidoMultimedia.html', {'pagina_actual':tipo_contenido_titulo, 'tipo_contenido':tipo_contenido})
+	#Si es llamado desde la página index.html
+	elif pag_actual == "index.html":
+		return render(request, "index.html", {'pagina_actual':'Documentos', 'usuario':usuario})
+	#Si es llamado desde la página favoritos.html
+	else:
+		return render(request, "favoritos.html", {'pagina_actual':'Favoritos', 'usuario':usuario})
+
+#Eliminar de favoritos
+@login_required(login_url='/accounts/login/')
+def delFavoritos(request):
+	id_archivo = request.GET.get('id_archivo','')
+	pag_actual = request.GET.get('pag_actual','')
+	g_archivo.delFavoritos(id_archivo)
+
+	#Si es llamado desde la página contenidoMultimedia.html
+	if pag_actual == "contenidoMultimedia.html":
+		tipo_contenido = request.GET.get('tipo_contenido','')
+		tipo_contenido_titulo = ""
+		
+		if tipo_contenido == "archivos_musica":
+			tipo_contenido_titulo = "Música"
+		elif tipo_contenido == "archivos_imagen":
+			tipo_contenido_titulo = "Imágenes"
+		else:
+			tipo_contenido_titulo = "Vídeos"
+
+		return render(request, 'contenidoMultimedia.html', {'pagina_actual':tipo_contenido_titulo, 'tipo_contenido':tipo_contenido})
+	#Si es llamado desde la página index.html
+	elif pag_actual == "index.html":
+		return render(request, "index.html", {'pagina_actual':'Documentos', 'usuario':usuario})
+	#Si es llamado desde la página favoritos.html
+	else:
+		return render(request, "favoritos.html", {'pagina_actual':'Favoritos', 'usuario':usuario})
+
+#Obtener los archivos pertenecientes al usuario y mandarlos mediante Ajax
+def getArchivosFavoritos(request):
+
+	archivos = g_archivo.getArchivosFavoritos(usuario.username)
+	
+	return HttpResponse(json.dumps(archivos), content_type="application/json")

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django import forms
 from mongoengine import *
 import datetime
@@ -58,20 +60,41 @@ class ArchivoForm():
 		archivos_dic = {}
 
 		for item in archivos:
-			archivos_dic[int(item.id_archivo)] = [int(item.id_archivo), item.nombre, item.tipo_archivo, str(item.fecha_subida), str(item.tam_archivo)]
+			archivos_dic[int(item.id_archivo)] = [int(item.id_archivo), item.nombre, item.tipo_archivo, 
+			str(item.fecha_subida), str(item.tam_archivo), item.favorito]
 
 		return archivos_dic
 
+	#Devolver una lista con los archivos del usuario buscando por extension
 	def getArchivosPorExtension(self, username, extension):
 
 		archivos = list(Archivo.objects.filter(propietario=username, tipo_archivo__in=extension))
 		archivos_dic = {}
 
 		for item in archivos:
-			archivos_dic[int(item.id_archivo)] = [int(item.id_archivo), item.nombre, item.tipo_archivo, str(item.fecha_subida), str(item.tam_archivo)]
+			archivos_dic[int(item.id_archivo)] = [int(item.id_archivo), item.nombre, item.tipo_archivo,
+			str(item.fecha_subida), str(item.tam_archivo), item.favorito]
 
 		return archivos_dic
 
+	#Añadir un archivo a favoritos
+	def addFavoritos(self, id_archivo):
+		Archivo.objects(id_archivo=id_archivo).update_one(set__favorito=True)
+
+	#Eliminar un archivo de favoritos
+	def delFavoritos(self, id_archivo):
+		Archivo.objects(id_archivo=id_archivo).update_one(set__favorito=False)	
+
+	#Devolver una lista con los archivos favoritos del usuario
+	def getArchivosFavoritos(self, username):
+		archivos = list(Archivo.objects.filter(propietario=username, favorito=True))
+		archivos_dic = {}
+
+		for item in archivos:
+			archivos_dic[int(item.id_archivo)] = [int(item.id_archivo), item.nombre, item.tipo_archivo,
+			str(item.fecha_subida), str(item.tam_archivo), item.favorito]
+
+		return archivos_dic
 
 
 def getContentType(tipo_archivo):

@@ -7,111 +7,236 @@
     <li><a href="{% url 'grupoTrabajo' %}">Grupo de trabajo</a></li>
 {% endblock %}
 {% block contenido_body %}
-	<!-- Añadir el botón para cambiar a vista lista/cuadricula -->
-	<div id="cambiar_vista">
-	    <!-- Código insertado desde javascript  -->
-	</div>
+    <!-- Añadir el botón para cambiar a vista lista/cuadricula -->
+    <p class="pull-right visible-xs">
+        <button id="bt_offcanvas" type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Mostrar opciones</button>
+    </p>
+    <div id="cambiar_vista">
+        <!-- Código insertado desde javascript  -->
+    </div>
 
-	<!-- <div id="vista_documentos" class="col-xs-12 col-md-12 col-lg-12"> -->
-	<div class="col-xs-12 col-md-12 col-lg-12">
-	    <div class='table-responsive'>
-            <table id='tabla' class='table'>
-                <thead>
-                    <tr>
-                        <th>Nombre archivo</th>
-                        <th>Tamaño</th>
-                        <th>Última modificación</th>
-                        <th>Disponible para</th>
-                        <th class='hidden-xs'>Opciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr id='1'>
-                        <td><img src='/static/images/folder_lista.png' class='img-rounded img_lista'>Carpeta<span class='glyphicon glyphicon-star'></span></td>
-                        <td class='center'>1GB</td>
-                        <td class='center'>07/04/2017</td>
-                        <td class='center'>Solo yo</td>
-                        <td class='hidden-xs'>
-                            <div class='btn-group'>
-                                <button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>
-                                Más <span class='caret'></span>
-                                </button>
-                                <ul class='dropdown-menu' role='menu'>
-                                    <li><a href='#''>Descargar</a></li>
-                                    <li><a href='#''>Compartir</a></li>
-                                    <li><a href='#''>Copiar</a></li>
-                                    <li><a href='#''>Mover</a></li>
-                                    <li><a href='#''>Añadir a favoritos</a></li>
-                                    <li><a href='#'>Eliminar</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr id='2'>
-                        <td><img src='/static/images/files_icons/icon_file_txt_lista.png' class='img-rounded img_lista'>documento.txt<span class='glyphicon glyphicon-star'></span></td>
-                        <td class='center'>1GB</td>
-                        <td class='center'>07/04/2017</td>
-                        <td class='center'>Solo yo</td>
-                        <td class='hidden-xs'>
-                            <div class='btn-group'>
-                                <button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>
-                                Más <span class='caret'></span>
-                                </button>
-                                <ul class='dropdown-menu' role='menu'>
-                                    <li><a href='#''>Descargar</a></li>
-                                    <li><a href='#''>Compartir</a></li>
-                                    <li><a href='#''>Copiar</a></li>
-                                    <li><a href='#''>Mover</a></li>
-                                    <li><a href='#''>Añadir a favoritos</a></li>
-                                    <li><a href='#'>Eliminar</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr id='3'>
-                        <td><img src='/static/images/files_icons/icon_file_music_lista.png' class='img-rounded img_lista'>musica.mp3<span class='glyphicon glyphicon-star'></span></td>
-                        <td class='center'>1GB</td>
-                        <td class='center'>07/04/2017</td>
-                        <td class='center'>Solo yo</td>
-                        <td class='hidden-xs'>
-                            <div class='btn-group'>
-                                <button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>
-                                Más <span class='caret'></span>
-                                </button>
-                                <ul class='dropdown-menu' role='menu'>
-                                    <li><a href='#''>Descargar</a></li>
-                                    <li><a href='#''>Compartir</a></li>
-                                    <li><a href='#''>Copiar</a></li>
-                                    <li><a href='#''>Mover</a></li>
-                                    <li><a href='#''>Añadir a favoritos</a></li>
-                                    <li><a href='#'>Eliminar</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr id='4'>
-                        <td><img src='/static/images/files_icons/icon_file_img_lista.png' class='img-rounded img_lista'>imagen.png<span class='glyphicon glyphicon-star'></span></td>
-                        <td class='center'>1GB</td>
-                        <td class='center'>07/04/2017</td>
-                        <td class='center'>Solo yo</td>
-                        <td class='hidden-xs'>
-                            <div class='btn-group'>
-                                <button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>
-                                Más <span class='caret'></span>
-                                </button>
-                                <ul class='dropdown-menu' role='menu'>
-                                    <li><a href='#''>Descargar</a></li>
-                                    <li><a href='#''>Compartir</a></li>
-                                    <li><a href='#''>Copiar</a></li>
-                                    <li><a href='#''>Mover</a></li>
-                                    <li><a href='#''>Añadir a favoritos</a></li>
-                                    <li><a href='#'>Eliminar</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-	</div> <!-- vista_documentos -->
+    <div id="vista_documentos" class="col-xs-10 col-md-10 col-lg-10">
+        <!-- Código insertado desde javascript  -->
+    </div> <!-- vista_documentos -->
+
+
+    <script type="text/javascript">
+
+        /******************* VISTA DE DOCUMENTOS *******************/
+
+        //localStorage.setItem("modo_vista", "lista");
+        //localStorage.getItem("modo_vista");
+        actualizaVista();
+        
+        //Cambiar a vista lista
+        $("#cambiar_vista").on("click","#vista_cuadricula", function(){
+            localStorage.setItem("modo_vista", "cuadricula");
+            actualizaVista();
+        });
+
+        //Cambiar a vista cuadrícula
+        $("#cambiar_vista").on("click","#vista_lista", function(){
+            localStorage.setItem("modo_vista", "lista");
+            actualizaVista();
+        });
+
+        function actualizaVista(){
+            var html = "";
+            var username = "{{ usuario.username }}";
+            getArchivos(username);
+        }
+
+        //Función que se encarga de pedir y recibir los archivos del usuario
+        function getArchivos(_username) {
+            $.ajax({
+                url : "{% url 'getArchivosFavoritos' %}",
+                data : {
+                    
+                },
+                type : 'GET',
+                dataType: 'json',
+                success : function(datos){
+                    if (localStorage.getItem("modo_vista") == "cuadricula"){
+                        html = "<span id='vista_lista' title='ver lista' class='glyphicon glyphicon-th-list'></span>";
+                        vistaCuadricula(datos);
+                    }
+                    else{ 
+                        html = "<span id='vista_cuadricula' title='ver iconos' class='glyphicon glyphicon-th-large'></span>";
+                        vistaLista(datos);
+                    }
+
+                    document.getElementById('cambiar_vista').innerHTML = html;
+                },
+                failure : function(datos){
+                    alert("Error: no se pudo realizar la consulta");
+                },
+                complete : function(datos) {
+                    console.log('Petición realizada');
+                }
+            });
+        }
+
+        function vistaCuadricula(datos){
+            var html = "" +
+                "<div class='container-fluid cuadricula'>" +
+                    "<div class='row'>";
+                    for(var i in datos){
+                        var tipo_archivo = comprobarExtension(datos[i][2], "cuadricula");
+                        var favorito = "";
+                        if(datos[i][5] == true)
+                            favorito = "<span class='glyphicon glyphicon-star'></span>";
+
+                        html += "<div id='documento_vista_cuadricula' class='col-xs-4 col-md-3 col-lg-2'>" +
+                            "<div id='" + datos[i][0] + "' title='" + datos[i][1] + "'>" +
+                                "<img src='" + tipo_archivo + "'>" +
+                                "<h5>" + datos[i][1] + "" + favorito + "</h5>" +
+                            "</div>" +
+                        "</div>";
+                    }
+                    html += "</div>" +
+                "</div> <!--> <!-- container -->";
+
+            document.getElementById('vista_documentos').innerHTML = html;
+            
+            //Mostramos el menú si hacemos click derecho con el ratón
+            $("div.row div").bind("contextmenu", function(e){
+                $("#menu").css({'display':'block', 'left':e.pageX, 'top':e.pageY});
+                return false;
+            });
+
+            //Acción al pulsar sobre un documento
+            $("#documento_vista_cuadricula div").click(function( event ) {
+                alert("Fila " + this.id);
+            });
+        }
+
+        function vistaLista(datos){
+
+            var html = "" +
+                "<div class='table-responsive'>" +
+                    "<table id='tabla' class='table'>" +
+                        "<thead>" +
+                            "<tr>" +
+                                "<th>Nombre archivo</th>" +
+                                "<th>Tamaño</th>" +
+                                "<th>Última modificación</th>" +
+                                "<th>Disponible para</th>" +
+                                "<th class='hidden-xs'>Opciones</th>" +
+                            "</tr>" +
+                        "</thead>" +
+                        "<tbody>";
+                        for(var i in datos){
+                            var tipo_archivo = comprobarExtension(datos[i][2], "lista");
+                            var favorito = "";
+                            if(datos[i][5] == true)
+                                favorito = "<span class='glyphicon glyphicon-star'></span>";
+
+                            html += "<tr id='" + datos[i][0] + "'>" +
+                                "<td id='" + datos[i][0] + "'><img src='" + tipo_archivo + "' class='img-rounded img_lista'>" + datos[i][1] + "" + favorito + "</td>" +
+                                "<td id='" + datos[i][0] + "' class='center'>" + mostrarTam(datos[i][4]) + "</td>" +
+                                "<td id='" + datos[i][0] + "' class='center'>" + datos[i][3] + "</td>" +
+                                "<td id='" + datos[i][0] + "' class='center'>Solo yo</td>" +
+                                "<td class='hidden-xs'>" +
+                                    "<div class='btn-group'>" +
+                                        "<button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>" +
+                                        "Más <span class='caret'></span>" +
+                                        "</button>" +
+                                        "<ul class='dropdown-menu' role='menu'>" +
+                                            "<li><a href='{% url 'descargarArchivo' %}?id_archivo=" + datos[i][0] + "'>Descargar</a></li>" +
+                                            "<li><a href='#'>Compartir</a></li>" +
+                                            "<li><a href='{% url 'delFavoritos' %}?id_archivo=" + datos[i][0] + "&pag_actual=favoritos.html'>Eliminar de favoritos</a></li>"
+                                        "</ul>" +
+                                    "</div>" +
+                                "</td>" +
+                            "</tr>";
+                        }
+                        html += "</tbody>" +
+                    "</table>" +
+                "</div> <!-- table-responsive -->";
+
+            document.getElementById('vista_documentos').innerHTML = html;
+
+            //Mostramos el menú si hacemos click derecho con el ratón
+            $("tbody tr").bind("contextmenu", function(e){
+                $("#menu").css({'display':'block', 'left':e.pageX, 'top':e.pageY});
+                return false;
+            });
+
+            //Al pulsar sobre una fila llamamos a la función para ver/descargar el archivo
+            $("#tabla td").click(function( event ) {
+                var id = this.id;
+                if(id != 0){
+                    window.location=document.getElementById(id).href = "{% url 'verArchivo' %}?id_archivo=" + datos[id][0];
+                }
+            });
+        }
+        //localStorage.clear();
+
+        //Dar formato al tamaño del archivo
+        function mostrarTam(tam){
+            n = parseInt(tam);
+            if(n > (1204 * 1024 * 1024)){
+                n = n / (1204 * 1024 * 1024)
+                res = n.toString();
+                return res.substring(0, 5) + " GB";
+            }
+            else if(n > (1204 * 1024)){
+                n = n / (1204 * 1024)
+                res = n.toString();
+                return res.substring(0, 5) + " MB";
+            }
+            else if(n > 1204){
+                n = n / 1204
+                res = n.toString();
+                return res.substring(0, 5) + " KB";
+            }
+            else{
+                res = n.toString();
+                return res.substring(0, 5) + " B";
+            }
+        }
+
+        //Función para obtener la imagen según el tipo de documento
+        function comprobarExtension(extension, vista){
+            resultado = "";
+            if(vista == "lista"){
+                if((extension == "txt") || (extension == "odt") || (extension == "doc"))
+                    resultado = "/static/images/files_icons/icon_file_txt_lista.png";
+                else if((extension == "mp3") || (extension == "wma"))
+                    resultado = "/static/images/files_icons/icon_file_music_lista.png";
+                else if((extension == "png") || (extension == "jpg") || (extension == "jpeg"))
+                    resultado = "/static/images/files_icons/icon_file_img_lista.png";
+                else if((extension == "mp3") || (extension == "wma"))
+                    resultado = "/static/images/files_icons/icon_file_music_lista.png";
+                else if((extension == "mp4") || (extension == "avi") || (extension == "mkv"))
+                    resultado = "/static/images/files_icons/icon_file_video_lista.png";
+                else if((extension == "pptx") || (extension == "odp"))
+                    resultado = "/static/images/files_icons/icon_file_presentation_lista.png";
+                else if(extension == "pdf")
+                    resultado = "/static/images/files_icons/icon_file_pdf_lista.png";
+                else
+                    resultado = "/static/images/files_icons/icon_file_base_lista.png";
+            }
+            else{
+                if((extension == "txt") || (extension == "odt") || (extension == "doc"))
+                    resultado = "/static/images/files_icons/icon_file_txt.png";
+                else if((extension == "mp3") || (extension == "wma"))
+                    resultado = "/static/images/files_icons/icon_file_music.png";
+                else if((extension == "png") || (extension == "jpg") || (extension == "jpeg"))
+                    resultado = "/static/images/files_icons/icon_file_img.png";
+                else if((extension == "mp3") || (extension == "wma"))
+                    resultado = "/static/images/files_icons/icon_file_music.png";
+                else if((extension == "mp4") || (extension == "avi") || (extension == "mkv"))
+                    resultado = "/static/images/files_icons/icon_file_video.png";
+                else if((extension == "pptx") || (extension == "odp"))
+                    resultado = "/static/images/files_icons/icon_file_presentation.png";
+                else if(extension == "pdf")
+                    resultado = "/static/images/files_icons/icon_file_pdf.png";
+                else
+                    resultado = "/static/images/files_icons/icon_file_base.png";
+            }
+
+            return resultado;
+        }
+    </script>
 {% endblock %}
