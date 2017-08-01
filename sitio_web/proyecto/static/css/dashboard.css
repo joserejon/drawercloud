@@ -91,29 +91,33 @@ body {
     cursor:pointer;
 }
 
-/* Menú emergente con botón derecho en la lista de documentos */
-#menu{
+.context-menu{
     background-color: #FFFFFF;
-    position:absolute;      
     border:1px solid black;
     -moz-box-shadow: 0 0 5px #888;
     -webkit-box-shadow: 0 0 5px#888;
     box-shadow: 0 0 5px #888;
-    z-index: 1;
+    display: none;
+    position: absolute;
+    z-index: 10;
 }
 
-#menu ul{
+.context-menu ul{
     list-style: none;
     list-style-type: none;
     list-style-position: outside;
 }
 
-#menu li{
-    margin-left: -25px;
+.context-menu li{
+    margin-top: 10px;
+    margin-left: -22px;
     padding-right: 13px;
-    line-height: 30px;
     font-size: 16px;
     cursor:pointer;
+}
+
+.context-menu--active{
+    display: block;
 }
 
 .btn-info{
