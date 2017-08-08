@@ -34,6 +34,7 @@ class UsuarioForm():
 
 		return datos_usuario[0]
 
+
 #Form para la clase Archivo
 class ArchivoForm():
 
@@ -89,6 +90,38 @@ class ArchivoForm():
 	def getArchivosFavoritos(self, username):
 		archivos = list(Archivo.objects.filter(propietario=username, favorito=True))
 		archivos_dic = {}
+
+		for item in archivos:
+			archivos_dic[int(item.id_archivo)] = [int(item.id_archivo), item.nombre, item.tipo_archivo,
+			str(item.fecha_subida), str(item.tam_archivo), item.favorito]
+
+		return archivos_dic
+
+	#Compartir un archivo
+	def compartirArchivo(self, username, username_destino, id_archivo):
+		#Copiar archivo para el usuario de destino
+		#archivo_a_compartir = Archivo.objects(id_archivo=id_archivo)
+		#self.save(archivo_a_compartir[0].nombre, archivo_a_compartir[0].tipo_archivo, username_destino, 'upload/' + archivo_a_compartir[0].nombre)
+
+		#Actualizar los vectores de archivos compartidos en los usuarios involucrados
+		Usuario.objects(username=username).update_one(compartido_por_mi=[id_archivo])
+		Usuario.objects(username=username_destino).update_one(compartido_conmigo=[id_archivo])
+
+	#Devolver una lista con los archivos compartidos
+	def getArchivosCompartidos(self, username, opcion):
+		usuario = Usuario.objects(username=username)
+		archivos = []
+		archivos_dic = {}
+		datos = None
+
+		#Obtener archivos compartidos por mi o conmigo
+		if opcion == "compartido_por_mi":
+			datos = usuario[0].compartido_por_mi
+		else:
+			datos = usuario[0].compartido_conmigo
+
+		for id_archivo in datos:
+			archivos += list(Archivo.objects.filter(id_archivo=id_archivo))
 
 		for item in archivos:
 			archivos_dic[int(item.id_archivo)] = [int(item.id_archivo), item.nombre, item.tipo_archivo,

@@ -35,6 +35,21 @@
 	    <!-- Código insertado desde javascript  -->
 	</div> <!-- vista_documentos -->
 
+	<!-- PopUp para compartir un archivo -->
+    <div id="abrirPopUpCompartir" class="popUp">
+        <div>
+            <a href="#close" title="Close" class="close">X</a>
+            <form action="{% url 'compartirArchivo' %}" method="POST">
+                {% csrf_token %}
+                <input type="text" id="username_destino" name="username_destino" placeholder="Username de destino" required/>
+                <input type="hidden" id="id_archivo_compartir" name="id_archivo_compartir" value="" />
+                <input type="hidden" id="pag_actual" name="pag_actual" value="contenidoMultimedia.html" />
+                <input type="hidden" id="tipo_contenido" name="tipo_contenido" value="{{ tipo_contenido }}" />
+                <input type="submit" value="Compartir" class="input_file btn btn-default" />
+            </form>
+        </div>
+    </div>
+
 	<script type="text/javascript">
 
 		var mis_archivos;
@@ -159,7 +174,7 @@
 	                                    "</button>" +
 	                                    "<ul class='dropdown-menu' role='menu'>" +
 	                                        "<li><a href='{% url 'descargarArchivo' %}?id_archivo=" + datos[i][0] + "'>Descargar</a></li>" +
-	                                        "<li><a href='#'>Compartir</a></li>";
+	                                        "<li><a href='#abrirPopUpCompartir' onClick='compartirArchivo(" + datos[i][0] + "); return false;'>Compartir</a></li>";
 	                                        if(favorito == "")
 	                                        	html += "<li><a href='{% url 'addFavoritos' %}?id_archivo=" + datos[i][0] + "&pag_actual=contenidoMultimedia.html&tipo_contenido={{ tipo_contenido }}'>Añadir a favoritos</a></li>";
 	                                        else
@@ -184,6 +199,12 @@
 	        });
 	    }
 	    //localStorage.clear();
+
+	    //Llamar al popUp para compartir archivo incluyendo el ID de éste
+        function compartirArchivo(id_archivo) {
+            document.getElementById('id_archivo_compartir').value = id_archivo;
+            window.location=document.getElementById('abrirPopUpCompartir').href = "#abrirPopUpCompartir";
+        }
 
 	    //Dar formato al tamaño del archivo
 	    function mostrarTam(tam){
@@ -430,7 +451,7 @@
 				if(accion == "descargar")
 					window.location=document.getElementById(id_item_clicked).href = "{% url 'descargarArchivo' %}?id_archivo=" + id_item_clicked;
 				else if(accion == "compartir")
-					alert("compartir");
+					compartirArchivo(id_item_clicked);
 				else if(accion == "favorito"){
 					if(document.getElementById("favorito").innerText == "Añadir a favoritos")
 						window.location=document.getElementById(id_item_clicked).href = "{% url 'addFavoritos' %}?id_archivo=" + id_item_clicked + "&pag_actual=contenidoMultimedia.html&tipo_contenido={{ tipo_contenido }}";

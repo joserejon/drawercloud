@@ -19,4 +19,6 @@ urlpatterns = [
 	url(r'^addFavoritos/$', views.addFavoritos, name='addFavoritos'),
 	url(r'^getArchivosFavoritos/$', views.getArchivosFavoritos, name='getArchivosFavoritos'),
 	url(r'^delFavoritos/$', views.delFavoritos, name='delFavoritos'),
+	url(r'^compartirArchivo/$', views.compartirArchivo, name='compartirArchivo'),
+	url(r'^getArchivosCompartidos/$', views.getArchivosCompartidos, name='getArchivosCompartidos'),
 ]

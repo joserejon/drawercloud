@@ -301,6 +301,28 @@ body {
     font-weight: bold;
 }
 
+.popUp ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color: #72A7CF;
+}
+.popUp :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color: #72A7CF;
+   opacity: 1;
+}
+.popUp ::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color: #72A7CF;
+   opacity: 1;
+}
+.popUp :-ms-input-placeholder { /* Internet Explorer 10-11 */
+   color: #72A7CF;
+}
+.popUp ::-ms-input-placeholder { /* Microsoft Edge */
+   color: #72A7CF;
+}
+
+#username_destino{
+    color: #72A7CF; 
+}
+
 .close{
     opacity: 2;
     background: white;

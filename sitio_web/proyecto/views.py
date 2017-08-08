@@ -207,3 +207,38 @@ def getArchivosFavoritos(request):
 	archivos = g_archivo.getArchivosFavoritos(usuario.username)
 	
 	return HttpResponse(json.dumps(archivos), content_type="application/json")
+
+#Compartir un archivo
+@login_required(login_url='/accounts/login/')
+def compartirArchivo(request):
+	id_archivo = request.POST.get('id_archivo_compartir','')
+	pag_actual = request.POST.get('pag_actual','')
+	username_destino = request.POST.get('username_destino','')
+	g_archivo.compartirArchivo(usuario.username, username_destino, id_archivo)
+
+	#Si es llamado desde la página contenidoMultimedia.html
+	if pag_actual == "contenidoMultimedia.html":
+		tipo_contenido = request.POST.get('tipo_contenido','')
+		tipo_contenido_titulo = ""
+		
+		if tipo_contenido == "archivos_musica":
+			tipo_contenido_titulo = "Música"
+		elif tipo_contenido == "archivos_imagen":
+			tipo_contenido_titulo = "Imágenes"
+		else:
+			tipo_contenido_titulo = "Vídeos"
+
+		return render(request, 'contenidoMultimedia.html', {'pagina_actual':tipo_contenido_titulo, 'tipo_contenido':tipo_contenido})
+	#Si es llamado desde la página index.html
+	elif pag_actual == "index.html":
+		return render(request, "index.html", {'pagina_actual':'Documentos', 'usuario':usuario})
+	#Si es llamado desde la página favoritos.html
+	else:
+		return render(request, "favoritos.html", {'pagina_actual':'Favoritos', 'usuario':usuario})
+
+#Obtener los archivos compartidos por el usuario o con el usuario (según opción)
+def getArchivosCompartidos(request):
+	opcion = request.GET.get('opcion','')
+	archivos = g_archivo.getArchivosCompartidos(usuario.username, opcion)
+	
+	return HttpResponse(json.dumps(archivos), content_type="application/json")

@@ -44,14 +44,29 @@
 			<li class="barra"><a href="#">Crear carpeta</a></li>
 		</ul>
 
+		<!-- PopUp para subir un archivo -->
 		<div id="abrirPopUp" class="popUp">
 			<div>
 				<a href="#close" title="Close" class="close">X</a>
 				<form action="{% url 'upload' %}" method="POST" enctype="multipart/form-data">
 					{% csrf_token %} 
-					<input type="file" name="file" class="input_file btn btn-default" />
+					<input type="file" name="file" class="input_file btn btn-default" required/>
 					<br />
 					<input type="submit" value="Subir archivo" class="input_file btn btn-default" />
+				</form>
+			</div>
+		</div>
+
+		<!-- PopUp para compartir un archivo -->
+		<div id="abrirPopUpCompartir" class="popUp">
+			<div>
+				<a href="#close" title="Close" class="close">X</a>
+				<form action="{% url 'compartirArchivo' %}" method="POST">
+					{% csrf_token %}
+					<input type="text" id="username_destino" name="username_destino" placeholder="Username de destino" required/>
+					<input type="hidden" id="id_archivo_compartir" name="id_archivo_compartir" value="" />
+					<input type="hidden" id="pag_actual" name="pag_actual" value="index.html" />
+					<input type="submit" value="Compartir" class="input_file btn btn-default" />
 				</form>
 			</div>
 		</div>
@@ -180,7 +195,7 @@
 	                                    "</button>" +
 	                                    "<ul class='dropdown-menu' role='menu'>" +
 	                                        "<li><a href='{% url 'descargarArchivo' %}?id_archivo=" + datos[i][0] + "'>Descargar</a></li>" +
-	                                        "<li><a href='#'>Compartir</a></li>" +
+	                                        "<li><a href='#abrirPopUpCompartir' onClick='compartirArchivo(" + datos[i][0] + "); return false;'>Compartir</a></li>" +
 	                                        "<li><a href='#'>Copiar</a></li>" +
 	                                        "<li><a href='#'>Mover</a></li>";
 	                                        if(favorito == "")
@@ -208,6 +223,12 @@
 	        });
 	    }
 	    //localStorage.clear();
+
+	    //Llamar al popUp para compartir archivo incluyendo el ID de éste
+	    function compartirArchivo(id_archivo) {
+	    	document.getElementById('id_archivo_compartir').value = id_archivo;
+	    	window.location=document.getElementById('abrirPopUpCompartir').href = "#abrirPopUpCompartir";
+	    }
 
 	    //Dar formato al tamaño del archivo
 	    function mostrarTam(tam){
@@ -453,7 +474,7 @@
 				if(accion == "descargar")
 					window.location=document.getElementById(id_item_clicked).href = "{% url 'descargarArchivo' %}?id_archivo=" + id_item_clicked;
 				else if(accion == "compartir")
-					alert("compartir");
+					compartirArchivo(id_item_clicked);
 				else if(accion == "copiar")
 					alert("copiar");
 				else if(accion == "mover")
