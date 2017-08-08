@@ -7,35 +7,65 @@
     <li><a href="{% url 'grupoTrabajo' %}">Grupo de trabajo</a></li>
 {% endblock %}
 {% block contenido_body %}
+
+	<ul class="nav nav-pills nav-justified">
+		<li class="active"><a data-toggle="pill" class="tablinks" href="#compartido_por_mi" onclick="opcionCompartido(event, 'compartido_por_mi')">Compartido por mi</a></li>
+		<li><a data-toggle="pill" class="tablinks" href="#compartido_conmigo" onclick="opcionCompartido(event, 'compartido_conmigo')">Compartido conmigo</a></li>
+	</ul>
+
+	<div id="compartido_por_mi" class="tabcontent">
+		<!-- Añadir el botón para cambiar a vista lista/cuadricula -->
+		<br>
+		<div id="cambiar_vista">
+			<!-- Código insertado desde javascript  -->
+		</div>
+
+		<div id="vista_documentos" class="col-xs-12 col-md-12 col-lg-12">
+			<!-- Código insertado desde javascript  -->
+		</div> <!-- vista_documentos -->
+	</div>
+	<div id="compartido_conmigo" class="tabcontent">
+		<!-- Añadir el botón para cambiar a vista lista/cuadricula -->
+		<br>
+		<div id="cambiar_vista">
+			<!-- Código insertado desde javascript  -->
+		</div>
+
+		<div id="vista_documentos" class="col-xs-12 col-md-12 col-lg-12">
+			<!-- Código insertado desde javascript  -->
+		</div> <!-- vista_documentos -->
+	</div>
+
+	<!--
 	<ul class="nav nav-pills nav-justified">
 		<li class="active"><a data-toggle="pill" href="#compartido_por_mi">Compartido por mi</a></li>
 		<li><a data-toggle="pill" href="#compartido_conmigo">Compartido conmigo</a></li>
 	</ul>
 
 	<div class="tab-content contenido compartido">
-		<div id="compartido_por_mi" class="tab-pane fade in active">
-			<!-- Añadir el botón para cambiar a vista lista/cuadricula -->
+		<div id="compartido_por_mi" class="tab-pane fade active">
+			<!-- Añadir el botón para cambiar a vista lista/cuadricula 
 			<br>
 			<div id="cambiar_vista">
-			<!-- Código insertado desde javascript  -->
+			<!-- Código insertado desde javascript  
 			</div>
 
 			<div id="vista_documentos" class="col-xs-12 col-md-12 col-lg-12">
-			<!-- Código insertado desde javascript  -->
-			</div> <!-- vista_documentos -->
+			<!-- Código insertado desde javascript 
+			</div> <!-- vista_documentos 
 		</div>
 		<div id="compartido_conmigo" class="tab-pane fade">
-			<!-- Añadir el botón para cambiar a vista lista/cuadricula -->
+			<!-- Añadir el botón para cambiar a vista lista/cuadricula 
 			<br>
 			<div id="cambiar_vista">
-			<!-- Código insertado desde javascript  -->
+			<!-- Código insertado desde javascript  
 			</div>
 
 			<div id="vista_documentos" class="col-xs-12 col-md-12 col-lg-12">
-			<!-- Código insertado desde javascript  -->
-			</div> <!-- vista_documentos -->
+			<!-- Código insertado desde javascript  
+			</div> <!-- vista_documentos 
 		</div>
-	</div>
+	</div>-->
 
 	<script type="text/javascript">
 		var mis_archivos;
@@ -58,16 +88,27 @@
 	        actualizaVista();
 	    });
 
-	    function actualizaVista(){
+	    function actualizaVista(opcion_compartido="compartido_por_mi"){
 	        var html = "";
 	        var username = "{{ usuario.username }}";
 
-
-	        /*if($("#compartido_por_mi.active"))
+	        if(opcion_compartido == "compartido_por_mi"){
 				getArchivosCompartidos(username, "compartido_por_mi");
-			else
-				getArchivosCompartidos(username, "compartido_conmigo");*/
+	        }
+			else{
+				getArchivosCompartidos(username, "compartido_conmigo");
+			}
 	    }
+
+		function opcionCompartido(event, opcion_compartido) {
+	
+			if(opcion_compartido == "compartido_por_mi"){
+				actualizaVista("compartido_por_mi");
+			}
+			else{
+				actualizaVista("compartido_conmigo");
+			}
+		}
 
 	    //Función que se encarga de pedir y recibir los archivos del usuario compartidos por él
 	    function getArchivosCompartidos(_username, _opcion) {

@@ -127,6 +127,12 @@ class ArchivoForm():
 			archivos_dic[int(item.id_archivo)] = [int(item.id_archivo), item.nombre, item.tipo_archivo,
 			str(item.fecha_subida), str(item.tam_archivo), item.favorito]
 
+		print "*++++++++++++++++++++++++++++++++++++++"
+		print archivos_dic
+		print len(archivos_dic)
+		print username
+		print opcion
+		print "*++++++++++++++++++++++++++++++++++++++"
 		return archivos_dic
 
 
