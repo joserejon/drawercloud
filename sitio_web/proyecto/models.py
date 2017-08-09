@@ -28,3 +28,4 @@ class ArchivoCompartido(Document):
 	propietario = StringField(required=True)
 	destinatario = StringField(required=True)
 	id_archivo_compartido = DecimalField(required=True)
+	identificador_tupla = StringField(required=True, unique=True)

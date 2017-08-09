@@ -217,9 +217,9 @@ def getArchivosFavoritos(request):
 #Compartir un archivo
 @login_required(login_url='/accounts/login/')
 def compartirArchivo(request):
-	id_archivo = request.POST.get('id_archivo_compartir','')
-	pag_actual = request.POST.get('pag_actual','')
-	username_destino = request.POST.get('username_destino','')
+	id_archivo = request.GET.get('id_archivo_compartir','')
+	pag_actual = request.GET.get('pag_actual','')
+	username_destino = request.GET.get('username_destino','')
 	archivo_compartido = ArchivoCompartidoForm()
 	archivo_compartido.compartirArchivo(usuario.username, username_destino, id_archivo)
 
@@ -258,3 +258,11 @@ def borrarArchivo(request):
 	g_archivo.borrarArchivo(id_archivo)
 
 	return render(request, "index.html", {'pagina_actual':'Documentos', 'usuario':usuario})
+
+#Comprobar si existe el usuario introducido
+def comprobarUsuarioCompartir(request):
+	username = request.GET.get('username','')
+	u = UsuarioForm()
+	resultado = u.comprobarUsuarioCompartir(username)
+
+	return HttpResponse(json.dumps(resultado), content_type="application/json")

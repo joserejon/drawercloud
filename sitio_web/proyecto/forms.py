@@ -32,7 +32,17 @@ class UsuarioForm():
 
 		return datos_usuario[0]
 
+	#Comprobar si existe el usuario introducido
+	def comprobarUsuarioCompartir(self, username):
+		usuario = Usuario.objects(username=username)
 
+		if len(usuario) > 0:
+			return True
+		else:
+			return False
+
+
+################################################################
 #Form para la clase Archivo
 class ArchivoForm():
 
@@ -101,49 +111,21 @@ class ArchivoForm():
 		archivos[0].archivo.delete()
 		Archivo.objects.filter(id_archivo=id_archivo).delete()
 
-	#Compartir un archivo
-	#def compartirArchivo(self, username, username_destino, id_archivo):
-		#Copiar archivo para el usuario de destino
-		#archivo_a_compartir = Archivo.objects(id_archivo=id_archivo)
-		#self.save(archivo_a_compartir[0].nombre, archivo_a_compartir[0].tipo_archivo, username_destino, 'upload/' + archivo_a_compartir[0].nombre)
-
-		#Actualizar los vectores de archivos compartidos en los usuarios involucrados
-		#Usuario.objects(username=username).update(add_to_set__compartido_por_mi=[id_archivo])
-		#Usuario.objects(username=username_destino).update(add_to_set__compartido_conmigo=[id_archivo])
-
-	#Devolver una lista con los archivos compartidos
-	#def getArchivosCompartidos(self, username, opcion):
-	#	usuario = Usuario.objects(username=username)
-	#	archivos = []
-	#	archivos_dic = {}
-	#	datos = None
-
-		#Obtener archivos compartidos por mi o conmigo
-	#	if opcion == "compartido_por_mi":
-	#		datos = usuario[0].compartido_por_mi
-	#	else:
-	#		datos = usuario[0].compartido_conmigo
-	#
-	#	for id_archivo in datos:
-	#		archivos += list(Archivo.objects.filter(id_archivo=id_archivo))
-	#
-	#	for item in archivos:
-	#		archivos_dic[int(item.id_archivo)] = [int(item.id_archivo), item.nombre, item.tipo_archivo,
-	#		str(item.fecha_subida), str(item.tam_archivo), item.favorito]
-	#
-	#	return archivos_dic
-
-
+################################################################
 #Form para la clase ArchivoCompartido
 class ArchivoCompartidoForm(Document):
 
 	def compartirArchivo(self, propietario, destinatario, id_archivo_compartido):
 		a = ArchivoCompartido()
 
-		a.propietario = propietario
-		a.destinatario = destinatario
-		a.id_archivo_compartido = id_archivo_compartido
-		a.save()
+		try:
+			a.propietario = propietario
+			a.destinatario = destinatario
+			a.id_archivo_compartido = id_archivo_compartido
+			a.identificador_tupla = propietario + destinatario + str(id_archivo_compartido)
+			a.save()
+		except: 
+			pass
 
 	#Devolver una lista con los archivos compartidos
 	def getArchivosCompartidos(self, username, opcion):

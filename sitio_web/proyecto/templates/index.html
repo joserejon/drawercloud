@@ -61,7 +61,8 @@
 		<div id="abrirPopUpCompartir" class="popUp">
 			<div>
 				<a href="#close" title="Close" class="close">X</a>
-				<form action="{% url 'compartirArchivo' %}" method="POST">
+				<!-- <form action="{% url 'compartirArchivo' %}" method="POST"> -->
+				<form action="javascript:comprobarUsuarioCompartir();" method="POST">
 					{% csrf_token %}
 					<input type="text" id="username_destino" name="username_destino" placeholder="Username de destino" required/>
 					<input type="hidden" id="id_archivo_compartir" name="id_archivo_compartir" value="" />
@@ -72,9 +73,18 @@
 		</div>
 	</div>
 
+	<div id="snackbar" ></div>
+
 	<script type="text/javascript">
 
 		var mis_archivos;
+
+		function mostrarSnackbar(texto) {
+			var x = document.getElementById("snackbar")
+			x.innerHTML = texto;
+			x.className = "show";
+			setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+		}
 
 		/******************* VISTA DE DOCUMENTOS *******************/
 
@@ -227,6 +237,40 @@
 	    	document.getElementById('id_archivo_compartir').value = id_archivo;
 	    	window.location=document.getElementById('abrirPopUpCompartir').href = "#abrirPopUpCompartir";
 	    }
+
+	    function comprobarUsuarioCompartir(){
+	    	var username = document.getElementById('username_destino').value;
+	    	var id_archivo_compartir = document.getElementById('id_archivo_compartir').value;
+	    	var pag_actual = document.getElementById('pag_actual').value;
+
+	    	$.ajax({
+	            url : "{% url 'comprobarUsuarioCompartir' %}",
+	            data : {
+	                username: username
+	            },
+	            type : 'GET',
+	            dataType: 'json',
+	            success : function(datos){
+					if (datos){
+						mostrarSnackbar("Archivo compartido con " + username);
+						setTimeout(function() {
+						    window.location.href = "{% url 'compartirArchivo' %}?id_archivo_compartir=" + id_archivo_compartir + 
+							"&username_destino=" + username + "&pag_actual=" + pag_actual;
+						}, 1800);
+					}
+					else{ 
+						mostrarSnackbar("El usuario introducido no existe");
+					}
+	            },
+	            failure : function(datos){
+	                alert("Error: no se pudo realizar la consulta");
+	            },
+	            complete : function(datos) {
+	                console.log('Petición realizada');
+	            }
+	     	});
+	    }
+
 
 	    //Dar formato al tamaño del archivo
 	    function mostrarTam(tam){

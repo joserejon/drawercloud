@@ -22,4 +22,5 @@ urlpatterns = [
 	url(r'^compartirArchivo/$', views.compartirArchivo, name='compartirArchivo'),
 	url(r'^getArchivosCompartidos/$', views.getArchivosCompartidos, name='getArchivosCompartidos'),
 	url(r'^borrarArchivo/$', views.borrarArchivo, name='borrarArchivo'),
+	url(r'^comprobarUsuarioCompartir/$', views.comprobarUsuarioCompartir, name='comprobarUsuarioCompartir'),
 ]
