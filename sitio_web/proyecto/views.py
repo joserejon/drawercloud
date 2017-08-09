@@ -171,8 +171,11 @@ def addFavoritos(request):
 	elif pag_actual == "index.html":
 		return render(request, "index.html", {'pagina_actual':'Documentos', 'usuario':usuario})
 	#Si es llamado desde la página favoritos.html
-	else:
+	elif pag_actual == "favoritos.html":
 		return render(request, "favoritos.html", {'pagina_actual':'Favoritos', 'usuario':usuario})
+	#Si es llamado desde la página compartido.html
+	elif pag_actual == "compartido.html":
+		return render(request, "compartido.html", {'pagina_actual':'Compartido', 'usuario':usuario})
 
 #Eliminar de favoritos
 @login_required(login_url='/accounts/login/')
@@ -198,8 +201,11 @@ def delFavoritos(request):
 	elif pag_actual == "index.html":
 		return render(request, "index.html", {'pagina_actual':'Documentos', 'usuario':usuario})
 	#Si es llamado desde la página favoritos.html
-	else:
+	elif pag_actual == "favoritos.html":
 		return render(request, "favoritos.html", {'pagina_actual':'Favoritos', 'usuario':usuario})
+	#Si es llamado desde la página compartido.html
+	elif pag_actual == "compartido.html":
+		return render(request, "compartido.html", {'pagina_actual':'Compartido', 'usuario':usuario})
 
 #Obtener los archivos pertenecientes al usuario y mandarlos mediante Ajax
 def getArchivosFavoritos(request):
@@ -214,7 +220,8 @@ def compartirArchivo(request):
 	id_archivo = request.POST.get('id_archivo_compartir','')
 	pag_actual = request.POST.get('pag_actual','')
 	username_destino = request.POST.get('username_destino','')
-	g_archivo.compartirArchivo(usuario.username, username_destino, id_archivo)
+	archivo_compartido = ArchivoCompartidoForm()
+	archivo_compartido.compartirArchivo(usuario.username, username_destino, id_archivo)
 
 	#Si es llamado desde la página contenidoMultimedia.html
 	if pag_actual == "contenidoMultimedia.html":
@@ -239,6 +246,15 @@ def compartirArchivo(request):
 #Obtener los archivos compartidos por el usuario o con el usuario (según opción)
 def getArchivosCompartidos(request):
 	opcion = request.GET.get('opcion','')
-	archivos = g_archivo.getArchivosCompartidos(usuario.username, opcion)
+	archivo_compartido = ArchivoCompartidoForm()
+	archivos = archivo_compartido.getArchivosCompartidos(usuario.username, opcion)
 	
 	return HttpResponse(json.dumps(archivos), content_type="application/json")
+
+#Borrar un archivo
+@login_required(login_url='/accounts/login/')
+def borrarArchivo(request):
+	id_archivo = request.GET.get('id_archivo','')
+	g_archivo.borrarArchivo(id_archivo)
+
+	return render(request, "index.html", {'pagina_actual':'Documentos', 'usuario':usuario})

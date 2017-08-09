@@ -14,8 +14,6 @@ class UsuarioForm():
 
 		u.username = _username
 		u.id_username = Usuario.objects.count() + 1
-		u.compartido_por_mi = []
-		u.compartido_conmigo = []
 
 		u.save()
 
@@ -97,45 +95,84 @@ class ArchivoForm():
 
 		return archivos_dic
 
+	#Borrar un archivo
+	def borrarArchivo(self, id_archivo):
+		archivos = list(Archivo.objects.filter(id_archivo=id_archivo))
+		archivos[0].archivo.delete()
+		Archivo.objects.filter(id_archivo=id_archivo).delete()
+
 	#Compartir un archivo
-	def compartirArchivo(self, username, username_destino, id_archivo):
+	#def compartirArchivo(self, username, username_destino, id_archivo):
 		#Copiar archivo para el usuario de destino
 		#archivo_a_compartir = Archivo.objects(id_archivo=id_archivo)
 		#self.save(archivo_a_compartir[0].nombre, archivo_a_compartir[0].tipo_archivo, username_destino, 'upload/' + archivo_a_compartir[0].nombre)
 
 		#Actualizar los vectores de archivos compartidos en los usuarios involucrados
-		Usuario.objects(username=username).update_one(compartido_por_mi=[id_archivo])
-		Usuario.objects(username=username_destino).update_one(compartido_conmigo=[id_archivo])
+		#Usuario.objects(username=username).update(add_to_set__compartido_por_mi=[id_archivo])
+		#Usuario.objects(username=username_destino).update(add_to_set__compartido_conmigo=[id_archivo])
+
+	#Devolver una lista con los archivos compartidos
+	#def getArchivosCompartidos(self, username, opcion):
+	#	usuario = Usuario.objects(username=username)
+	#	archivos = []
+	#	archivos_dic = {}
+	#	datos = None
+
+		#Obtener archivos compartidos por mi o conmigo
+	#	if opcion == "compartido_por_mi":
+	#		datos = usuario[0].compartido_por_mi
+	#	else:
+	#		datos = usuario[0].compartido_conmigo
+	#
+	#	for id_archivo in datos:
+	#		archivos += list(Archivo.objects.filter(id_archivo=id_archivo))
+	#
+	#	for item in archivos:
+	#		archivos_dic[int(item.id_archivo)] = [int(item.id_archivo), item.nombre, item.tipo_archivo,
+	#		str(item.fecha_subida), str(item.tam_archivo), item.favorito]
+	#
+	#	return archivos_dic
+
+
+#Form para la clase ArchivoCompartido
+class ArchivoCompartidoForm(Document):
+
+	def compartirArchivo(self, propietario, destinatario, id_archivo_compartido):
+		a = ArchivoCompartido()
+
+		a.propietario = propietario
+		a.destinatario = destinatario
+		a.id_archivo_compartido = id_archivo_compartido
+		a.save()
 
 	#Devolver una lista con los archivos compartidos
 	def getArchivosCompartidos(self, username, opcion):
-		usuario = Usuario.objects(username=username)
-		archivos = []
 		archivos_dic = {}
-		datos = None
 
 		#Obtener archivos compartidos por mi o conmigo
 		if opcion == "compartido_por_mi":
-			datos = usuario[0].compartido_por_mi
+			archivos = list(ArchivoCompartido.objects.filter(propietario=username))
 		else:
-			datos = usuario[0].compartido_conmigo
-
-		for id_archivo in datos:
-			archivos += list(Archivo.objects.filter(id_archivo=id_archivo))
-
+			archivos = list(ArchivoCompartido.objects.filter(destinatario=username))
+			
+		#Guardamos los archivos compartidos por o con el usuario
 		for item in archivos:
-			archivos_dic[int(item.id_archivo)] = [int(item.id_archivo), item.nombre, item.tipo_archivo,
-			str(item.fecha_subida), str(item.tam_archivo), item.favorito]
+			archivo = list(Archivo.objects.filter(id_archivo=int(item.id_archivo_compartido)))
+			archivos_dic[int(item.id_archivo_compartido)] = [int(item.id_archivo_compartido), item.propietario, item.destinatario,
+				archivo[0].nombre, archivo[0].tipo_archivo, str(archivo[0].fecha_subida), str(archivo[0].tam_archivo), 
+				archivo[0].favorito]
 
-		print "*++++++++++++++++++++++++++++++++++++++"
-		print archivos_dic
-		print len(archivos_dic)
-		print username
-		print opcion
-		print "*++++++++++++++++++++++++++++++++++++++"
 		return archivos_dic
 
+	#Obtener el número de usuarios que están compartiendo un archivo
+	def getNumUsuariosCompartidos(self, id_archivo, username):
+		archivos = list(ArchivoCompartido.objects.filter(propietario=username, id_archivo_compartido=id_archivo))
 
+		return len(archivos)
+
+
+
+################################################################
 def getContentType(tipo_archivo):
 	ct = ""
 	if tipo_archivo == 'odt':

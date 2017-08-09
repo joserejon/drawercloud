@@ -27,6 +27,7 @@
 	<p class="pull-right visible-xs">
 	    <button id="bt_offcanvas" type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Mostrar opciones</button>
 	</p>
+
 	<div id="cambiar_vista">
 	    <!-- Código insertado desde javascript  -->
 	</div>
@@ -72,6 +73,8 @@
 	        actualizaVista();
 	    });
 
+
+
 	    function actualizaVista(){
 	        var html = "";
 	        var username = "{{ usuario.username }}";
@@ -89,12 +92,13 @@
 	            type : 'GET',
 	            dataType: 'json',
 	            success : function(datos){
+	            	html = "<a href='{% url 'multimedia' %}'><span id='volver' title='volver' class='glyphicon glyphicon-chevron-left'></span></a>";
 					if (localStorage.getItem("modo_vista") == "cuadricula"){
-						html = "<span id='vista_lista' title='ver lista' class='glyphicon glyphicon-th-list'></span>";
+						html += "<span id='vista_lista' title='ver lista' class='glyphicon glyphicon-th-list'></span>";
 						vistaCuadricula(datos);
 					}
 					else{ 
-						html = "<span id='vista_cuadricula' title='ver iconos' class='glyphicon glyphicon-th-large'></span>";
+						html += "<span id='vista_cuadricula' title='ver iconos' class='glyphicon glyphicon-th-large'></span>";
 						vistaLista(datos);
 					}
 
@@ -151,7 +155,6 @@
 	                            "<th>Nombre archivo</th>" +
 	                            "<th>Tamaño</th>" +
 	                            "<th>Última modificación</th>" +
-	                            "<th>Disponible para</th>" +
 	                            "<th class='hidden-xs'>Opciones</th>" +
 	                        "</tr>" +
 	                    "</thead>" +
@@ -166,7 +169,6 @@
 	                            "<td id='" + datos[i][0] + "'><img src='" + tipo_archivo + "' class='img-rounded img_lista'>" + datos[i][1] + "" + favorito + "</td>" +
 	                            "<td id='" + datos[i][0] + "' class='center'>" + mostrarTam(datos[i][4]) + "</td>" +
 	                            "<td id='" + datos[i][0] + "' class='center'>" + datos[i][3] + "</td>" +
-	                            "<td id='" + datos[i][0] + "' class='center'>Solo yo</td>" +
 	                            "<td class='hidden-xs'>" +
 	                                "<div class='btn-group'>" +
 	                                    "<button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>" +

@@ -8,8 +8,6 @@ import datetime
 class Usuario(Document):
     id_username = IntField(required=True, unique=True)
     username = StringField(required=True, unique=True)
-    compartido_por_mi = ListField() #ID directorios y archivos
-    compartido_conmigo = ListField() #ID directorios y archivos
 
 class Directorio(Document):
 	id_directorio = DecimalField()
@@ -25,3 +23,8 @@ class Archivo(Document):
 	propietario = StringField(required=True)
 	tam_archivo = DecimalField()
 	favorito = BooleanField()
+
+class ArchivoCompartido(Document):
+	propietario = StringField(required=True)
+	destinatario = StringField(required=True)
+	id_archivo_compartido = DecimalField(required=True)

@@ -172,7 +172,6 @@
 	                            "<th>Nombre archivo</th>" +
 	                            "<th>Tamaño</th>" +
 	                            "<th>Última modificación</th>" +
-	                            "<th>Disponible para</th>" +
 	                            "<th class='hidden-xs'>Opciones</th>" +
 	                        "</tr>" +
 	                    "</thead>" +
@@ -187,7 +186,6 @@
 	                            "<td id='" + datos[i][0] + "'><img src='" + tipo_archivo + "' class='img-rounded img_lista'>" + datos[i][1] + "" + favorito + "</td>" +
 	                            "<td id='" + datos[i][0] + "' class='center'>" + mostrarTam(datos[i][4]) + "</td>" +
 	                            "<td id='" + datos[i][0] + "' class='center'>" + datos[i][3] + "</td>" +
-	                            "<td id='" + datos[i][0] + "' class='center'>Solo yo</td>" +
 	                            "<td class='hidden-xs'>" +
 	                                "<div class='btn-group'>" +
 	                                    "<button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>" +
@@ -202,7 +200,7 @@
 	                                        	html += "<li><a href='{% url 'addFavoritos' %}?id_archivo=" + datos[i][0] + "&pag_actual=index.html'>Añadir a favoritos</a></li>";
 	                                        else
 	                                        	html += "<li><a href='{% url 'delFavoritos' %}?id_archivo=" + datos[i][0] + "&pag_actual=index.html'>Eliminar de favoritos</a></li>";
-	                                        html += "<li><a href='#'>Eliminar</a></li>" +
+	                                        html += "<li><a href='{% url 'borrarArchivo' %}?id_archivo=" + datos[i][0] + "'>Eliminar</a></li>" +
 	                                    "</ul>" +
 	                                "</div>" +
 	                            "</td>" +

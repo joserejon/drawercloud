@@ -8,6 +8,21 @@
 {% endblock %}
 {% block contenido_body %}
 
+	<!-- Menú botón derecho sobre archivos -->
+    <nav id="context-menu" class="context-menu">
+        <ul class="context-menu__items">
+            <li class="context-menu__item">
+                <a href="#" class="context-menu__link" id="descargar" data-action="descargar">Descargar</a>
+            </li>
+            <li class="context-menu__item">
+                <a href="#" class="context-menu__link" id="compartir" data-action="compartir">Compartir</a>
+            </li>
+            <li class="context-menu__item">
+                <a href="#" class="context-menu__link" id="favorito" data-action="favorito">Añadir a favoritos</a>
+            </li>
+        </ul>
+    </nav>
+
 	<ul class="nav nav-pills nav-justified">
 		<li class="active"><a data-toggle="pill" class="tablinks" href="#compartido_por_mi" onclick="opcionCompartido(event, 'compartido_por_mi')">Compartido por mi</a></li>
 		<li><a data-toggle="pill" class="tablinks" href="#compartido_conmigo" onclick="opcionCompartido(event, 'compartido_conmigo')">Compartido conmigo</a></li>
@@ -35,37 +50,6 @@
 			<!-- Código insertado desde javascript  -->
 		</div> <!-- vista_documentos -->
 	</div>
-
-	<!--
-	<ul class="nav nav-pills nav-justified">
-		<li class="active"><a data-toggle="pill" href="#compartido_por_mi">Compartido por mi</a></li>
-		<li><a data-toggle="pill" href="#compartido_conmigo">Compartido conmigo</a></li>
-	</ul>
-
-	<div class="tab-content contenido compartido">
-		<div id="compartido_por_mi" class="tab-pane fade active">
-			<!-- Añadir el botón para cambiar a vista lista/cuadricula 
-			<br>
-			<div id="cambiar_vista">
-			<!-- Código insertado desde javascript  
-			</div>
-
-			<div id="vista_documentos" class="col-xs-12 col-md-12 col-lg-12">
-			<!-- Código insertado desde javascript 
-			</div> <!-- vista_documentos 
-		</div>
-		<div id="compartido_conmigo" class="tab-pane fade">
-			<!-- Añadir el botón para cambiar a vista lista/cuadricula 
-			<br>
-			<div id="cambiar_vista">
-			<!-- Código insertado desde javascript  
-			</div>
-
-			<div id="vista_documentos" class="col-xs-12 col-md-12 col-lg-12">
-			<!-- Código insertado desde javascript  
-			</div> <!-- vista_documentos 
-		</div>
-	</div>-->
 
 	<script type="text/javascript">
 		var mis_archivos;
@@ -110,7 +94,7 @@
 			}
 		}
 
-	    //Función que se encarga de pedir y recibir los archivos del usuario compartidos por él
+	    //Función que se encarga de pedir y recibir los archivos compartidos del usuario
 	    function getArchivosCompartidos(_username, _opcion) {
 	        $.ajax({
 	            url : "{% url 'getArchivosCompartidos' %}",
@@ -127,7 +111,7 @@
 					}
 					else{ 
 						html = "<span id='vista_cuadricula' title='ver iconos' class='glyphicon glyphicon-th-large'></span>";
-						vistaLista(datos);
+						vistaLista(datos, _opcion);
 					}
 
 					document.getElementById('cambiar_vista').innerHTML = html;
@@ -147,15 +131,15 @@
 	            "<div class='container-fluid cuadricula'>" +
 	                "<div class='row'>";
 	                for(var i in datos){
-	                    var tipo_archivo = comprobarExtension(datos[i][2], "cuadricula");
+	                    var tipo_archivo = comprobarExtension(datos[i][4], "cuadricula");
 	                    var favorito = "";
-	                    if(datos[i][5] == true)
+	                    if(datos[i][7] == true)
 	                    	favorito = "<span class='glyphicon glyphicon-star'></span>";
 
 	                    html += "<div id='documento_vista_cuadricula' class='col-xs-4 col-md-3 col-lg-2'>" +
-	                        "<div id='" + datos[i][0] + "' class='task' title='" + datos[i][1] + "'>" +
+	                        "<div id='" + datos[i][0] + "' class='task' title='" + datos[i][3] + "'>" +
 	                            "<img id='" + datos[i][0] + "' src='" + tipo_archivo + "'>" +
-	                            "<h5 id='" + datos[i][0] + "'>" + datos[i][1] + "" + favorito + "</h5>" +
+	                            "<h5 id='" + datos[i][0] + "'>" + datos[i][3] + "" + favorito + "</h5>" +
 	                        "</div>" +
 	                    "</div>";
 	                }
@@ -173,7 +157,7 @@
 	        });
 	    }
 
-	    function vistaLista(datos){
+	    function vistaLista(datos, opcion){
 	    	mis_archivos = datos;
 	        var html = "" +
 	            "<div class='table-responsive'>" +
@@ -182,39 +166,42 @@
 	                        "<tr>" +
 	                            "<th>Nombre archivo</th>" +
 	                            "<th>Tamaño</th>" +
-	                            "<th>Última modificación</th>" +
-	                            "<th>Disponible para</th>" +
-	                            "<th class='hidden-xs'>Opciones</th>" +
+	                            "<th>Última modificación</th>";
+	                            if(opcion == "compartido_por_mi")
+	                            	html += "<th>Compartido con</th>";
+	                            else
+	                            	html += "<th>Compartido por</th>";
+	                            html += "<th class='hidden-xs'>Opciones</th>" +
 	                        "</tr>" +
 	                    "</thead>" +
 	                    "<tbody>";
 	                    for(var i in datos){
-	                    	var tipo_archivo = comprobarExtension(datos[i][2], "lista");
+	                    	var tipo_archivo = comprobarExtension(datos[i][4], "lista");
 	                    	var favorito = "";
-	                    	if(datos[i][5] == true)
+	                    	if(datos[i][7] == true)
 	                    		favorito = "<span class='glyphicon glyphicon-star'></span>";
 
 	                        html += "<tr id='" + datos[i][0] + "' class='task' >" +
-	                            "<td id='" + datos[i][0] + "'><img src='" + tipo_archivo + "' class='img-rounded img_lista'>" + datos[i][1] + "" + favorito + "</td>" +
-	                            "<td id='" + datos[i][0] + "' class='center'>" + mostrarTam(datos[i][4]) + "</td>" +
-	                            "<td id='" + datos[i][0] + "' class='center'>" + datos[i][3] + "</td>" +
-	                            "<td id='" + datos[i][0] + "' class='center'>Solo yo</td>" +
-	                            "<td class='hidden-xs'>" +
+	                            "<td id='" + datos[i][0] + "'><img src='" + tipo_archivo + "' class='img-rounded img_lista'>" + datos[i][3] + "" + favorito + "</td>" +
+	                            "<td id='" + datos[i][0] + "' class='center'>" + mostrarTam(datos[i][6]) + "</td>" +
+	                            "<td id='" + datos[i][0] + "' class='center'>" + datos[i][5] + "</td>";
+	                            if(opcion == "compartido_por_mi")
+	                            	html += "<td id='" + datos[i][0] + "' class='center'>" + datos[i][2] + "</td>";
+	                            else
+	                            	html += "<td id='" + datos[i][0] + "' class='center'>" + datos[i][1] + "</td>";
+	                            html += "<td class='hidden-xs'>" +
 	                                "<div class='btn-group'>" +
 	                                    "<button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>" +
 	                                    "Más <span class='caret'></span>" +
 	                                    "</button>" +
 	                                    "<ul class='dropdown-menu' role='menu'>" +
 	                                        "<li><a href='{% url 'descargarArchivo' %}?id_archivo=" + datos[i][0] + "'>Descargar</a></li>" +
-	                                        "<li><a href='#abrirPopUpCompartir' onClick='compartirArchivo(" + datos[i][0] + "); return false;'>Compartir</a></li>" +
-	                                        "<li><a href='#'>Copiar</a></li>" +
-	                                        "<li><a href='#'>Mover</a></li>";
+	                                        "<li><a href='#abrirPopUpCompartir' onClick='compartirArchivo(" + datos[i][0] + "); return false;'>Compartir</a></li>";
 	                                        if(favorito == "")
-	                                        	html += "<li><a href='{% url 'addFavoritos' %}?id_archivo=" + datos[i][0] + "&pag_actual=index.html'>Añadir a favoritos</a></li>";
+	                                        	html += "<li><a href='{% url 'addFavoritos' %}?id_archivo=" + datos[i][0] + "&pag_actual=compartido.html'>Añadir a favoritos</a></li>";
 	                                        else
-	                                        	html += "<li><a href='{% url 'delFavoritos' %}?id_archivo=" + datos[i][0] + "&pag_actual=index.html'>Eliminar de favoritos</a></li>";
-	                                        html += "<li><a href='#'>Eliminar</a></li>" +
-	                                    "</ul>" +
+	                                        	html += "<li><a href='{% url 'delFavoritos' %}?id_archivo=" + datos[i][0] + "&pag_actual=compartido.html'>Eliminar de favoritos</a></li>";
+	                                    html += "</ul>" +
 	                                "</div>" +
 	                            "</td>" +
 	                        "</tr>";
@@ -370,7 +357,7 @@
 					id_item_clicked = e.target.id //Donde se ha hecho click derecho
 
 					//Si el documento está marcado como favorito
-					if(mis_archivos[id_item_clicked][5])
+					if(mis_archivos[id_item_clicked][7])
 						document.getElementById("favorito").innerText = "Eliminar de favoritos";
 					else
 						document.getElementById("favorito").innerText = "Añadir a favoritos";
@@ -486,18 +473,12 @@
 					window.location=document.getElementById(id_item_clicked).href = "{% url 'descargarArchivo' %}?id_archivo=" + id_item_clicked;
 				else if(accion == "compartir")
 					compartirArchivo(id_item_clicked);
-				else if(accion == "copiar")
-					alert("copiar");
-				else if(accion == "mover")
-					alert("mover");
 				else if(accion == "favorito"){
 					if(document.getElementById("favorito").innerText == "Añadir a favoritos")
-						window.location=document.getElementById(id_item_clicked).href = "{% url 'addFavoritos' %}?id_archivo=" + id_item_clicked + "&pag_actual=index.html";
+						window.location=document.getElementById(id_item_clicked).href = "{% url 'addFavoritos' %}?id_archivo=" + id_item_clicked + "&pag_actual=compartido.html";
 					else
-						window.location=document.getElementById(id_item_clicked).href = "{% url 'delFavoritos' %}?id_archivo=" + id_item_clicked + "&pag_actual=index.html";
+						window.location=document.getElementById(id_item_clicked).href = "{% url 'delFavoritos' %}?id_archivo=" + id_item_clicked + "&pag_actual=compartido.html";
 				}
-				else if(accion == "eliminar")
-					alert("eliminar");
 				
 				toggleMenuOff();
 			}
