@@ -29,3 +29,9 @@ class ArchivoCompartido(Document):
 	destinatario = StringField(required=True)
 	id_archivo_compartido = DecimalField(required=True)
 	identificador_tupla = StringField(required=True, unique=True)
+
+class GrupoTrabajo(Document):
+	id_grupo = DecimalField(required=True, unique=True)
+	nombre = StringField(required=True)
+	usuarios = ListField()
+	archivos = ListField()

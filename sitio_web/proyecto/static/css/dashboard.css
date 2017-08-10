@@ -328,6 +328,10 @@ body {
    color: #72A7CF;
 }
 
+.popUp form{
+    color: #72A7CF;
+}
+
 #username_destino{
     color: #72A7CF; 
 }
@@ -395,4 +399,11 @@ body {
 @keyframes fadeout {
     from {bottom: 30px; opacity: 1;}
     to {bottom: 0; opacity: 0;}
+}
+
+#bt_crear_grupo{
+    margin-left: 5px;
+    border-radius: 4px;
+    background-color: #72A7CF;
+    color: white;
 }

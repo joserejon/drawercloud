@@ -24,4 +24,6 @@ urlpatterns = [
 	url(r'^borrarArchivo/$', views.borrarArchivo, name='borrarArchivo'),
 	url(r'^comprobarUsuarioCompartir/$', views.comprobarUsuarioCompartir, name='comprobarUsuarioCompartir'),
 	url(r'^dejarCompartirArchivo/$', views.dejarCompartirArchivo, name='dejarCompartirArchivo'),
+	url(r'^crearGrupoTrabajo/$', views.crearGrupoTrabajo, name='crearGrupoTrabajo'),
+	url(r'^getGruposTrabajo/$', views.getGruposTrabajo, name='getGruposTrabajo'),
 ]

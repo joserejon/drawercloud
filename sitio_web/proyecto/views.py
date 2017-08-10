@@ -93,6 +93,7 @@ def usuario(request):
 		'email':request.user.email, 'nombre':request.user.first_name, 'apellidos':request.user.last_name})
 
 #Subir un archivo
+@login_required(login_url='/accounts/login/')
 def upload(request):
 	if request.method == 'POST':
 		handle_uploaded_file(request.FILES['file'], request)
@@ -121,6 +122,7 @@ def getTipoArchivo(nombre_archivo):
 	return ''
 
 #Obtener los archivos pertenecientes al usuario y mandarlos mediante Ajax
+@login_required(login_url='/accounts/login/')
 def getArchivos(request):
 
 	archivos = g_archivo.getArchivos(usuario.username)
@@ -208,6 +210,7 @@ def delFavoritos(request):
 		return render(request, "compartido.html", {'pagina_actual':'Compartido', 'usuario':usuario})
 
 #Obtener los archivos pertenecientes al usuario y mandarlos mediante Ajax
+@login_required(login_url='/accounts/login/')
 def getArchivosFavoritos(request):
 
 	archivos = g_archivo.getArchivosFavoritos(usuario.username)
@@ -244,6 +247,7 @@ def compartirArchivo(request):
 		return render(request, "favoritos.html", {'pagina_actual':'Favoritos', 'usuario':usuario})
 
 #Obtener los archivos compartidos por el usuario o con el usuario (según opción)
+@login_required(login_url='/accounts/login/')
 def getArchivosCompartidos(request):
 	opcion = request.GET.get('opcion','')
 	archivo_compartido = ArchivoCompartidoForm()
@@ -260,6 +264,7 @@ def borrarArchivo(request):
 	return render(request, "index.html", {'pagina_actual':'Documentos', 'usuario':usuario})
 
 #Comprobar si existe el usuario introducido
+@login_required(login_url='/accounts/login/')
 def comprobarUsuarioCompartir(request):
 	username = request.GET.get('username','')
 	u = UsuarioForm()
@@ -278,3 +283,23 @@ def dejarCompartirArchivo(request):
 	archivo_compartido.dejarCompartirArchivo(id_archivo, propietario, destino)
 
 	return render(request, 'compartido.html', {'pagina_actual':'Compartido'})
+
+#Crear un grupo de trabajo
+@login_required(login_url='/accounts/login/')
+def crearGrupoTrabajo(request):
+	nombre_grupo = request.GET.get('nombre_grupo', '')
+
+	grupo = GrupoTrabajoForm()
+	grupo.crearGrupoTrabajo(nombre_grupo, usuario.username)
+
+	return render(request, 'grupoTrabajo.html', {'pagina_actual':'Grupo de Trabajo'})
+
+#Obtener los grupos de trabajo
+@login_required(login_url='/accounts/login/')
+def getGruposTrabajo(request):
+
+	grupo = GrupoTrabajoForm()
+	grupos = grupo.getGruposTrabajo(usuario.username)
+
+	print grupos
+	return HttpResponse(json.dumps(grupos), content_type="application/json")

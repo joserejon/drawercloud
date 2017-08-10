@@ -167,6 +167,36 @@ class ArchivoCompartidoForm(Document):
 
 
 ################################################################
+#Form para la clase GrupoTrabajo
+class GrupoTrabajoForm():
+
+	#Guardar un nuevo archivo
+	def crearGrupoTrabajo(self, nombre_grupo, propietario):
+		gt = GrupoTrabajo()
+
+		grupos = GrupoTrabajo.objects.all()
+		try:
+			gt.id_grupo = grupos[len(grupos) - 1].id_grupo + 1
+		except:
+			gt.id_grupo = 1
+			pass
+
+		gt.nombre = nombre_grupo
+		gt.save()
+		GrupoTrabajo.objects(id_grupo=gt.id_grupo).update(add_to_set__usuarios=[propietario])
+
+	#Obtener los grupos de trabajo donde esté el usuario
+	def getGruposTrabajo(self, username):
+		grupos = GrupoTrabajo.objects(usuarios__contains=username)
+		grupos_dic = {}
+
+		for item in grupos:
+			grupos_dic[int(item.id_grupo)] = [int(item.id_grupo), item.nombre]
+
+		return grupos_dic
+
+
+################################################################
 def getContentType(tipo_archivo):
 	ct = ""
 	if tipo_archivo == 'odt':
