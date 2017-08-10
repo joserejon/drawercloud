@@ -15,7 +15,7 @@
                 <a href="#" class="context-menu__link" id="descargar" data-action="descargar">Descargar</a>
             </li>
             <li class="context-menu__item">
-                <a href="#" class="context-menu__link" id="compartir" data-action="compartir">Compartir</a>
+                <a href="#" class="context-menu__link" id="compartir" data-action="compartir">Dejar de compartir</a>
             </li>
             <li class="context-menu__item">
                 <a href="#" class="context-menu__link" id="favorito" data-action="favorito">Añadir a favoritos</a>
@@ -51,8 +51,34 @@
 		</div> <!-- vista_documentos -->
 	</div>
 
+	<!-- PopUp para compartir un archivo -->
+	<div id="abrirPopUpDejarCompartir" class="popUp">
+		<div>
+			<a href="#close" title="Close" class="close">X</a>
+			<!-- <form action="{% url 'compartirArchivo' %}" method="POST"> -->
+			<form action="javascript:dejarCompartirArchivo();" method="POST">
+				{% csrf_token %}
+				<input type="hidden" id="id_archivo_dejar_compartir" name="id_archivo_dejar_compartir" value="" />
+				<input type="hidden" id="username_propietario" name="username_propietario" placeholder="Username de destino" required/>
+				<input type="hidden" id="username_destino" name="username_destino" placeholder="Username de destino" required/>
+				<label>¿Realmente desea dejar de compartir el archivo?</label>
+				<input type="submit" value="Dejar de compartir" class="input_file btn btn-default" />
+			</form>
+		</div>
+	</div>
+
+	<div id="snackbar" ></div>
+
 	<script type="text/javascript">
 		var mis_archivos;
+		var g_opcion;
+
+		function mostrarSnackbar(texto) {
+			var x = document.getElementById("snackbar")
+			x.innerHTML = texto;
+			x.className = "show";
+			setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+		}
 
 		/******************* VISTA DE DOCUMENTOS *******************/
 
@@ -96,6 +122,7 @@
 
 	    //Función que se encarga de pedir y recibir los archivos compartidos del usuario
 	    function getArchivosCompartidos(_username, _opcion) {
+	    	g_opcion = _opcion;
 	        $.ajax({
 	            url : "{% url 'getArchivosCompartidos' %}",
 	            data : {
@@ -196,7 +223,7 @@
 	                                    "</button>" +
 	                                    "<ul class='dropdown-menu' role='menu'>" +
 	                                        "<li><a href='{% url 'descargarArchivo' %}?id_archivo=" + datos[i][0] + "'>Descargar</a></li>" +
-	                                        "<li><a href='#abrirPopUpCompartir' onClick='compartirArchivo(" + datos[i][0] + "); return false;'>Compartir</a></li>";
+	                                        "<li><a href='#abrirPopUpDejarCompartir' onClick='comprobarDejarCompartirArchivo(" + datos[i][0] + "); return false;'>Dejar de Compartir</a></li>";
 	                                        if(favorito == "")
 	                                        	html += "<li><a href='{% url 'addFavoritos' %}?id_archivo=" + datos[i][0] + "&pag_actual=compartido.html'>Añadir a favoritos</a></li>";
 	                                        else
@@ -221,12 +248,6 @@
 	        });
 	    }
 	    //localStorage.clear();
-
-	    //Llamar al popUp para compartir archivo incluyendo el ID de éste
-	    function compartirArchivo(id_archivo) {
-	    	document.getElementById('id_archivo_compartir').value = id_archivo;
-	    	window.location=document.getElementById('abrirPopUpCompartir').href = "#abrirPopUpCompartir";
-	    }
 
 	    //Dar formato al tamaño del archivo
 	    function mostrarTam(tam){
@@ -295,6 +316,26 @@
 	    	return resultado;
 	   	}
 
+	   	//Llamar al popUp para compartir archivo incluyendo el ID de éste
+	    function comprobarDejarCompartirArchivo(id_archivo){
+	    	document.getElementById('id_archivo_dejar_compartir').value = id_archivo;
+	    	document.getElementById('username_propietario').value = mis_archivos[id_archivo][1];
+	    	document.getElementById('username_destino').value = mis_archivos[id_archivo][2];
+	    	window.location=document.getElementById('abrirPopUpDejarCompartir').href = "#abrirPopUpDejarCompartir";
+	    }
+
+	   	//Preguntar al usuario si realmente quiere eliminar el archivo
+	   	function dejarCompartirArchivo(){
+	   		var id_archivo_dejar_compartir = document.getElementById('id_archivo_dejar_compartir').value;
+	   		var username_propietario = document.getElementById('username_propietario').value;
+	   		var username_destino = document.getElementById('username_destino').value;
+	   		mostrarSnackbar("El archivo a dejado de ser compartido");
+	   		setTimeout(function(){
+			    window.location.href = "{% url 'dejarCompartirArchivo' %}?id_archivo=" + id_archivo_dejar_compartir + 
+			    	"&username_propietario=" + username_propietario + "&username_destino=" + username_destino;
+			}, 1800);
+	   		
+	   	}
 
 	   	/******************* OPCIONES DE BOTÓN DERECHO EN LA LISTA *******************/
 		(function() {
@@ -472,7 +513,10 @@
 				if(accion == "descargar")
 					window.location=document.getElementById(id_item_clicked).href = "{% url 'descargarArchivo' %}?id_archivo=" + id_item_clicked;
 				else if(accion == "compartir")
-					compartirArchivo(id_item_clicked);
+					if(g_opcion == "compartido_por_mi")
+						comprobarDejarCompartirArchivo(id_item_clicked, mis_archivos[id_item_clicked][1], mis_archivos[id_item_clicked][2]);
+					else
+						comprobarDejarCompartirArchivo(id_item_clicked, mis_archivos[id_item_clicked][2], mis_archivos[id_item_clicked][1]);
 				else if(accion == "favorito"){
 					if(document.getElementById("favorito").innerText == "Añadir a favoritos")
 						window.location=document.getElementById(id_item_clicked).href = "{% url 'addFavoritos' %}?id_archivo=" + id_item_clicked + "&pag_actual=compartido.html";

@@ -61,13 +61,26 @@
 		<div id="abrirPopUpCompartir" class="popUp">
 			<div>
 				<a href="#close" title="Close" class="close">X</a>
-				<!-- <form action="{% url 'compartirArchivo' %}" method="POST"> -->
 				<form action="javascript:comprobarUsuarioCompartir();" method="POST">
 					{% csrf_token %}
 					<input type="text" id="username_destino" name="username_destino" placeholder="Username de destino" required/>
 					<input type="hidden" id="id_archivo_compartir" name="id_archivo_compartir" value="" />
 					<input type="hidden" id="pag_actual" name="pag_actual" value="index.html" />
 					<input type="submit" value="Compartir" class="input_file btn btn-default" />
+				</form>
+			</div>
+		</div>
+
+		<!-- PopUp para eliminar un archivo -->
+		<div id="abrirPopUpEliminar" class="popUp">
+			<div>
+				<a href="#close" title="Close" class="close">X</a>
+				<!-- <form action="{% url 'compartirArchivo' %}" method="POST"> -->
+				<form action="javascript:eliminarArchivo();" method="POST">
+					{% csrf_token %}
+					<label>¿Realmente desea eliminar el archivo?</label>
+					<input type="hidden" id="id_archivo_eliminar" name="id_archivo_eliminar" value="" />
+					<input type="submit" value="Eliminar" class="input_file btn btn-default" />
 				</form>
 			</div>
 		</div>
@@ -210,7 +223,7 @@
 	                                        	html += "<li><a href='{% url 'addFavoritos' %}?id_archivo=" + datos[i][0] + "&pag_actual=index.html'>Añadir a favoritos</a></li>";
 	                                        else
 	                                        	html += "<li><a href='{% url 'delFavoritos' %}?id_archivo=" + datos[i][0] + "&pag_actual=index.html'>Eliminar de favoritos</a></li>";
-	                                        html += "<li><a href='{% url 'borrarArchivo' %}?id_archivo=" + datos[i][0] + "'>Eliminar</a></li>" +
+	                                        html += "<li><a href='#abrirPopUpEliminar' onClick='comprobarEliminarArchivo(" + datos[i][0] + "); return false;'>Eliminar</a></li>" +
 	                                    "</ul>" +
 	                                "</div>" +
 	                            "</td>" +
@@ -231,46 +244,6 @@
 	        });
 	    }
 	    //localStorage.clear();
-
-	    //Llamar al popUp para compartir archivo incluyendo el ID de éste
-	    function compartirArchivo(id_archivo) {
-	    	document.getElementById('id_archivo_compartir').value = id_archivo;
-	    	window.location=document.getElementById('abrirPopUpCompartir').href = "#abrirPopUpCompartir";
-	    }
-
-	    function comprobarUsuarioCompartir(){
-	    	var username = document.getElementById('username_destino').value;
-	    	var id_archivo_compartir = document.getElementById('id_archivo_compartir').value;
-	    	var pag_actual = document.getElementById('pag_actual').value;
-
-	    	$.ajax({
-	            url : "{% url 'comprobarUsuarioCompartir' %}",
-	            data : {
-	                username: username
-	            },
-	            type : 'GET',
-	            dataType: 'json',
-	            success : function(datos){
-					if (datos){
-						mostrarSnackbar("Archivo compartido con " + username);
-						setTimeout(function() {
-						    window.location.href = "{% url 'compartirArchivo' %}?id_archivo_compartir=" + id_archivo_compartir + 
-							"&username_destino=" + username + "&pag_actual=" + pag_actual;
-						}, 1800);
-					}
-					else{ 
-						mostrarSnackbar("El usuario introducido no existe");
-					}
-	            },
-	            failure : function(datos){
-	                alert("Error: no se pudo realizar la consulta");
-	            },
-	            complete : function(datos) {
-	                console.log('Petición realizada');
-	            }
-	     	});
-	    }
-
 
 	    //Dar formato al tamaño del archivo
 	    function mostrarTam(tam){
@@ -337,6 +310,61 @@
 	    	}
 
 	    	return resultado;
+	   	}
+
+	   	//Llamar al popUp para compartir archivo incluyendo el ID de éste
+	    function compartirArchivo(id_archivo) {
+	    	document.getElementById('id_archivo_compartir').value = id_archivo;
+	    	window.location=document.getElementById('abrirPopUpCompartir').href = "#abrirPopUpCompartir";
+	    }
+
+	    function comprobarUsuarioCompartir(){
+	    	var username = document.getElementById('username_destino').value;
+	    	var id_archivo_compartir = document.getElementById('id_archivo_compartir').value;
+	    	var pag_actual = document.getElementById('pag_actual').value;
+
+	    	$.ajax({
+	            url : "{% url 'comprobarUsuarioCompartir' %}",
+	            data : {
+	                username: username
+	            },
+	            type : 'GET',
+	            dataType: 'json',
+	            success : function(datos){
+					if (datos){
+						mostrarSnackbar("Archivo compartido con " + username);
+						setTimeout(function() {
+						    window.location.href = "{% url 'compartirArchivo' %}?id_archivo_compartir=" + id_archivo_compartir + 
+							"&username_destino=" + username + "&pag_actual=" + pag_actual;
+						}, 1800);
+					}
+					else{ 
+						mostrarSnackbar("El usuario introducido no existe");
+					}
+	            },
+	            failure : function(datos){
+	                alert("Error: no se pudo realizar la consulta");
+	            },
+	            complete : function(datos) {
+	                console.log('Petición realizada');
+	            }
+	     	});
+	    }
+
+	   	//Llamar al popUp para compartir archivo incluyendo el ID de éste
+	    function comprobarEliminarArchivo(id_archivo) {
+	    	document.getElementById('id_archivo_eliminar').value = id_archivo;
+	    	window.location=document.getElementById('abrirPopUpEliminar').href = "#abrirPopUpEliminar";
+	    }
+
+	   	//Preguntar al usuario si realmente quiere eliminar el archivo
+	   	function eliminarArchivo(){
+	   		var id_archivo_eliminar = document.getElementById('id_archivo_eliminar').value;
+	   		mostrarSnackbar("Archivo eliminado");
+	   		setTimeout(function() {
+			    window.location.href = "{% url 'borrarArchivo' %}?id_archivo=" + id_archivo_eliminar;
+			}, 1800);
+	   		
 	   	}
 
 
@@ -528,7 +556,7 @@
 						window.location=document.getElementById(id_item_clicked).href = "{% url 'delFavoritos' %}?id_archivo=" + id_item_clicked + "&pag_actual=index.html";
 				}
 				else if(accion == "eliminar")
-					alert("eliminar");
+					comprobarEliminarArchivo(id_item_clicked);
 				
 				toggleMenuOff();
 			}

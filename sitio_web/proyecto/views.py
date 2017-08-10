@@ -225,7 +225,7 @@ def compartirArchivo(request):
 
 	#Si es llamado desde la página contenidoMultimedia.html
 	if pag_actual == "contenidoMultimedia.html":
-		tipo_contenido = request.POST.get('tipo_contenido','')
+		tipo_contenido = request.GET.get('tipo_contenido','')
 		tipo_contenido_titulo = ""
 		
 		if tipo_contenido == "archivos_musica":
@@ -263,6 +263,18 @@ def borrarArchivo(request):
 def comprobarUsuarioCompartir(request):
 	username = request.GET.get('username','')
 	u = UsuarioForm()
-	resultado = u.comprobarUsuarioCompartir(username)
+	resultado = u.comprobarUsuarioCompartir(username, usuario.username)
 
 	return HttpResponse(json.dumps(resultado), content_type="application/json")
+
+#Dejar de compartir un archivo
+@login_required(login_url='/accounts/login/')
+def dejarCompartirArchivo(request):
+	id_archivo = request.GET.get('id_archivo', '')
+	propietario = request.GET.get('username_propietario', '')
+	destino = request.GET.get('username_destino', '')
+
+	archivo_compartido = ArchivoCompartidoForm()
+	archivo_compartido.dejarCompartirArchivo(id_archivo, propietario, destino)
+
+	return render(request, 'compartido.html', {'pagina_actual':'Compartido'})

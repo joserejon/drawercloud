@@ -33,11 +33,14 @@ class UsuarioForm():
 		return datos_usuario[0]
 
 	#Comprobar si existe el usuario introducido
-	def comprobarUsuarioCompartir(self, username):
+	def comprobarUsuarioCompartir(self, username, usuario_actual):
 		usuario = Usuario.objects(username=username)
 
 		if len(usuario) > 0:
-			return True
+			if usuario[0].username == usuario_actual:
+				return False
+			else:
+				return True
 		else:
 			return False
 
@@ -50,7 +53,12 @@ class ArchivoForm():
 	def save(self, nombre_archivo, tipo_archivo, username, path):
 		a = Archivo()
 
-		a.id_archivo = Archivo.objects.count() + 1
+		archivo = Archivo.objects.all()
+		try:
+			a.id_archivo = archivo[len(archivo) - 1].id_archivo + 1
+		except:
+			a.id_archivo = 1
+			pass
 		a.nombre = nombre_archivo
 		a.tipo_archivo = tipo_archivo
 		a.fecha_subida = str(datetime.datetime.now().replace(microsecond=0))
@@ -109,6 +117,7 @@ class ArchivoForm():
 	def borrarArchivo(self, id_archivo):
 		archivos = list(Archivo.objects.filter(id_archivo=id_archivo))
 		archivos[0].archivo.delete()
+		ArchivoCompartido.objects.filter(id_archivo_compartido=id_archivo).delete()
 		Archivo.objects.filter(id_archivo=id_archivo).delete()
 
 ################################################################
@@ -152,6 +161,9 @@ class ArchivoCompartidoForm(Document):
 
 		return len(archivos)
 
+	#Dejar de compartir un archivo
+	def dejarCompartirArchivo(self, id_archivo, propietario, destino):
+		ArchivoCompartido.objects.filter(id_archivo_compartido=id_archivo, propietario=propietario, destinatario=destino).delete()
 
 
 ################################################################
