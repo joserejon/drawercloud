@@ -331,15 +331,18 @@
 	            type : 'GET',
 	            dataType: 'json',
 	            success : function(datos){
-					if (datos){
+					if(datos == 1){
 						mostrarSnackbar("Archivo compartido con " + username);
 						setTimeout(function() {
 						    window.location.href = "{% url 'compartirArchivo' %}?id_archivo_compartir=" + id_archivo_compartir + 
 							"&username_destino=" + username + "&pag_actual=" + pag_actual;
 						}, 1800);
 					}
-					else{ 
+					else if(datos == 0){ 
 						mostrarSnackbar("El usuario introducido no existe");
+					}
+					else{ 
+						mostrarSnackbar("No puedes compartir contigo mismo");
 					}
 	            },
 	            failure : function(datos){

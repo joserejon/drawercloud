@@ -33,16 +33,17 @@ class UsuarioForm():
 		return datos_usuario[0]
 
 	#Comprobar si existe el usuario introducido
+	# 0 == no existe; -1 == es el propio usuario; 1 == éxito
 	def comprobarUsuarioCompartir(self, username, usuario_actual):
 		usuario = Usuario.objects(username=username)
 
 		if len(usuario) > 0:
 			if usuario[0].username == usuario_actual:
-				return False
+				return -1
 			else:
-				return True
+				return 1
 		else:
-			return False
+			return 0
 
 
 ################################################################
@@ -195,6 +196,23 @@ class GrupoTrabajoForm():
 
 		return grupos_dic
 
+	#Comprobar si existe el usuario- y no pertenece ya al grupo
+	# 0 == no existe; -1 == el usuario ya forma parte del grupo; 1 == éxito
+	def comprobarParticipante(self, id_grupo, participante):
+		participantes = GrupoTrabajo.objects(usuarios__contains=participante)
+
+		if len(participantes) > 0:
+			return -1
+		else:
+			usuario = Usuario.objects(username=participante)
+			if len(usuario) > 0:
+				return 1
+			else:
+				return 0
+
+	#Añadir un participante al grupo
+	def addParticipante(self, id_grupo, participante):
+		GrupoTrabajo.objects(id_grupo=id_grupo).update(add_to_set__usuarios=[participante])
 
 ################################################################
 def getContentType(tipo_archivo):

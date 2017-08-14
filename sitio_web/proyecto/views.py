@@ -301,5 +301,24 @@ def getGruposTrabajo(request):
 	grupo = GrupoTrabajoForm()
 	grupos = grupo.getGruposTrabajo(usuario.username)
 
-	print grupos
 	return HttpResponse(json.dumps(grupos), content_type="application/json")
+
+#Comprobar si existe el usuario introducido
+@login_required(login_url='/accounts/login/')
+def comprobarParticipante(request):
+	id_grupo = request.GET.get('id_grupo','')
+	participante = request.GET.get('participante','')
+	gt = GrupoTrabajoForm()
+	resultado = gt.comprobarParticipante(id_grupo, participante)
+
+	return HttpResponse(json.dumps(resultado), content_type="application/json")
+
+#Añadir un participante al grupo
+@login_required(login_url='/accounts/login/')
+def addParticipante(request):
+	id_grupo = request.GET.get('id_grupo','')
+	participante = request.GET.get('participante','')
+	gt = GrupoTrabajoForm()
+	gt.addParticipante(id_grupo, participante)
+
+	return render(request, 'grupoTrabajo.html', {'pagina_actual':'Grupo de Trabajo'})

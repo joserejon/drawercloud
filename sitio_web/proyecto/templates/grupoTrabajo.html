@@ -11,7 +11,8 @@
 		<button id="bt_grupos" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" onclick="getGruposTrabajo();">
 		Seleccione grupo de trabajo <span class="caret"></span>
 		</button>
-		<a href="#abrirPopUpCrearGrupo"><button id="bt_crear_grupo" class="btn btn-default dropdown-toggle">Crear Grupo de trabajo</button></a>
+		<a href="#abrirPopUpCrearGrupo"><button id="bt_crear_grupo" class="btn btn-default dropdown-toggle bts_grupo_trabajo">Crear Grupo de trabajo</button></a>
+		<a id="add_participante" href="#abrirPopUpAddParticipante"></a>
 
 		<ul id="menuGrupos" class="dropdown-menu" role="menu">
 			<!-- Código insertado desde javascript -->
@@ -34,6 +35,20 @@
 			</form>
 		</div>
 	</div>
+
+	<!-- PopUp para añadir un participante al grupo -->
+		<div id="abrirPopUpAddParticipante" class="popUp">
+			<div>
+				<a href="#close" title="Close" class="close">X</a>
+				<form action="javascript:comprobarParticipante();" method="POST">
+					{% csrf_token %}
+					<input type="text" id="participante" name="participante" placeholder="Username del participante" required/>
+					<input type="hidden" id="id_grupo" name="id_grupo" value="" />
+					<input type="hidden" id="nombre_grupo_actual" name="nombre_grupo_actual" value="" />
+					<input type="submit" value="Compartir" class="input_file btn btn-default" />
+				</form>
+			</div>
+		</div>
 
 	<div id="snackbar" ></div>
 
@@ -78,6 +93,8 @@
 									"</div> <!-- vista_documentos -->" +
 								"</div>";
 
+							document.getElementById("id_grupo").value = datos[id][0];
+							document.getElementById("nombre_grupo_actual").value = datos[id][1];
 							document.getElementById('contenidoTab').innerHTML = html;
 							actualizaVista();
 
@@ -107,6 +124,8 @@
 	    function actualizaVista(){
 	        var html = "";
 	        var username = "{{ usuario.username }}";
+	        html = "<button id='bt_add_participante' class='btn btn-default dropdown-toggle bts_grupo_trabajo'>Añadir participante al grupo</button>";
+	        document.getElementById("add_participante").innerHTML = html;
 			getArchivos(username);
 	    }
 
@@ -306,6 +325,42 @@
 			    window.location.href = "{% url 'crearGrupoTrabajo' %}?nombre_grupo=" + nombre_grupo;
 			}, 1800);
 	   	}
+
+	   	function comprobarParticipante(){
+	    	var participante = document.getElementById('participante').value;
+	    	var id_grupo = document.getElementById("id_grupo").value;
+	    	var nombre_grupo_actual = document.getElementById("nombre_grupo_actual").value;
+
+	    	$.ajax({
+	            url : "{% url 'comprobarParticipante' %}",
+	            data : {
+	            	id_grupo : id_grupo,
+	                participante: participante
+	            },
+	            type : 'GET',
+	            dataType: 'json',
+	            success : function(datos){
+					if(datos == 1){
+						mostrarSnackbar(participante + " ahora forma parte del grupo " + nombre_grupo_actual);
+						setTimeout(function() {
+						    window.location.href = "{% url 'addParticipante' %}?id_grupo=" + id_grupo + "&participante=" + participante;
+						}, 1800);
+					}
+					else if(datos == 0){ 
+						mostrarSnackbar("El usuario introducido no existe");
+					}
+					else if(datos == -1){ 
+						mostrarSnackbar("El usuario introducido ya forma parte del grupo");
+					}
+	            },
+	            failure : function(datos){
+	                alert("Error: no se pudo realizar la consulta");
+	            },
+	            complete : function(datos) {
+	                console.log('Petición realizada');
+	            }
+	     	});
+	    }
 
 	</script>
 

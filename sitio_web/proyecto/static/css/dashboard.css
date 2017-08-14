@@ -401,9 +401,14 @@ body {
     to {bottom: 0; opacity: 0;}
 }
 
-#bt_crear_grupo{
+.bts_grupo_trabajo{
     margin-left: 5px;
     border-radius: 4px;
     background-color: #72A7CF;
+    color: white;
+}
+
+.bts_grupo_trabajo:hover{
+    background-color: #72A7FF;
     color: white;
 }
