@@ -84,7 +84,26 @@
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <img src='/static/images/user.png'> <b class="caret"></b></a>
+                            <a id="img_perfil_barra" href="#" class="dropdown-toggle" data-toggle="dropdown"></a>
+                            <script type="text/javascript">
+                                $.ajax({
+                                    url : "{% url 'getImgPerfil' %}",
+                                    data : {
+                                        
+                                    },
+                                    type : 'GET',
+                                    dataType: 'json',
+                                    success : function(nombre_img){
+                                        document.getElementById('img_perfil_barra').innerHTML = "<img src='" + nombre_img + "'><b class='caret'></b>";
+                                    },
+                                    failure : function(datos){
+                                        alert("Error: no se pudo realizar la consulta");
+                                    },
+                                    complete : function(datos) {
+                                        console.log('Petición realizada');
+                                    }
+                                });
+                            </script>
                             <ul class="dropdown-menu multi-level">
                                 <li><a href="{% url 'usuario' %}">Usuario</a></li>
                                 <li class="divider"></li>

@@ -9,11 +9,51 @@
 {% endblock %}
 
 {% block contenido_body %}
-	<img id="img_perfil" src='/static/images/user_grande.png'>
+	<div id="div_img_perfil">
+		
+	</div>
 	<div class="info_usuario">
 		<button class="btn btn-primary">Editar información</button>
 		<button class="btn btn-danger">Eliminar cuenta</button>
 		<h4><span class="letra_azul">Username: {{ username }}</span></h4>
 		<h4><span class="letra_azul">Email: {{ email }}</span></h4>
 	</div>
+
+	<!-- PopUp para subir un archivo -->
+	<div id="popUpcargarImgPerfil" class="popUp">
+		<div>
+			<a href="#close" title="Close" class="close">X</a>
+			<form action="{% url 'cargarImgPerfil' %}" method="POST" enctype="multipart/form-data">
+				{% csrf_token %}
+				<input type="file" name="file" class="input_file btn btn-default" accept="image/*" required />
+				<br />
+				<input type="submit" value="Establecer como imagen de perfil" class="input_file btn btn-default" />
+			</form>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+
+		$.ajax({
+            url : "{% url 'getImgPerfil' %}",
+            data : {
+                
+            },
+            type : 'GET',
+            dataType: 'json',
+            success : function(nombre_img){
+				document.getElementById('div_img_perfil').innerHTML = "<img id='img_perfil' src='" + nombre_img + "'>";
+            },
+            failure : function(datos){
+                alert("Error: no se pudo realizar la consulta");
+            },
+            complete : function(datos) {
+                console.log('Petición realizada');
+            }
+     	});
+
+		$("#div_img_perfil").click(function(event){
+            window.location=document.getElementById('popUpcargarImgPerfil').href = "#popUpcargarImgPerfil";
+        });
+	</script>
 {% endblock %}

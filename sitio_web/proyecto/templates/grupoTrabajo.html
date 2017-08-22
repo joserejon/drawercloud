@@ -104,6 +104,7 @@
 	<div id="abrirPopUpVerParticipantes" class="popUp">
 		<div>
 			<a href="#close" title="Close" class="close">X</a>
+			<label id="num_participantes"></label>
 			<ul id="participantes" class="verParticipantes">
 				<!-- Código insertado desde javascript -->
 			</ul>
@@ -451,8 +452,12 @@
 	            dataType: 'json',
 	            success : function(datos){
 	            	document.getElementById('participantes').innerHTML = "";
- 					for(var i in datos)
-						document.getElementById('participantes').innerHTML += "<li>" + datos[i][0] + "</li>"
+	            	var participantes = 0;
+ 					for(var i in datos){
+						document.getElementById('participantes').innerHTML += "<li><img class='img_perfil' src='" + datos[i][1] + "'>" + datos[i][0] + "</li>"
+						participantes++;
+ 					}
+ 					document.getElementById('num_participantes').innerHTML = "Participantes: " + participantes;
 	            },
 	            failure : function(datos){
 	                alert("Error: no se pudo realizar la consulta");

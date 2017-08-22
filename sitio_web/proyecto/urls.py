@@ -31,4 +31,6 @@ urlpatterns = [
 	url(r'^getArchivosGrupoTrabajo/$', views.getArchivosGrupoTrabajo, name='getArchivosGrupoTrabajo'),
 	url(r'^subirArchivoGrupo/$', views.subirArchivoGrupo, name='subirArchivoGrupo'),
 	url(r'^getParticipantes/$', views.getParticipantes, name='getParticipantes'),
+	url(r'^cargarImgPerfil/$', views.cargarImgPerfil, name='cargarImgPerfil'),
+	url(r'^getImgPerfil/$', views.getImgPerfil, name='getImgPerfil'),
 ]

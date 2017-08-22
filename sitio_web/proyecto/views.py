@@ -89,8 +89,7 @@ def ayuda(request):
 #Mostrar datos usuario
 @login_required(login_url='/accounts/login/')
 def usuario(request):
-	return render(request, 'usuario.html', {'pagina_actual':'Mi perfil', 'username':request.user.username,
-		'email':request.user.email, 'nombre':request.user.first_name, 'apellidos':request.user.last_name})
+	return render(request, 'usuario.html', {'pagina_actual':'Mi perfil', 'username':request.user.username, 'email':request.user.email})
 
 #Subir un archivo
 @login_required(login_url='/accounts/login/')
@@ -305,7 +304,6 @@ def crearGrupoTrabajo(request):
 #Obtener los grupos de trabajo
 @login_required(login_url='/accounts/login/')
 def getGruposTrabajo(request):
-
 	grupo = GrupoTrabajoForm()
 	grupos = grupo.getGruposTrabajo(usuario.username)
 
@@ -348,7 +346,7 @@ def subirArchivoGrupo(request):
 		handle_uploaded_file(request.FILES['file'], request, id_grupo)
 		return render(request, 'grupoTrabajo.html', {'pagina_actual':'Grupo de Trabajo'})
 
-	return render(request, 'index.html', {'pagina_actual':'Documentos', 'usuario':usuario})
+	return render(request, 'grupoTrabajo.html', {'pagina_actual':'Grupo de Trabajo'})
 
 def handle_uploaded_file(file, request, id_grupo):
 	if not os.path.exists('upload/'):
@@ -368,5 +366,31 @@ def getParticipantes(request):
 	id_grupo = request.GET.get('id_grupo', '')
 	gt = GrupoTrabajoForm()
 	resultado = gt.getParticipantes(id_grupo)
+
+	return HttpResponse(json.dumps(resultado), content_type="application/json")
+
+#Cargar la imagen de perfil
+@login_required(login_url='/accounts/login/')
+def cargarImgPerfil(request):
+	if request.method == 'POST':
+		handle_uploaded_img_profile(request.FILES['file'], request)
+		return render(request, 'usuario.html', {'pagina_actual':'Mi perfil', 'usuario':usuario, 'email':request.user.email})
+
+	return render(request, 'usuario.html', {'pagina_actual':'Mi perfil', 'usuario':usuario, 'email':request.user.email})
+
+def handle_uploaded_img_profile(file, request):
+	filename = str(file)
+	with open('proyecto/static/images/' + filename, 'wb+') as destination:
+		for chunk in file.chunks():
+			destination.write(chunk)
+
+		u = UsuarioForm()
+		u.cargarImgPerfil(filename, getTipoArchivo(filename), usuario.username ,'proyecto/static/images/' + filename)
+
+#Obtener la imagen de perfil
+@login_required(login_url='/accounts/login/')
+def getImgPerfil(request):
+	u = UsuarioForm()
+	resultado = u.getImgPerfil(usuario.username)
 
 	return HttpResponse(json.dumps(resultado), content_type="application/json")

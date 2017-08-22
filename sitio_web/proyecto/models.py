@@ -8,6 +8,7 @@ import datetime
 class Usuario(Document):
     id_username = IntField(required=True, unique=True)
     username = StringField(required=True, unique=True)
+    img_perfil = IntField()
 
 class Directorio(Document):
 	id_directorio = DecimalField()

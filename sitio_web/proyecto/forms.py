@@ -14,6 +14,7 @@ class UsuarioForm():
 
 		u.username = _username
 		u.id_username = Usuario.objects.count() + 1
+		u.img_perfil = -1
 
 		u.save()
 
@@ -44,6 +45,27 @@ class UsuarioForm():
 				return 1
 		else:
 			return 0
+
+	#Cargar la imagen de perfil
+	def cargarImgPerfil(self, nombre_archivo, tipo_archivo, username, path):
+		a = ArchivoForm()
+		#Subir el archivo a la base de datos
+		id_archivo = a.save(nombre_archivo, tipo_archivo, "", path)
+		#Añadir fichero al grupo de trabajo
+		Usuario.objects(username=username).update(set__img_perfil=id_archivo)
+
+	#Obtener la imagen de perfil
+	def getImgPerfil(self, username):
+		usuario = Usuario.objects(username=username)
+		nombre_img_perfil = ""
+
+		if usuario[0].img_perfil >= 0:
+			a = ArchivoForm()
+			nombre_img_perfil = "/static/images/" + a.getNombreArchivo(usuario[0].img_perfil)
+		else:
+			nombre_img_perfil = "/static/images/img_perfil.png"
+
+		return nombre_img_perfil
 
 
 ################################################################
@@ -84,6 +106,11 @@ class ArchivoForm():
 			str(item.fecha_subida), str(item.tam_archivo), item.favorito]
 
 		return archivos_dic
+
+	def getNombreArchivo(self, id_archivo):
+		archivo = list(Archivo.objects.filter(id_archivo=id_archivo))
+
+		return archivo[0].nombre
 
 	#Devolver una lista con los archivos del usuario buscando por extension
 	def getArchivosPorExtension(self, username, extension):
@@ -257,7 +284,8 @@ class GrupoTrabajoForm():
 		cont = 0
 		for username in grupo[0].usuarios:
 			#Añadir el usuario al diccionario
-			participantes_dic[cont] = [username]
+			u = UsuarioForm()
+			participantes_dic[cont] = [username, u.getImgPerfil(username)]
 			cont += 1
 
 		return participantes_dic
