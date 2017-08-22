@@ -71,6 +71,8 @@ class ArchivoForm():
 		a.favorito = False
 		a.save()
 
+		return a.id_archivo
+
 	#Devolver una lista con los archivos del usuario
 	def getArchivos(self, username):
 
@@ -213,6 +215,53 @@ class GrupoTrabajoForm():
 	#Añadir un participante al grupo
 	def addParticipante(self, id_grupo, participante):
 		GrupoTrabajo.objects(id_grupo=id_grupo).update(add_to_set__usuarios=[participante])
+
+	#Obtener los archivos de un grupo de trabajo
+	def getArchivosGrupoTrabajo(self, id_grupo):
+		grupo = list(GrupoTrabajo.objects.filter(id_grupo=id_grupo))
+		archivos_dic = {}
+
+		#Almacenar los archivos del grupo X en un diccionario
+		for id_archivo in grupo[0].archivos:
+			#Obtener el archivo por ID
+			archivo = Archivo.objects(id_archivo=id_archivo)
+			archivo = archivo[0]
+			#Añadir el archivo al diccionario
+			archivos_dic[id_archivo] = [int(archivo.id_archivo), archivo.nombre, archivo.tipo_archivo, 
+			str(archivo.fecha_subida), str(archivo.tam_archivo), archivo.favorito]
+
+		return archivos_dic
+
+
+	#Subir un archivo a un grupo
+	def subirArchivoGrupo(self, id_grupo, nombre_archivo, tipo_archivo, path):
+		a = ArchivoForm()
+		#Subir el archivo a la base de datos
+		id_archivo = a.save(nombre_archivo, tipo_archivo, "", path)
+		#Añadir fichero al grupo de trabajo
+		GrupoTrabajo.objects(id_grupo=id_grupo).update(add_to_set__archivos=[int(id_archivo)])
+
+	#Borrar un archivo
+	def borrarArchivo(self, id_archivo, id_grupo):
+		a = ArchivoForm()
+		a.borrarArchivo(id_archivo)
+
+		GrupoTrabajo.objects(id_grupo=id_grupo).update(pull__archivos=int(id_archivo))
+
+	#Obtener los participantes de un grupo
+	def getParticipantes(self, id_grupo):
+		grupo = list(GrupoTrabajo.objects.filter(id_grupo=id_grupo))
+		participantes_dic = {}
+
+		#Almacenar los usuarios del grupo X en un diccionario
+		cont = 0
+		for username in grupo[0].usuarios:
+			#Añadir el usuario al diccionario
+			participantes_dic[cont] = [username]
+			cont += 1
+
+		return participantes_dic
+
 
 ################################################################
 def getContentType(tipo_archivo):

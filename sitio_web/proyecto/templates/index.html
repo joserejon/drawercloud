@@ -25,7 +25,7 @@
         </ul>
     </nav>
 
-	<!-- Añadir el botón para cambiar a vista lista/cuadricula -->
+	<!-- Añadir el botón para mostrar las opciones del menú de la derecha -->
 	<p class="pull-right visible-xs">
 	    <button id="bt_offcanvas" type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Mostrar opciones</button>
 	</p>
@@ -315,7 +315,7 @@
 	   	//Llamar al popUp para compartir archivo incluyendo el ID de éste
 	    function compartirArchivo(id_archivo) {
 	    	document.getElementById('id_archivo_compartir').value = id_archivo;
-	    	window.location=document.getElementById('abrirPopUpCompartir').href = "#abrirPopUpCompartir";
+	    	window.location = document.getElementById('abrirPopUpCompartir').href = "#abrirPopUpCompartir";
 	    }
 
 	    function comprobarUsuarioCompartir(){
@@ -365,13 +365,13 @@
 	   		var id_archivo_eliminar = document.getElementById('id_archivo_eliminar').value;
 	   		mostrarSnackbar("Archivo eliminado");
 	   		setTimeout(function() {
-			    window.location.href = "{% url 'borrarArchivo' %}?id_archivo=" + id_archivo_eliminar;
+			    window.location.href = "{% url 'borrarArchivo' %}?id_archivo=" + id_archivo_eliminar + "&pag_actual=index.html";
 			}, 1800);
 	   		
 	   	}
 
 
-	   	/******************* OPCIONES DE BOTÓN DERECHO EN LA LISTA *******************/
+	   	/******************* OPCIONES DE BOTÓN DERECHO *******************/
 		(function() {
 
 			"use strict";

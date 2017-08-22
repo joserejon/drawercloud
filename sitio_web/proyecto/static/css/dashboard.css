@@ -162,6 +162,12 @@ body {
     position: absolute;
 }
 
+.btn-desplegables-gt{
+    position: relative;
+    float: left;
+    margin-left: 5px;
+}
+
 /* Estilo para la vista de cuadrícula */
 .cuadricula{
      margin-top: 20px
@@ -251,13 +257,6 @@ body {
     text-align: center;
 }
 
-/* Vista Grupo de trabajo */
-.dropdown-menu > li{
-    margin-left: 10px;
-    margin-bottom: 5px;
-    margin-top: 5px;
-}
-
 .dropdown-menu > li:hover{
     cursor:pointer;
     color: #72A7CF;
@@ -330,6 +329,10 @@ body {
 
 .popUp form{
     color: #72A7CF;
+}
+
+.popUp label{
+    color: white;
 }
 
 #username_destino{
@@ -411,4 +414,18 @@ body {
 .bts_grupo_trabajo:hover{
     background-color: #72A7FF;
     color: white;
+}
+
+.verParticipantes{
+    list-style: none;
+    list-style-type: none;
+}
+
+.verParticipantes > li{
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 5px;
+    border-color: white;
+    padding: 5px;
+    margin-top: 5px;
 }

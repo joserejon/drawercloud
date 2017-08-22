@@ -28,4 +28,7 @@ urlpatterns = [
 	url(r'^getGruposTrabajo/$', views.getGruposTrabajo, name='getGruposTrabajo'),
 	url(r'^comprobarParticipante/$', views.comprobarParticipante, name='comprobarParticipante'),
 	url(r'^addParticipante/$', views.addParticipante, name='addParticipante'),
+	url(r'^getArchivosGrupoTrabajo/$', views.getArchivosGrupoTrabajo, name='getArchivosGrupoTrabajo'),
+	url(r'^subirArchivoGrupo/$', views.subirArchivoGrupo, name='subirArchivoGrupo'),
+	url(r'^getParticipantes/$', views.getParticipantes, name='getParticipantes'),
 ]

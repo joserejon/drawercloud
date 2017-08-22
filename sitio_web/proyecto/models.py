@@ -20,7 +20,7 @@ class Archivo(Document):
 	tipo_archivo = StringField()
 	archivo = FileField()
 	fecha_subida = StringField()
-	propietario = StringField(required=True)
+	propietario = StringField()
 	tam_archivo = DecimalField()
 	favorito = BooleanField()
 

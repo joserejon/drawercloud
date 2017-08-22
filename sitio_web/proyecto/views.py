@@ -259,9 +259,17 @@ def getArchivosCompartidos(request):
 @login_required(login_url='/accounts/login/')
 def borrarArchivo(request):
 	id_archivo = request.GET.get('id_archivo','')
-	g_archivo.borrarArchivo(id_archivo)
+	pag_actual = request.GET.get('pag_actual','')
 
-	return render(request, "index.html", {'pagina_actual':'Documentos', 'usuario':usuario})
+	if pag_actual == "index.html":
+		g_archivo.borrarArchivo(id_archivo)
+		return render(request, "index.html", {'pagina_actual':'Documentos', 'usuario':usuario})
+	elif pag_actual == "grupoTrabajo.html":
+		id_grupo = request.GET.get('id_grupo','')
+		gt = GrupoTrabajoForm()
+		gt.borrarArchivo(id_archivo, id_grupo)
+		return render(request, "grupoTrabajo.html", {'pagina_actual':'Grupo de Trabajo'})
+
 
 #Comprobar si existe el usuario introducido
 @login_required(login_url='/accounts/login/')
@@ -322,3 +330,43 @@ def addParticipante(request):
 	gt.addParticipante(id_grupo, participante)
 
 	return render(request, 'grupoTrabajo.html', {'pagina_actual':'Grupo de Trabajo'})
+
+#Obtener los archivos de un grupo de trabajo
+@login_required(login_url='/accounts/login/')
+def getArchivosGrupoTrabajo(request):
+	id_grupo = request.GET.get('id_grupo','')
+	gt = GrupoTrabajoForm()
+	resultado = gt.getArchivosGrupoTrabajo(id_grupo)
+
+	return HttpResponse(json.dumps(resultado), content_type="application/json")
+
+#Subir un archivo a un grupo
+@login_required(login_url='/accounts/login/')
+def subirArchivoGrupo(request):
+	if request.method == 'POST':
+		id_grupo = request.POST.get('id_grupo_upload','')
+		handle_uploaded_file(request.FILES['file'], request, id_grupo)
+		return render(request, 'grupoTrabajo.html', {'pagina_actual':'Grupo de Trabajo'})
+
+	return render(request, 'index.html', {'pagina_actual':'Documentos', 'usuario':usuario})
+
+def handle_uploaded_file(file, request, id_grupo):
+	if not os.path.exists('upload/'):
+		os.mkdir('upload/')
+
+	gt = GrupoTrabajoForm()		
+	filename = str(file)
+	with open('upload/' + filename, 'wb+') as destination:
+		for chunk in file.chunks():
+			destination.write(chunk)
+
+		gt.subirArchivoGrupo(id_grupo, filename, getTipoArchivo(filename), 'upload/' + filename)
+
+#Obtener los participantes de un grupo
+@login_required(login_url='/accounts/login/')
+def getParticipantes(request):
+	id_grupo = request.GET.get('id_grupo', '')
+	gt = GrupoTrabajoForm()
+	resultado = gt.getParticipantes(id_grupo)
+
+	return HttpResponse(json.dumps(resultado), content_type="application/json")
