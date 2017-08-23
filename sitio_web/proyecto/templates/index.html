@@ -47,13 +47,15 @@
 		<!-- PopUp para subir un archivo -->
 		<div id="abrirPopUp" class="popUp">
 			<div>
-				<a href="#close" title="Close" class="close">X</a>
-				<form action="{% url 'upload' %}" method="POST" enctype="multipart/form-data">
+				<a id="bt_close_popup" href="#close" title="Close" class="close">X</a>
+				<form action="{% url 'upload' %}" method="POST" enctype="multipart/form-data" id="upload_form">
 					{% csrf_token %} 
 					<input type="file" name="file" class="input_file btn btn-default" required/>
 					<br />
 					<input type="submit" value="Subir archivo" class="input_file btn btn-default" />
 				</form>
+				<div id="progress-wrp"><div class="progress-bar"></div ><div class="status">0%</div></div>
+				<a id="bt_fin_upload" class="btn btn-default" href="{% url 'index' %}">Continuar</a>
 			</div>
 		</div>
 
@@ -120,6 +122,7 @@
 	    function actualizaVista(){
 	        var html = "";
 	        var username = "{{ usuario.username }}";
+	        document.getElementById("bt_fin_upload").style.visibility = 'hidden';
 			getArchivos(username);
 	    }
 
@@ -369,6 +372,58 @@
 			}, 1800);
 	   		
 	   	}
+
+
+	   	/******************* PROGRESS BAR *******************/
+
+	   	$('#upload_form').on( "submit", function(event) { 
+			event.preventDefault();
+			var proceed = true; //set proceed flag
+			var error = [];	//errors
+			var total_files_size = 0;
+			var progress_bar_id = '#progress-wrp';
+			//reset progressbar
+			$(progress_bar_id +" .progress-bar").css("width", "0%");
+			$(progress_bar_id + " .status").text("0%");
+									
+			var form_data = new FormData(this); //Creates new FormData object
+			var post_url = $(this).attr("action"); //get action URL of form
+
+			$('#bt_close_popup').hide();
+
+			//jQuery Ajax to Post form data
+			$.ajax({
+				url : post_url,
+				type: "POST",
+				data : form_data,
+				contentType: false,
+				cache: false,
+				processData:false,
+				xhr: function(){
+					//upload Progress
+					var xhr = $.ajaxSettings.xhr();
+					if (xhr.upload) {
+						xhr.upload.addEventListener('progress', function(event) {
+							var percent = 0;
+							var position = event.loaded || event.position;
+							var total = event.total;
+							if (event.lengthComputable) {
+								percent = Math.ceil(position / total * 100);
+							}
+							//update progressbar
+							$(progress_bar_id +" .progress-bar").css("width", + percent +"%");
+							$(progress_bar_id + " .status").text(percent +"%");
+						}, true);
+					}
+					return xhr;
+				},
+				mimeType:"multipart/form-data",
+				complete: function (data) {
+			    	document.getElementById("bt_fin_upload").style.visibility = 'visible';
+			    	$('#bt_close_popup').show();
+			    }
+			});
+		});
 
 
 	   	/******************* OPCIONES DE BOTÓN DERECHO *******************/

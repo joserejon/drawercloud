@@ -14,7 +14,6 @@ g_archivo = None
 #Mostrar la página principal
 @login_required(login_url='/accounts/login/')
 def index(request):
-	print("********************************************************")
 	global usuario, g_archivo
 	usuario = UsuarioForm()
 	g_archivo = ArchivoForm()
@@ -343,12 +342,12 @@ def getArchivosGrupoTrabajo(request):
 def subirArchivoGrupo(request):
 	if request.method == 'POST':
 		id_grupo = request.POST.get('id_grupo_upload','')
-		handle_uploaded_file(request.FILES['file'], request, id_grupo)
+		handle_uploaded_file2(request.FILES['file'], request, id_grupo)
 		return render(request, 'grupoTrabajo.html', {'pagina_actual':'Grupo de Trabajo'})
 
 	return render(request, 'grupoTrabajo.html', {'pagina_actual':'Grupo de Trabajo'})
 
-def handle_uploaded_file(file, request, id_grupo):
+def handle_uploaded_file2(file, request, id_grupo):
 	if not os.path.exists('upload/'):
 		os.mkdir('upload/')
 
