@@ -277,7 +277,7 @@ body {
     color: #72A7CF;
 }
 
-/* POP - UP para subir archivos */
+/* POP - UP */
 .popUp{
     position: fixed;
     top: 0;
@@ -304,7 +304,7 @@ body {
     margin: 10% auto;
     padding: 20px;
     border-radius: 7px;
-    background-color: #72A7CF;
+    background-color: #222222;
     color: white;
     font-weight: bold;
 }
@@ -335,14 +335,18 @@ body {
     color: white;
 }
 
+#bt_upload{
+    margin-top: 3px;
+}
+
 #username_destino{
     color: #72A7CF; 
 }
 
 .close{
     opacity: 2;
-    background: white;
-    color: #72A7CF;
+    background: #72A7CF;
+    color: white;
     line-height: 25px;
     position: absolute;
     right: 5px;
@@ -353,11 +357,21 @@ body {
     border-radius: 50%;
 }
 
-.close:hover { background: white; }
+.close:hover{
+    color: white;
+    background: #72A7FF;
+}
 
 .input_file{
     color: #72A7CF;
     font-weight: bold;
+    background-color: #FFFFFF;
+}
+
+.input_file:hover{
+    color: #72A7CF;
+    font-weight: bold;
+    background-color: #EEEEEE;
 }
 
 /* SNACKBAR */
@@ -452,27 +466,47 @@ body {
     margin-right: 10px;
 }
 
-#progress-wrp {
-    border: 1px solid #0099CC;
+#barra_progreso{
+    margin-top: 50px;
+}
+
+#progress-wrp{
+    height: 30px;
     padding: 1px;
     position: relative;
-    border-radius: 3px;
+    border-radius: 5px;
     margin: 10px;
     text-align: left;
     background: #fff;
     box-shadow: inset 1px 3px 6px rgba(0, 0, 0, 0.12);
 }
 #progress-wrp .progress-bar{
-    height: 20px;
-    border-radius: 3px;
-    background-color: #f39ac7;
+    height: 28px;
+    border-radius: 5px;
+    background-color: #72A7FF;
     width: 0;
     box-shadow: inset 1px 1px 10px rgba(0, 0, 0, 0.11);
 }
 #progress-wrp .status{
-    top:3px;
-    left:50%;
+    top:7px;
+    left:48%;
     position:absolute;
     display:inline-block;
     color: #000000;
+}
+
+#fin_upload{
+    text-align: center;
+}
+
+#bt_fin_upload{
+    color: #72A7CF;
+    font-weight: bold;
+    background-color: #FFFFFF;
+}
+
+#bt_fin_upload:hover{
+    color: #72A7CF;
+    font-weight: bold;
+    background-color: #EEEEEE;
 }
