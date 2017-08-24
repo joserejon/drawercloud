@@ -17,12 +17,25 @@ def index(request):
 	global usuario, g_archivo
 	usuario = UsuarioForm()
 	g_archivo = ArchivoForm()
+	#Comprobar si el usuario existe
 	if not usuario.usuarioExiste(request.user.username):
 		usuario.save(request.user.username)
+
 	#Usuario actual
 	usuario = usuario.getUsuario(request.user.username)
 
-	return render(request, 'index.html', {'pagina_actual':'Documentos', 'usuario':usuario})
+	#Comprobar si el directorio raíz existe
+	d = DirectorioForm()
+	d.comprobarExisteDirectorioRaiz(usuario.username)
+
+	directorio_actual = 0
+	if request.method == 'GET':
+		directorio_actual = request.GET.get("directorio_actual", '')
+		if directorio_actual == '':
+			directorio_actual = 0
+
+
+	return render(request, 'index.html', {'pagina_actual':'Documentos', 'usuario':usuario, 'directorio_actual':directorio_actual})
 
 #Mostrar multimedia
 @login_required(login_url='/accounts/login/')
@@ -94,12 +107,13 @@ def usuario(request):
 @login_required(login_url='/accounts/login/')
 def upload(request):
 	if request.method == 'POST':
-		handle_uploaded_file(request.FILES['file'], request)
+		id_directorio = request.POST.get('id_directorio', '')
+		handle_uploaded_file(request.FILES['file'], request, id_directorio)
 		return render(request, 'index.html', {'pagina_actual':'Documentos', 'usuario':usuario})
 
-	return render(request, 'index.html', {'pagina_actual':'Documentos', 'usuario':usuario})
+	return render(request, 'index.html', {'pagina_actual':'Documentos', 'usuario':usuario, 'directorio_actual':id_directorio})
 
-def handle_uploaded_file(file, request):
+def handle_uploaded_file(file, request, id_directorio):
 	if not os.path.exists('upload/'):
 		os.mkdir('upload/')
 
@@ -108,7 +122,7 @@ def handle_uploaded_file(file, request):
 		for chunk in file.chunks():
 			destination.write(chunk)
 
-		g_archivo.save(filename, getTipoArchivo(filename), usuario.username, 'upload/' + filename)
+		g_archivo.save(filename, getTipoArchivo(filename), usuario.username, 'upload/' + filename, id_directorio)
 
 #Obtener la extensión de un archivo
 def getTipoArchivo(nombre_archivo):
@@ -122,8 +136,8 @@ def getTipoArchivo(nombre_archivo):
 #Obtener los archivos pertenecientes al usuario y mandarlos mediante Ajax
 @login_required(login_url='/accounts/login/')
 def getArchivos(request):
-
-	archivos = g_archivo.getArchivos(usuario.username)
+	id_directorio = request.GET.get('id_directorio', '')
+	archivos = g_archivo.getArchivos(usuario.username, id_directorio)
 	
 	return HttpResponse(json.dumps(archivos), content_type="application/json")
 
@@ -152,6 +166,7 @@ def verArchivo(request):
 def addFavoritos(request):
 	id_archivo = request.GET.get('id_archivo','')
 	pag_actual = request.GET.get('pag_actual','')
+	directorio_actual = request.GET.get('directorio_actual','')
 	g_archivo.addFavoritos(id_archivo)
 
 	#Si es llamado desde la página contenidoMultimedia.html
@@ -169,7 +184,7 @@ def addFavoritos(request):
 		return render(request, 'contenidoMultimedia.html', {'pagina_actual':tipo_contenido_titulo, 'tipo_contenido':tipo_contenido})
 	#Si es llamado desde la página index.html
 	elif pag_actual == "index.html":
-		return render(request, "index.html", {'pagina_actual':'Documentos', 'usuario':usuario})
+		return render(request, "index.html", {'pagina_actual':'Documentos', 'usuario':usuario, 'directorio_actual':directorio_actual})
 	#Si es llamado desde la página favoritos.html
 	elif pag_actual == "favoritos.html":
 		return render(request, "favoritos.html", {'pagina_actual':'Favoritos', 'usuario':usuario})
@@ -182,6 +197,7 @@ def addFavoritos(request):
 def delFavoritos(request):
 	id_archivo = request.GET.get('id_archivo','')
 	pag_actual = request.GET.get('pag_actual','')
+	directorio_actual = request.GET.get('directorio_actual','')
 	g_archivo.delFavoritos(id_archivo)
 
 	#Si es llamado desde la página contenidoMultimedia.html
@@ -199,7 +215,7 @@ def delFavoritos(request):
 		return render(request, 'contenidoMultimedia.html', {'pagina_actual':tipo_contenido_titulo, 'tipo_contenido':tipo_contenido})
 	#Si es llamado desde la página index.html
 	elif pag_actual == "index.html":
-		return render(request, "index.html", {'pagina_actual':'Documentos', 'usuario':usuario})
+		return render(request, "index.html", {'pagina_actual':'Documentos', 'usuario':usuario, 'directorio_actual':directorio_actual})
 	#Si es llamado desde la página favoritos.html
 	elif pag_actual == "favoritos.html":
 		return render(request, "favoritos.html", {'pagina_actual':'Favoritos', 'usuario':usuario})
@@ -221,6 +237,7 @@ def compartirArchivo(request):
 	id_archivo = request.GET.get('id_archivo_compartir','')
 	pag_actual = request.GET.get('pag_actual','')
 	username_destino = request.GET.get('username_destino','')
+	directorio_actual = request.GET.get('directorio_actual','')
 	archivo_compartido = ArchivoCompartidoForm()
 	archivo_compartido.compartirArchivo(usuario.username, username_destino, id_archivo)
 
@@ -239,7 +256,7 @@ def compartirArchivo(request):
 		return render(request, 'contenidoMultimedia.html', {'pagina_actual':tipo_contenido_titulo, 'tipo_contenido':tipo_contenido})
 	#Si es llamado desde la página index.html
 	elif pag_actual == "index.html":
-		return render(request, "index.html", {'pagina_actual':'Documentos', 'usuario':usuario})
+		return render(request, "index.html", {'pagina_actual':'Documentos', 'usuario':usuario, 'directorio_actual':directorio_actual})
 	#Si es llamado desde la página favoritos.html
 	else:
 		return render(request, "favoritos.html", {'pagina_actual':'Favoritos', 'usuario':usuario})
@@ -258,10 +275,11 @@ def getArchivosCompartidos(request):
 def borrarArchivo(request):
 	id_archivo = request.GET.get('id_archivo','')
 	pag_actual = request.GET.get('pag_actual','')
+	directorio_actual = request.GET.get('directorio_actual','')
 
 	if pag_actual == "index.html":
-		g_archivo.borrarArchivo(id_archivo)
-		return render(request, "index.html", {'pagina_actual':'Documentos', 'usuario':usuario})
+		g_archivo.borrarArchivo(id_archivo, directorio_actual, usuario.username)
+		return render(request, "index.html", {'pagina_actual':'Documentos', 'usuario':usuario, 'directorio_actual':directorio_actual})
 	elif pag_actual == "grupoTrabajo.html":
 		id_grupo = request.GET.get('id_grupo','')
 		gt = GrupoTrabajoForm()
@@ -391,5 +409,27 @@ def handle_uploaded_img_profile(file, request):
 def getImgPerfil(request):
 	u = UsuarioForm()
 	resultado = u.getImgPerfil(usuario.username)
+
+	return HttpResponse(json.dumps(resultado), content_type="application/json")
+
+#Crear un nuevo directorio
+@login_required(login_url='/accounts/login/')
+def crearDirectorio(request):
+	nombre_directorio = request.GET.get('nombre_directorio', '')
+	directorio_actual = request.GET.get('directorio_actual', '')
+
+	d = DirectorioForm()
+	d.crearDirectorio(nombre_directorio, directorio_actual, usuario.username)
+
+	return render(request, 'index.html', {'pagina_actual':'Documentos', 'usuario':usuario.username, 'directorio_actual':directorio_actual})
+
+#Comprobar si existe el directorio a crear
+@login_required(login_url='/accounts/login/')
+def comprobarExisteDirectorio(request):
+	nombre_directorio = request.GET.get('nombre_directorio','')
+	directorio_actual = request.GET.get('directorio_actual','')
+
+	d = DirectorioForm()
+	resultado = d.comprobarExisteDirectorio(nombre_directorio, directorio_actual, usuario.username)
 
 	return HttpResponse(json.dumps(resultado), content_type="application/json")

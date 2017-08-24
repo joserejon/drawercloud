@@ -11,9 +11,12 @@ class Usuario(Document):
     img_perfil = IntField()
 
 class Directorio(Document):
-	id_directorio = DecimalField()
-	nombre = StringField()
+	identificador_tupla = StringField(required=True, unique=True)
+	id_directorio = DecimalField(required=True)
+	nombre = StringField(required=True)
+	id_padre = DecimalField(required=True)
 	contenido = ListField()
+	propietario = StringField()
 
 class Archivo(Document):
 	id_archivo = DecimalField()

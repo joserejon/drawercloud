@@ -33,4 +33,6 @@ urlpatterns = [
 	url(r'^getParticipantes/$', views.getParticipantes, name='getParticipantes'),
 	url(r'^cargarImgPerfil/$', views.cargarImgPerfil, name='cargarImgPerfil'),
 	url(r'^getImgPerfil/$', views.getImgPerfil, name='getImgPerfil'),
+	url(r'^crearDirectorio/$', views.crearDirectorio, name='crearDirectorio'),
+	url(r'^comprobarExisteDirectorio/$', views.comprobarExisteDirectorio, name='comprobarExisteDirectorio'),
 ]

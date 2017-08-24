@@ -69,11 +69,75 @@ class UsuarioForm():
 
 
 ################################################################
+#Form para la clase Directorio
+class DirectorioForm():
+
+	#Crear el directorio raíz
+	def crearDirectorioRaiz(self, propietario):
+		d = Directorio()
+
+		d.id_directorio = 0
+		d.nombre = "raíz"
+		d.id_padre = -1
+		d.propietario = propietario
+		d.identificador_tupla = propietario + str(d.id_directorio)
+		d.save()
+
+		return d
+
+	#Comprobar si existe el directorio raíz
+	def comprobarExisteDirectorioRaiz(self, propietario):
+		directorio = Directorio.objects(id_directorio=0, propietario=propietario)
+		if len(directorio) == 0:
+			self.crearDirectorioRaiz(propietario)
+
+	#Comprobar si existe el directorio a crear
+	def comprobarExisteDirectorio(self, nombre_directorio, directorio_actual, propietario):
+		directorio = list(Directorio.objects.filter(id_directorio=directorio_actual, propietario=propietario))
+
+		#Recorrer el contenido para directorio_actual
+		for contenido in directorio[0].contenido:
+			#Escoger la tupla que es directorio
+			if contenido[1] == "directorio":
+				#Comprobar, con el id del directorio, su nombre
+				d = Directorio.objects(id_directorio=contenido[0])
+				if d[0].nombre == nombre_directorio:
+					return True
+
+		return False
+
+
+	#Crear un nuevo directorio
+	def crearDirectorio(self, nombre_directorio, id_padre, propietario):
+		d = Directorio()
+
+		directorio = Directorio.objects(propietario=propietario)
+		d.id_directorio = directorio[len(directorio) - 1].id_directorio + 1
+
+		d.nombre = nombre_directorio
+		d.id_padre = id_padre
+		d.propietario = propietario
+		d.identificador_tupla = propietario + str(d.id_directorio)
+
+		contenido = (int(d.id_directorio), 'directorio')
+		self.actualizarContenidoDirectorio(id_padre, contenido, propietario)
+		d.save()
+
+		return d
+
+	#Actualizar contenido de un directorio
+	#nuevo contenido -> tupla con la forma ( id_contenido , tipo_contenido )
+	#tipo contenido indica si es directorio o archivo
+	def actualizarContenidoDirectorio(self, id_directorio, nuevo_contenido, propietario):
+		Directorio.objects(id_directorio=id_directorio, propietario=propietario).update(add_to_set__contenido=[nuevo_contenido])
+
+
+################################################################
 #Form para la clase Archivo
 class ArchivoForm():
 
 	#Guardar un nuevo archivo
-	def save(self, nombre_archivo, tipo_archivo, username, path):
+	def save(self, nombre_archivo, tipo_archivo, username, path, id_directorio):
 		a = Archivo()
 
 		archivo = Archivo.objects.all()
@@ -93,19 +157,35 @@ class ArchivoForm():
 		a.favorito = False
 		a.save()
 
+		d = DirectorioForm()
+		contenido = (int(a.id_archivo), 'archivo')
+		d.actualizarContenidoDirectorio(id_directorio, contenido, username)
+
 		return a.id_archivo
 
 	#Devolver una lista con los archivos del usuario
-	def getArchivos(self, username):
-
-		archivos = list(Archivo.objects.filter(propietario=username))
+	def getArchivos(self, username, id_directorio):
 		archivos_dic = {}
+		subdirectorios_dic = {}
+		directorio = list(Directorio.objects.filter(id_directorio=id_directorio, propietario=username))
 
-		for item in archivos:
-			archivos_dic[int(item.id_archivo)] = [int(item.id_archivo), item.nombre, item.tipo_archivo, 
-			str(item.fecha_subida), str(item.tam_archivo), item.favorito]
+		#Recorrer el contenido para directorio_actual
+		for contenido in directorio[0].contenido:
+			#Escoger la tupla que es archivo
+			if contenido[1] == "archivo":
+				archivo = Archivo.objects(id_archivo=contenido[0])
+				archivo = archivo[0]
+				archivos_dic[int(archivo.id_archivo)] = [int(archivo.id_archivo), archivo.nombre, archivo.tipo_archivo, 
+				str(archivo.fecha_subida), str(archivo.tam_archivo), archivo.favorito]
+			else:
+				subdirectorio = Directorio.objects(id_directorio=contenido[0])
+				subdirectorio = subdirectorio[0]
 
-		return archivos_dic
+				subdirectorios_dic[int(subdirectorio.id_directorio)] = [int(subdirectorio.id_directorio), subdirectorio.nombre]
+
+		contenido = (subdirectorios_dic, archivos_dic)
+
+		return contenido
 
 	def getNombreArchivo(self, id_archivo):
 		archivo = list(Archivo.objects.filter(id_archivo=id_archivo))
@@ -144,16 +224,32 @@ class ArchivoForm():
 		return archivos_dic
 
 	#Borrar un archivo
-	def borrarArchivo(self, id_archivo):
+	def borrarArchivo(self, id_archivo, id_directorio, propietario):
 		archivos = list(Archivo.objects.filter(id_archivo=id_archivo))
 		archivos[0].archivo.delete()
 		ArchivoCompartido.objects.filter(id_archivo_compartido=id_archivo).delete()
 		Archivo.objects.filter(id_archivo=id_archivo).delete()
+		contenido = (id_archivo, 'archivo')
+		#Directorio.objects(id_directorio=id_directorio).update(pull__contenido=int(id_archivo))
+		directorio = list(Directorio.objects.filter(id_directorio=id_directorio, propietario=propietario))
+
+		contador = 0
+		#Recorrer el contenido para directorio_actual
+		for contenido in directorio[0].contenido:
+			#Escoger la tupla que es directorio
+			if contenido[1] == "archivo" and contenido[0] == int(id_archivo):
+				del directorio[0].contenido[contador]
+				directorio[0].save()
+				break
+
+			contador += 1
+
 
 ################################################################
 #Form para la clase ArchivoCompartido
 class ArchivoCompartidoForm(Document):
 
+	#Compartir un archivo
 	def compartirArchivo(self, propietario, destinatario, id_archivo_compartido):
 		a = ArchivoCompartido()
 
@@ -289,6 +385,7 @@ class GrupoTrabajoForm():
 			cont += 1
 
 		return participantes_dic
+
 
 
 ################################################################
