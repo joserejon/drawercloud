@@ -462,7 +462,7 @@
 	            	document.getElementById('participantes').innerHTML = "";
 	            	var participantes = 0;
  					for(var i in datos){
-						document.getElementById('participantes').innerHTML += "<li><img class='img_perfil' src='" + datos[i][1] + "'>" + datos[i][0] + "</li>"
+						document.getElementById('participantes').innerHTML += "<li><img class='img_perfil' src='" + datos[i][1] + "'>" + datos[i][0] + "</li>";
 						participantes++;
  					}
  					document.getElementById('num_participantes').innerHTML = "Participantes: " + participantes;

@@ -428,8 +428,52 @@ def crearDirectorio(request):
 def comprobarExisteDirectorio(request):
 	nombre_directorio = request.GET.get('nombre_directorio','')
 	directorio_actual = request.GET.get('directorio_actual','')
-
 	d = DirectorioForm()
+
 	resultado = d.comprobarExisteDirectorio(nombre_directorio, directorio_actual, usuario.username)
 
 	return HttpResponse(json.dumps(resultado), content_type="application/json")
+
+#Obtener los directorios del usuario posibles para mover
+@login_required(login_url='/accounts/login/')
+def getDirectoriosMover(request):
+	directorio_actual = request.GET.get('directorio_actual', '')
+	d = DirectorioForm()
+
+	resultado = d.getDirectoriosMover(usuario.username, directorio_actual)
+
+	return HttpResponse(json.dumps(resultado), content_type="application/json")
+
+#Mover un archivo a otro directorio
+@login_required(login_url='/accounts/login/')
+def moverArchivo(request):
+	id_archivo_mover = request.GET.get('id_archivo', '')
+	id_directorio_dest = request.GET.get('id_directorio_dest', '')
+	pag_actual = request.GET.get('pag_actual', '')
+	directorio_actual = request.GET.get('directorio_actual', '')
+	d = DirectorioForm()
+
+	d.moverArchivo(id_archivo_mover, directorio_actual, id_directorio_dest, usuario.username)
+
+	return render(request, 'index.html', {'pagina_actual':'Documentos', 'usuario':usuario.username, 'directorio_actual':directorio_actual})
+
+#Obtener los directorios del usuario posibles para copiar
+@login_required(login_url='/accounts/login/')
+def getDirectoriosCopiar(request):
+	d = DirectorioForm()
+	resultado = d.getDirectoriosCopiar(usuario.username)
+
+	return HttpResponse(json.dumps(resultado), content_type="application/json")
+
+#Copiar un archivo
+@login_required(login_url='/accounts/login/')
+def copiarArchivo(request):
+	id_archivo_copiar = request.GET.get('id_archivo', '')
+	id_directorio_dest = request.GET.get('id_directorio_dest', '')
+	pag_actual = request.GET.get('pag_actual', '')
+	directorio_actual = request.GET.get('directorio_actual', '')
+	d = DirectorioForm()
+
+	d.copiarArchivo(id_archivo_copiar, directorio_actual, id_directorio_dest, usuario.username)
+
+	return render(request, 'index.html', {'pagina_actual':'Documentos', 'usuario':usuario.username, 'directorio_actual':directorio_actual})

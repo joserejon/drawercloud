@@ -11,10 +11,10 @@
                 <a href="#" class="context-menu__link" id="compartir" data-action="compartir">Compartir</a>
             </li>
             <li class="context-menu__item">
-                <a href="#" class="context-menu__link" id="copiar" data-action="copiar">Copiar</a>
+                <a href="#" class="context-menu__link" id="copiar" data-action="copiar">Copiar en</a>
             </li>
             <li class="context-menu__item">
-                <a href="#" class="context-menu__link" id="mover" data-action="mover">Mover</a>
+                <a href="#" class="context-menu__link" id="mover" data-action="mover">Mover a</a>
             </li>
             <li class="context-menu__item">
                 <a href="#" class="context-menu__link" id="favorito" data-action="favorito">Añadir a favoritos</a>
@@ -44,65 +44,87 @@
 			<li class="barra"><a href="#abrirPopUp">Subir archivo</a></li>
 			<li class="barra"><a href="#abrirPopUpCrearCarpeta">Crear carpeta</a></li>
 		</ul>
+	</div>
 
-		<!-- PopUp para subir un archivo -->
-		<div id="abrirPopUp" class="popUp">
-			<div>
-				<a id="bt_close_popup" href="#close" title="Close" class="close">X</a>
-				<form action="{% url 'upload' %}" method="POST" enctype="multipart/form-data" id="upload_form">
-					{% csrf_token %} 
-					<input type="file" name="file" class="input_file btn btn-default" required/>
-					<input type="hidden" id="id_directorio" name="id_directorio" value="{{ directorio_actual }}" />
-					<input id="bt_upload" type="submit" value="Subir archivo" class="input_file btn btn-default" />
-				</form>
+	<!-- PopUp para subir un archivo -->
+	<div id="abrirPopUp" class="popUp">
+		<div>
+			<a id="bt_close_popup" href="#close" title="Close" class="close">X</a>
+			<form action="{% url 'upload' %}" method="POST" enctype="multipart/form-data" id="upload_form">
+				{% csrf_token %} 
+				<input type="file" name="file" class="input_file btn btn-default" required/>
+				<input type="hidden" id="id_directorio" name="id_directorio" value="{{ directorio_actual }}" />
+				<input id="bt_upload" type="submit" value="Subir archivo" class="input_file btn btn-default" />
+			</form>
 
-				<div id="barra_progreso">
-					<!-- Código insertado desde javascript  -->
-				</div>
-				<div id="fin_upload">
-					<!-- Código insertado desde javascript  -->
-				</div>
+			<div id="barra_progreso">
+				<!-- Código insertado desde javascript  -->
+			</div>
+			<div id="fin_upload">
+				<!-- Código insertado desde javascript  -->
 			</div>
 		</div>
+	</div>
 
-		<!-- PopUp para crear un directorio -->
-		<div id="abrirPopUpCrearCarpeta" class="popUp">
-			<div>
-				<a href="#close" title="Close" class="close">X</a>
-				<form action="javascript:comprobarExisteDirectorio();" method="POST">
-					{% csrf_token %}
-					<input type="text" id="nombre_directorio" name="nombre_directorio" placeholder="Nombre de la carpeta" required/>
-					<input type="hidden" id="directorio_actual" name="directorio_actual" value="{{ directorio_actual }}" />
-					<input type="submit" value="Crear carpeta" class="input_file btn btn-default" />
-				</form>
-			</div>
+	<!-- PopUp para crear un directorio -->
+	<div id="abrirPopUpCrearCarpeta" class="popUp">
+		<div>
+			<a href="#close" title="Close" class="close">X</a>
+			<form action="javascript:comprobarExisteDirectorio();" method="POST">
+				{% csrf_token %}
+				<input type="text" id="nombre_directorio" name="nombre_directorio" placeholder="Nombre de la carpeta" required/>
+				<input type="hidden" id="directorio_actual" name="directorio_actual" value="{{ directorio_actual }}" />
+				<input type="submit" value="Crear carpeta" class="input_file btn btn-default" />
+			</form>
 		</div>
+	</div>
 
-		<!-- PopUp para compartir un archivo -->
-		<div id="abrirPopUpCompartir" class="popUp">
-			<div>
-				<a href="#close" title="Close" class="close">X</a>
-				<form action="javascript:comprobarUsuarioCompartir();" method="POST">
-					{% csrf_token %}
-					<input type="text" id="username_destino" name="username_destino" placeholder="Username de destino" required/>
-					<input type="hidden" id="id_archivo_compartir" name="id_archivo_compartir" value="" />
-					<input type="hidden" id="pag_actual" name="pag_actual" value="index.html" />
-					<input type="submit" value="Compartir" class="input_file btn btn-default" />
-				</form>
-			</div>
+	<!-- PopUp para compartir un archivo -->
+	<div id="abrirPopUpCompartir" class="popUp">
+		<div>
+			<a href="#close" title="Close" class="close">X</a>
+			<form action="javascript:comprobarUsuarioCompartir();" method="POST">
+				{% csrf_token %}
+				<input type="text" id="username_destino" name="username_destino" placeholder="Username de destino" required/>
+				<input type="hidden" id="id_archivo_compartir" name="id_archivo_compartir" value="" />
+				<input type="hidden" id="pag_actual" name="pag_actual" value="index.html" />
+				<input type="submit" value="Compartir" class="input_file btn btn-default" />
+			</form>
 		</div>
+	</div>
 
-		<!-- PopUp para eliminar un archivo -->
-		<div id="abrirPopUpEliminar" class="popUp">
-			<div>
-				<a href="#close" title="Close" class="close">X</a>
-				<form action="javascript:eliminarArchivo();" method="POST">
-					{% csrf_token %}
-					<label>¿Realmente desea eliminar el archivo?</label>
-					<input type="hidden" id="id_archivo_eliminar" name="id_archivo_eliminar" value="" />
-					<input type="submit" value="Eliminar" class="input_file btn btn-default" />
-				</form>
-			</div>
+	<!-- PopUp para eliminar un archivo -->
+	<div id="abrirPopUpEliminar" class="popUp">
+		<div>
+			<a href="#close" title="Close" class="close">X</a>
+			<form action="javascript:eliminarArchivo();" method="POST">
+				{% csrf_token %}
+				<label>¿Realmente desea eliminar el archivo?</label>
+				<input type="hidden" id="id_archivo_eliminar" name="id_archivo_eliminar" value="" />
+				<input type="submit" value="Eliminar" class="input_file btn btn-default" />
+			</form>
+		</div>
+	</div>
+
+	<!-- PopUp para ver los directorios del usuario posibles para mover -->
+	<div id="abrirPopUpMoverA" class="popUp">
+		<div>
+			<a href="#close" title="Close" class="close">X</a>
+			<label id="label_mover"></label>
+			<ul id="ver_directorios_mover" class="moverA">
+				<!-- Código insertado desde javascript -->
+			</ul>
+		</div>
+	</div>
+
+	<!-- PopUp para ver los directorios del usuario posibles para copiar -->
+	<div id="abrirPopUpCopiarEn" class="popUp">
+		<div>
+			<a href="#close" title="Close" class="close">X</a>
+			<label id="label_mover"></label>
+			<ul id="ver_directorios_copiar" class="moverA">
+				<!-- Código insertado desde javascript -->
+			</ul>
 		</div>
 	</div>
 
@@ -219,8 +241,10 @@
 	        			id = Number(id_string.replace('a',''));
 	        			window.location = document.getElementById(id_string).href = "{% url 'verArchivo' %}?id_archivo=" + datos[1][id][0];
 	        		}
-	        		else
-	        			alert("directorio");
+	        		else{
+	        			id = Number(id_string.replace('d',''));
+	        			window.location = document.getElementById(id_string).href = "{% url 'index' %}?directorio_actual=" + id;
+	        		}
 	        	}
 	        });
 	    }
@@ -254,14 +278,14 @@
 	                                    "</button>" +
 	                                    "<ul class='dropdown-menu' role='menu'>" +
 	                                        "<li><a href='{% url 'descargarArchivo' %}?id_archivo=" + datos[0][i][0] + "'>Descargar</a></li>" +
-	                                        "<li><a href='#abrirPopUpCompartir' onClick='compartirArchivo(" + datos[0][i][0] + "); return false;'>Compartir</a></li>" +
+	                                        "<li><a href='#abrirPopUpCompartir' onclick='compartirArchivo(" + datos[0][i][0] + "); return false;'>Compartir</a></li>" +
 	                                        "<li><a href='#'>Copiar</a></li>" +
 	                                        "<li><a href='#'>Mover</a></li>";
 	                                        if(favorito == "")
 	                                        	html += "<li><a href='{% url 'addFavoritos' %}?id_archivo=" + datos[0][i][0] + "&pag_actual=index.html'>Añadir a favoritos</a></li>";
 	                                        else
 	                                        	html += "<li><a href='{% url 'delFavoritos' %}?id_archivo=" + datos[0][i][0] + "&pag_actual=index.html'>Eliminar de favoritos</a></li>";
-	                                        html += "<li><a href='#abrirPopUpEliminar' onClick='comprobarEliminarArchivo(" + datos[0][i][0] + "); return false;'>Eliminar</a></li>" +
+	                                        html += "<li><a href='#abrirPopUpEliminar' onclick='comprobarEliminarArchivo(" + datos[0][i][0] + "); return false;'>Eliminar</a></li>" +
 	                                    "</ul>" +
 	                                "</div>" +
 	                            "</td>" +
@@ -285,14 +309,14 @@
 	                                    "</button>" +
 	                                    "<ul class='dropdown-menu' role='menu'>" +
 	                                        "<li><a href='{% url 'descargarArchivo' %}?id_archivo=" + datos[1][i][0] + "'>Descargar</a></li>" +
-	                                        "<li><a href='#abrirPopUpCompartir' onClick='compartirArchivo(" + datos[1][i][0] + "); return false;'>Compartir</a></li>" +
-	                                        "<li><a href='#'>Copiar</a></li>" +
-	                                        "<li><a href='#'>Mover</a></li>";
+	                                        "<li><a href='#abrirPopUpCompartir' onclick='compartirArchivo(" + datos[1][i][0] + "); return false;'>Compartir</a></li>" +
+	                                        "<li><a href='#abrirPopUpCopiarEn' onclick='getDirectoriosCopiar(" + datos[1][i][0] + ");'>Copiar en</a></li>" +
+	                                        "<li><a href='#abrirPopUpMoverA' onclick='getDirectoriosMover(" + datos[1][i][0] + ");'>Mover a</a></li>";
 	                                        if(favorito == "")
 	                                        	html += "<li><a href='{% url 'addFavoritos' %}?id_archivo=" + datos[1][i][0] + "&pag_actual=index.html&directorio_actual={{directorio_actual}}'>Añadir a favoritos</a></li>";
 	                                        else
 	                                        	html += "<li><a href='{% url 'delFavoritos' %}?id_archivo=" + datos[1][i][0] + "&pag_actual=index.html&directorio_actual={{directorio_actual}}'>Eliminar de favoritos</a></li>";
-	                                        html += "<li><a href='#abrirPopUpEliminar' onClick='comprobarEliminarArchivo(" + datos[1][i][0] + "); return false;'>Eliminar</a></li>" +
+	                                        html += "<li><a href='#abrirPopUpEliminar' onclick='comprobarEliminarArchivo(" + datos[1][i][0] + "); return false;'>Eliminar</a></li>" +
 	                                    "</ul>" +
 	                                "</div>" +
 	                            "</td>" +
@@ -480,6 +504,72 @@
 			    window.location.href = "{% url 'borrarArchivo' %}?id_archivo=" + id_archivo_eliminar + "&pag_actual=index.html&directorio_actual=" + directorio_actual;
 			}, 1800);
 	   		
+	   	}
+
+	   	//Obtener los directorios del usuario posibles para mover
+	   	function getDirectoriosMover(id_archivo_mover){
+	   		window.location = document.getElementById('abrirPopUpMoverA').href = "#abrirPopUpMoverA";
+	   		$.ajax({
+	            url : "{% url 'getDirectoriosMover' %}",
+	            data : {
+	                directorio_actual: directorio_actual
+	            },
+	            type : 'GET',
+	            dataType: 'json',
+	            success : function(datos){
+	            	document.getElementById('ver_directorios_mover').innerHTML = "";
+					for(var i in datos){
+						document.getElementById('ver_directorios_mover').innerHTML += "<li id='" + datos[i][0] + "'>" + datos[i][1] + "</li>";
+					}
+
+					$("#ver_directorios_mover li").click(function( event ) {
+						id_directorio_dest = this.id;
+						mostrarSnackbar("Archivo movido a \"" + datos[id_directorio_dest][1] + "\"");
+						setTimeout(function() {
+						    window.location.href = "{% url 'moverArchivo' %}?id_archivo=" + id_archivo_mover + "&id_directorio_dest=" + id_directorio_dest + "&pag_actual=index.html&directorio_actual=" + directorio_actual;
+						}, 1800);
+					});
+	            },
+	            failure : function(datos){
+	                alert("Error: no se pudo realizar la consulta");
+	            },
+	            complete : function(datos) {
+	                console.log('Petición realizada');
+	            }
+	     	});
+	   	}
+
+	   	//Obtener los directorios del usuario posibles para copiar
+	   	function getDirectoriosCopiar(id_archivo_copiar){
+	   		window.location = document.getElementById('abrirPopUpCopiarEn').href = "#abrirPopUpCopiarEn";
+	   		$.ajax({
+	            url : "{% url 'getDirectoriosCopiar' %}",
+	            data : {
+
+	            },
+	            type : 'GET',
+	            dataType: 'json',
+	            success : function(datos){
+	            	document.getElementById('ver_directorios_copiar').innerHTML = "";
+					for(var i in datos){
+						document.getElementById('ver_directorios_copiar').innerHTML += "<li id='" + datos[i][0] + "'>" + datos[i][1] + "</li>";
+					}
+
+					$("#ver_directorios_copiar li").click(function( event ) {
+						id_directorio_dest = this.id;
+						mostrarSnackbar("Archivo copiado en \"" + datos[id_directorio_dest][1] + "\"");
+						setTimeout(function() {
+						    window.location.href = "{% url 'copiarArchivo' %}?id_archivo=" + id_archivo_copiar + "&id_directorio_dest=" + id_directorio_dest + "&pag_actual=index.html&directorio_actual=" + directorio_actual;
+						}, 1800);
+					});
+	            },
+	            failure : function(datos){
+	                alert("Error: no se pudo realizar la consulta");
+	            },
+	            complete : function(datos) {
+	                console.log('Petición realizada');
+	            }
+	     	});
 	   	}
 
 
@@ -714,9 +804,9 @@
 				else if(accion == "compartir")
 					compartirArchivo(Number(id_item_clicked.replace('a','')));
 				else if(accion == "copiar")
-					alert("copiar");
+					getDirectoriosCopiar(Number(id_item_clicked.replace('a','')));
 				else if(accion == "mover")
-					alert("mover");
+					getDirectoriosMover(Number(id_item_clicked.replace('a','')));
 				else if(accion == "favorito"){
 					if(document.getElementById("favorito").innerText == "Añadir a favoritos")
 						window.location = document.getElementById(id_item_clicked).href = "{% url 'addFavoritos' %}?id_archivo=" + Number(id_item_clicked.replace('a','')) + "&pag_actual=index.html&directorio_actual={{directorio_actual}}";
