@@ -35,8 +35,11 @@ urlpatterns = [
 	url(r'^getImgPerfil/$', views.getImgPerfil, name='getImgPerfil'),
 	url(r'^crearDirectorio/$', views.crearDirectorio, name='crearDirectorio'),
 	url(r'^comprobarExisteDirectorio/$', views.comprobarExisteDirectorio, name='comprobarExisteDirectorio'),
-	url(r'^getDirectoriosMover/$', views.getDirectoriosMover, name='getDirectoriosMover'),
+	url(r'^getDirectoriosMoverArchivo/$', views.getDirectoriosMoverArchivo, name='getDirectoriosMoverArchivo'),
 	url(r'^moverArchivo/$', views.moverArchivo, name='moverArchivo'),
 	url(r'^getDirectoriosCopiar/$', views.getDirectoriosCopiar, name='getDirectoriosCopiar'),
 	url(r'^copiarArchivo/$', views.copiarArchivo, name='copiarArchivo'),
+	url(r'^getDirectoriosMoverDirectorio/$', views.getDirectoriosMoverDirectorio, name='getDirectoriosMoverDirectorio'),
+	url(r'^moverDirectorio/$', views.moverDirectorio, name='moverDirectorio'),
+	url(r'^copiarDirectorio/$', views.copiarDirectorio, name='copiarDirectorio'),
 ]

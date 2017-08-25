@@ -279,13 +279,9 @@
 	                                    "<ul class='dropdown-menu' role='menu'>" +
 	                                        "<li><a href='{% url 'descargarArchivo' %}?id_archivo=" + datos[0][i][0] + "'>Descargar</a></li>" +
 	                                        "<li><a href='#abrirPopUpCompartir' onclick='compartirArchivo(" + datos[0][i][0] + "); return false;'>Compartir</a></li>" +
-	                                        "<li><a href='#'>Copiar</a></li>" +
-	                                        "<li><a href='#'>Mover</a></li>";
-	                                        if(favorito == "")
-	                                        	html += "<li><a href='{% url 'addFavoritos' %}?id_archivo=" + datos[0][i][0] + "&pag_actual=index.html'>Añadir a favoritos</a></li>";
-	                                        else
-	                                        	html += "<li><a href='{% url 'delFavoritos' %}?id_archivo=" + datos[0][i][0] + "&pag_actual=index.html'>Eliminar de favoritos</a></li>";
-	                                        html += "<li><a href='#abrirPopUpEliminar' onclick='comprobarEliminarArchivo(" + datos[0][i][0] + "); return false;'>Eliminar</a></li>" +
+	                                        "<li><a href='#abrirPopUpCopiarEn' onclick='getDirectoriosCopiar(" + datos[0][i][0] + ", 0);'>Copiar en</a></li>" +
+	                                        "<li><a href='#abrirPopUpMoverA' onclick='getDirectoriosMoverDirectorio(" + datos[0][i][0] + ");'>Mover a</a></li>" +
+	                                        "<li><a href='#abrirPopUpEliminar' onclick='comprobarEliminarArchivo(" + datos[0][i][0] + "); return false;'>Eliminar</a></li>" +
 	                                    "</ul>" +
 	                                "</div>" +
 	                            "</td>" +
@@ -310,8 +306,8 @@
 	                                    "<ul class='dropdown-menu' role='menu'>" +
 	                                        "<li><a href='{% url 'descargarArchivo' %}?id_archivo=" + datos[1][i][0] + "'>Descargar</a></li>" +
 	                                        "<li><a href='#abrirPopUpCompartir' onclick='compartirArchivo(" + datos[1][i][0] + "); return false;'>Compartir</a></li>" +
-	                                        "<li><a href='#abrirPopUpCopiarEn' onclick='getDirectoriosCopiar(" + datos[1][i][0] + ");'>Copiar en</a></li>" +
-	                                        "<li><a href='#abrirPopUpMoverA' onclick='getDirectoriosMover(" + datos[1][i][0] + ");'>Mover a</a></li>";
+	                                        "<li><a href='#abrirPopUpCopiarEn' onclick='getDirectoriosCopiar(" + datos[1][i][0] + ", 1);'>Copiar en</a></li>" +
+	                                        "<li><a href='#abrirPopUpMoverA' onclick='getDirectoriosMoverArchivo(" + datos[1][i][0] + ");'>Mover a</a></li>";
 	                                        if(favorito == "")
 	                                        	html += "<li><a href='{% url 'addFavoritos' %}?id_archivo=" + datos[1][i][0] + "&pag_actual=index.html&directorio_actual={{directorio_actual}}'>Añadir a favoritos</a></li>";
 	                                        else
@@ -506,11 +502,11 @@
 	   		
 	   	}
 
-	   	//Obtener los directorios del usuario posibles para mover
-	   	function getDirectoriosMover(id_archivo_mover){
+	   	//Obtener los directorios del usuario posibles para mover un archivo
+	   	function getDirectoriosMoverArchivo(id_archivo_mover){
 	   		window.location = document.getElementById('abrirPopUpMoverA').href = "#abrirPopUpMoverA";
 	   		$.ajax({
-	            url : "{% url 'getDirectoriosMover' %}",
+	            url : "{% url 'getDirectoriosMoverArchivo' %}",
 	            data : {
 	                directorio_actual: directorio_actual
 	            },
@@ -526,7 +522,7 @@
 						id_directorio_dest = this.id;
 						mostrarSnackbar("Archivo movido a \"" + datos[id_directorio_dest][1] + "\"");
 						setTimeout(function() {
-						    window.location.href = "{% url 'moverArchivo' %}?id_archivo=" + id_archivo_mover + "&id_directorio_dest=" + id_directorio_dest + "&pag_actual=index.html&directorio_actual=" + directorio_actual;
+					    	window.location.href = "{% url 'moverArchivo' %}?id_archivo=" + id_archivo_mover + "&id_directorio_dest=" + id_directorio_dest + "&pag_actual=index.html&directorio_actual=" + directorio_actual;
 						}, 1800);
 					});
 	            },
@@ -540,7 +536,8 @@
 	   	}
 
 	   	//Obtener los directorios del usuario posibles para copiar
-	   	function getDirectoriosCopiar(id_archivo_copiar){
+	   	// tipo_contenido == 0 => directorio; tipo_contenido == 1 => archivo
+	   	function getDirectoriosCopiar(id_contenido_copiar, tipo_contenido){
 	   		window.location = document.getElementById('abrirPopUpCopiarEn').href = "#abrirPopUpCopiarEn";
 	   		$.ajax({
 	            url : "{% url 'getDirectoriosCopiar' %}",
@@ -557,9 +554,49 @@
 
 					$("#ver_directorios_copiar li").click(function( event ) {
 						id_directorio_dest = this.id;
-						mostrarSnackbar("Archivo copiado en \"" + datos[id_directorio_dest][1] + "\"");
+						if(!tipo_contenido)
+							mostrarSnackbar("Directorio copiado en \"" + datos[id_directorio_dest][1] + "\"");
+						else
+							mostrarSnackbar("Archivo copiado en \"" + datos[id_directorio_dest][1] + "\"");
 						setTimeout(function() {
-						    window.location.href = "{% url 'copiarArchivo' %}?id_archivo=" + id_archivo_copiar + "&id_directorio_dest=" + id_directorio_dest + "&pag_actual=index.html&directorio_actual=" + directorio_actual;
+							if(!tipo_contenido)
+								window.location.href = "{% url 'copiarDirectorio' %}?id_archivo=" + id_contenido_copiar + "&id_directorio_dest=" + id_directorio_dest + "&pag_actual=index.html&directorio_actual=" + directorio_actual;
+							else
+						    	window.location.href = "{% url 'copiarArchivo' %}?id_archivo=" + id_contenido_copiar + "&id_directorio_dest=" + id_directorio_dest + "&pag_actual=index.html&directorio_actual=" + directorio_actual;
+						}, 1800);
+					});
+	            },
+	            failure : function(datos){
+	                alert("Error: no se pudo realizar la consulta");
+	            },
+	            complete : function(datos) {
+	                console.log('Petición realizada');
+	            }
+	     	});
+	   	}
+
+	   	//Obtener los directorios del usuario posibles para mover un directorio
+	   	function getDirectoriosMoverDirectorio(id_directorio_mover){
+	   		window.location = document.getElementById('abrirPopUpMoverA').href = "#abrirPopUpMoverA";
+	   		$.ajax({
+	            url : "{% url 'getDirectoriosMoverDirectorio' %}",
+	            data : {
+	                directorio_actual: directorio_actual,
+	                directorio_seleccionado: id_directorio_mover
+	            },
+	            type : 'GET',
+	            dataType: 'json',
+	            success : function(datos){
+	            	document.getElementById('ver_directorios_mover').innerHTML = "";
+					for(var i in datos){
+						document.getElementById('ver_directorios_mover').innerHTML += "<li id='" + datos[i][0] + "'>" + datos[i][1] + "</li>";
+					}
+
+					$("#ver_directorios_mover li").click(function( event ) {
+						id_directorio_dest = this.id;
+						mostrarSnackbar("Archivo movido a \"" + datos[id_directorio_dest][1] + "\"");
+						setTimeout(function() {
+					    	window.location.href = "{% url 'moverDirectorio' %}?id_archivo=" + id_directorio_mover + "&id_directorio_dest=" + id_directorio_dest + "&pag_actual=index.html&directorio_actual=" + directorio_actual;
 						}, 1800);
 					});
 	            },
@@ -683,14 +720,19 @@
 			function contextListener(){
 				document.addEventListener("contextmenu", function(e){
 					taskItemInContext = clickInsideElement(e, taskItemClassName);
+					
+					id_item_clicked = e.target.id; //Donde se ha hecho click derecho
 
-					id_item_clicked = e.target.id //Donde se ha hecho click derecho
-
-					//Si el documento está marcado como favorito
-					if(mis_archivos[1][Number(id_item_clicked.replace('a',''))][5])
-						document.getElementById("favorito").innerText = "Eliminar de favoritos";
-					else
-						document.getElementById("favorito").innerText = "Añadir a favoritos";
+					if(id_item_clicked[0] == 'a'){
+						//Si el documento está marcado como favorito
+						if(mis_archivos[1][Number(id_item_clicked.replace('a',''))][5])
+							document.getElementById("favorito").innerText = "Eliminar de favoritos";
+						else
+							document.getElementById("favorito").innerText = "Añadir a favoritos";
+					}
+					else{
+						document.getElementById("favorito").innerText = "";
+					}
 					
 					if(taskItemInContext){
 						e.preventDefault();
@@ -804,9 +846,16 @@
 				else if(accion == "compartir")
 					compartirArchivo(Number(id_item_clicked.replace('a','')));
 				else if(accion == "copiar")
-					getDirectoriosCopiar(Number(id_item_clicked.replace('a','')));
-				else if(accion == "mover")
-					getDirectoriosMover(Number(id_item_clicked.replace('a','')));
+					if(id_item_clicked[0] == 'a')
+						getDirectoriosCopiar(Number(id_item_clicked.replace('a','')), 1);
+					else
+						getDirectoriosCopiar(Number(id_item_clicked.replace('d','')), 0);
+				else if(accion == "mover"){
+					if(id_item_clicked[0] == 'a')
+						getDirectoriosMoverArchivo(Number(id_item_clicked.replace('a','')));
+					else
+						getDirectoriosMoverDirectorio(Number(id_item_clicked.replace('d','')));
+				}
 				else if(accion == "favorito"){
 					if(document.getElementById("favorito").innerText == "Añadir a favoritos")
 						window.location = document.getElementById(id_item_clicked).href = "{% url 'addFavoritos' %}?id_archivo=" + Number(id_item_clicked.replace('a','')) + "&pag_actual=index.html&directorio_actual={{directorio_actual}}";

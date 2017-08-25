@@ -131,14 +131,35 @@ class DirectorioForm():
 	def actualizarContenidoDirectorio(self, id_directorio, nuevo_contenido, propietario):
 		Directorio.objects(id_directorio=id_directorio, propietario=propietario).update(add_to_set__contenido=[nuevo_contenido])
 
-	#Obtener los directorios del usuario posibles para mover
-	def getDirectoriosMover(self, propietario, directorio_actual):
+	#Obtener los directorios del usuario posibles para mover un archivo
+	def getDirectoriosMoverArchivo(self, propietario, directorio_actual):
 		directorios = list(Directorio.objects.filter(propietario=propietario))
 		directorios_dic = {}
 
 		for directorio in directorios:
 			#Cuando el directorio sea distinto del actual
 			if int(directorio.id_directorio) != int(directorio_actual):
+				path = directorio.nombre
+				directorio_aux = directorio
+				#Recorremos los padres del directorio para añadirlos al path
+				while directorio_aux.id_padre >= 0:
+					directorio_aux = Directorio.objects(id_directorio=directorio_aux.id_padre, propietario=propietario)
+					directorio_aux = directorio_aux[0]
+					path = directorio_aux.nombre + "/" + path
+				
+				#Añadir al diccionario el id_directorio y el path
+				directorios_dic[int(directorio.id_directorio)] = [int(directorio.id_directorio), path]
+
+		return directorios_dic
+
+	#Obtener los directorios del usuario posibles para mover un directorio
+	def getDirectoriosMoverDirectorio(self, propietario, directorio_actual, directorio_seleccionado):
+		directorios = list(Directorio.objects.filter(propietario=propietario))
+		directorios_dic = {}
+
+		for directorio in directorios:
+			#Cuando el directorio sea distinto del actual
+			if int(directorio.id_directorio) != int(directorio_actual) and int(directorio.id_directorio) != int(directorio_seleccionado):
 				path = directorio.nombre
 				directorio_aux = directorio
 				#Recorremos los padres del directorio para añadirlos al path
@@ -172,7 +193,27 @@ class DirectorioForm():
 		contenido = (int(id_archivo_mover), 'archivo')
 		self.actualizarContenidoDirectorio(id_directorio_dest, contenido, propietario)
 
-	#Obtener los directorios del usuario posibles para copiar
+	#Mover un directorio
+	def moverDirectorio(self, id_directorio_mover, id_directorio_destino, propietario, directorio_actual):
+		directorio = list(Directorio.objects.filter(id_directorio=directorio_actual, propietario=propietario))
+		#Eliminar directorio del directorio actual
+		contador = 0
+		#Recorrer el contenido para directorio_actual
+		for contenido in directorio[0].contenido:
+			#Escoger la tupla que es directorio
+			if contenido[1] == "directorio" and contenido[0] == int(id_directorio_mover):
+				del directorio[0].contenido[contador]
+				directorio[0].save()
+				break
+
+			contador += 1
+		#Añadir directorio al directorio destino
+		contenido = (int(id_directorio_mover), 'directorio')
+		self.actualizarContenidoDirectorio(id_directorio_destino, contenido, propietario)
+		#Actualizar directorio padre
+		#Directorio.objects(id_directorio=id_directorio_mover, propietario=propietario).update_one(set__id_padre=id_directorio_destino)
+
+	#Obtener los directorios del usuario posibles para copiar un archivo
 	def getDirectoriosCopiar(self, propietario):
 		directorios = list(Directorio.objects.filter(propietario=propietario))
 		directorios_dic = {}
@@ -191,12 +232,10 @@ class DirectorioForm():
 
 		return directorios_dic
 
-	#Mover un archivo a otro directorio
+	#Copiar un archivo
 	def copiarArchivo(self, id_archivo_copiar, directorio_actual, id_directorio_dest, propietario):
 		archivo_original = Archivo.objects(id_archivo=id_archivo_copiar)
 		archivo_original = archivo_original[0]
-
-		#Crear copia del archivo original
 		a = ArchivoForm()
 
 		#Añadir "copia" al nombre si se copia en el mismo directorios
@@ -218,6 +257,32 @@ class DirectorioForm():
 
 		#Crear copia en la BD
 		a.save(nombre_archivo, archivo_original.tipo_archivo, propietario, 'upload/' + archivo_original.nombre, id_directorio_dest)
+
+	#Copiar un directorio
+	def copiarDirectorio(self, id_directorio_copiar, id_directorio_destino, propietario, directorio_actual):
+		directorios = Directorio.objects(propietario=propietario).order_by('id_directorio')
+		directorio_original = Directorio.objects(id_directorio=id_directorio_copiar, propietario=propietario)
+		directorio_nuevo = Directorio()
+
+		directorio_nuevo.id_directorio = directorios[len(directorios) - 1].id_directorio + 1
+		directorio_nuevo.identificador_tupla = propietario + str(directorio_nuevo.id_directorio)
+		directorio_nuevo.id_padre = id_directorio_destino
+		directorio_nuevo.propietario = propietario
+		if int(directorio_actual) == int(id_directorio_destino):
+			directorio_nuevo.nombre = "copia " + directorio_original[0].nombre
+		else:
+			directorio_nuevo.nombre = directorio_original[0].nombre
+
+		directorio_nuevo.contenido = directorio_original[0].contenido
+
+		for contenido in directorio_original[0].contenido:
+			if contenido[1] == "archivo":
+				self.copiarArchivo(int(contenido[0]), directorio_actual, directorio_nuevo.id_directorio, propietario)
+
+		contenido = (int(directorio_nuevo.id_directorio), 'directorio')
+		self.actualizarContenidoDirectorio(id_directorio_destino, contenido, propietario)
+		directorio_nuevo.save()
+
 
 ################################################################
 #Form para la clase Archivo

@@ -434,13 +434,13 @@ def comprobarExisteDirectorio(request):
 
 	return HttpResponse(json.dumps(resultado), content_type="application/json")
 
-#Obtener los directorios del usuario posibles para mover
+#Obtener los directorios del usuario posibles para mover un archivo
 @login_required(login_url='/accounts/login/')
-def getDirectoriosMover(request):
+def getDirectoriosMoverArchivo(request):
 	directorio_actual = request.GET.get('directorio_actual', '')
 	d = DirectorioForm()
 
-	resultado = d.getDirectoriosMover(usuario.username, directorio_actual)
+	resultado = d.getDirectoriosMoverArchivo(usuario.username, directorio_actual)
 
 	return HttpResponse(json.dumps(resultado), content_type="application/json")
 
@@ -457,7 +457,7 @@ def moverArchivo(request):
 
 	return render(request, 'index.html', {'pagina_actual':'Documentos', 'usuario':usuario.username, 'directorio_actual':directorio_actual})
 
-#Obtener los directorios del usuario posibles para copiar
+#Obtener los directorios del usuario posibles para copiar un archivo
 @login_required(login_url='/accounts/login/')
 def getDirectoriosCopiar(request):
 	d = DirectorioForm()
@@ -475,5 +475,42 @@ def copiarArchivo(request):
 	d = DirectorioForm()
 
 	d.copiarArchivo(id_archivo_copiar, directorio_actual, id_directorio_dest, usuario.username)
+
+	return render(request, 'index.html', {'pagina_actual':'Documentos', 'usuario':usuario.username, 'directorio_actual':directorio_actual})
+
+#Obtener los directorios del usuario posibles para mover un directorio
+@login_required(login_url='/accounts/login/')
+def getDirectoriosMoverDirectorio(request):
+	directorio_actual = request.GET.get('directorio_actual', '')
+	directorio_seleccionado = request.GET.get('directorio_seleccionado', '')
+	d = DirectorioForm()
+
+	resultado = d.getDirectoriosMoverDirectorio(usuario.username, directorio_actual, directorio_seleccionado)
+
+	return HttpResponse(json.dumps(resultado), content_type="application/json")
+
+#Mover un directorio
+@login_required(login_url='/accounts/login/')
+def moverDirectorio(request):
+	id_directorio_mover = request.GET.get('id_archivo', '')
+	id_directorio_destino = request.GET.get('id_directorio_dest', '')
+	pag_actual = request.GET.get('pag_actual', '')
+	directorio_actual = request.GET.get('directorio_actual', '')
+	d = DirectorioForm()
+
+	d.moverDirectorio(id_directorio_mover, id_directorio_destino, usuario.username, directorio_actual)
+
+	return render(request, 'index.html', {'pagina_actual':'Documentos', 'usuario':usuario.username, 'directorio_actual':directorio_actual})
+
+#Copiar un directorio
+@login_required(login_url='/accounts/login/')
+def copiarDirectorio(request):
+	id_directorio_copiar = request.GET.get('id_archivo', '')
+	id_directorio_destino = request.GET.get('id_directorio_dest', '')
+	pag_actual = request.GET.get('pag_actual', '')
+	directorio_actual = request.GET.get('directorio_actual', '')
+	d = DirectorioForm()
+
+	d.copiarDirectorio(id_directorio_copiar, id_directorio_destino, usuario.username, directorio_actual)
 
 	return render(request, 'index.html', {'pagina_actual':'Documentos', 'usuario':usuario.username, 'directorio_actual':directorio_actual})
