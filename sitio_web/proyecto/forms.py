@@ -283,6 +283,34 @@ class DirectorioForm():
 		self.actualizarContenidoDirectorio(id_directorio_destino, contenido, propietario)
 		directorio_nuevo.save()
 
+	#Borrar un directorio
+	def borrarDirectorio(self, id_directorio_eliminar, propietario):
+		directorio = Directorio.objects(id_directorio=id_directorio_eliminar, propietario=propietario)[0]
+		a = ArchivoForm()
+
+		#Borrar contenido del directorio a eliminar
+		for contenido in directorio.contenido:
+			if contenido[1] == "archivo":
+				a.borrarArchivo(contenido[0], id_directorio_eliminar, propietario)
+			elif contenido[1] == "directorio":
+				self.borrarDirectorio(contenido[0], propietario)
+
+
+		#Borrar directorio del contenido del padre
+		directorio_padre = Directorio.objects(id_directorio=directorio.id_padre, propietario=propietario)[0]
+		contador = 0
+		for contenido in directorio_padre.contenido:
+			#Escoger la tupla que es directorio
+			if contenido[1] == "directorio" and contenido[0] == int(id_directorio_eliminar):
+				del directorio_padre.contenido[contador]
+				directorio_padre.save()
+				break
+
+			contador += 1
+
+		#Borrar la tupla en la BD correspondiente al directorio
+		Directorio.objects(id_directorio=id_directorio_eliminar, propietario=propietario).delete()
+
 
 ################################################################
 #Form para la clase Archivo
@@ -382,7 +410,6 @@ class ArchivoForm():
 		ArchivoCompartido.objects.filter(id_archivo_compartido=id_archivo).delete()
 		Archivo.objects.filter(id_archivo=id_archivo).delete()
 		contenido = (id_archivo, 'archivo')
-		#Directorio.objects(id_directorio=id_directorio).update(pull__contenido=int(id_archivo))
 		directorio = list(Directorio.objects.filter(id_directorio=id_directorio, propietario=propietario))
 
 		contador = 0

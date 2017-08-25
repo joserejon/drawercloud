@@ -106,6 +106,19 @@
 		</div>
 	</div>
 
+	<!-- PopUp para eliminar un directorio -->
+	<div id="abrirPopUpEliminarDirectorio" class="popUp">
+		<div>
+			<a href="#close" title="Close" class="close">X</a>
+			<form action="javascript:eliminarDirectorio();" method="POST">
+				{% csrf_token %}
+				<label>¿Realmente desea eliminar el directorio y todo su contenido?</label>
+				<input type="hidden" id="id_directorio_eliminar" name="id_directorio_eliminar" value="" />
+				<input type="submit" value="Eliminar" class="input_file btn btn-default" />
+			</form>
+		</div>
+	</div>
+
 	<!-- PopUp para ver los directorios del usuario posibles para mover -->
 	<div id="abrirPopUpMoverA" class="popUp">
 		<div>
@@ -281,7 +294,7 @@
 	                                        "<li><a href='#abrirPopUpCompartir' onclick='compartirArchivo(" + datos[0][i][0] + "); return false;'>Compartir</a></li>" +
 	                                        "<li><a href='#abrirPopUpCopiarEn' onclick='getDirectoriosCopiar(" + datos[0][i][0] + ", 0);'>Copiar en</a></li>" +
 	                                        "<li><a href='#abrirPopUpMoverA' onclick='getDirectoriosMoverDirectorio(" + datos[0][i][0] + ");'>Mover a</a></li>" +
-	                                        "<li><a href='#abrirPopUpEliminar' onclick='comprobarEliminarArchivo(" + datos[0][i][0] + "); return false;'>Eliminar</a></li>" +
+	                                        "<li><a href='#abrirPopUpEliminarDirectorio' onclick='comprobarEliminarDirectorio(" + datos[0][i][0] + "); return false;'>Eliminar</a></li>" +
 	                                    "</ul>" +
 	                                "</div>" +
 	                            "</td>" +
@@ -486,10 +499,16 @@
 	     	});
 	    }
 
-	   	//Llamar al popUp para compartir archivo incluyendo el ID de éste
+	   	//Llamar al popUp para eliminar archivo incluyendo el ID de éste
 	    function comprobarEliminarArchivo(id_archivo) {
 	    	document.getElementById('id_archivo_eliminar').value = id_archivo;
 	    	window.location = document.getElementById('abrirPopUpEliminar').href = "#abrirPopUpEliminar";
+	    }
+
+	    //Llamar al popUp para compartir archivo incluyendo el ID de éste
+	    function comprobarEliminarDirectorio(id_directorio) {
+	    	document.getElementById('id_directorio_eliminar').value = id_directorio;
+	    	window.location = document.getElementById('abrirPopUpEliminarDirectorio').href = "#abrirPopUpEliminarDirectorio";
 	    }
 
 	   	//Preguntar al usuario si realmente quiere eliminar el archivo
@@ -498,6 +517,17 @@
 	   		mostrarSnackbar("Archivo eliminado");
 	   		setTimeout(function() {
 			    window.location.href = "{% url 'borrarArchivo' %}?id_archivo=" + id_archivo_eliminar + "&pag_actual=index.html&directorio_actual=" + directorio_actual;
+			}, 1800);
+	   		
+	   	}
+
+	   	//Preguntar al usuario si realmente quiere eliminar el archivo
+	   	function eliminarDirectorio(){
+	   		var id_directorio_eliminar = document.getElementById('id_directorio_eliminar').value;
+	   		mostrarSnackbar("Directorio eliminado");
+	   		setTimeout(function() {
+			    window.location.href = "{% url 'borrarDirectorio' %}?id_directorio=" + id_directorio_eliminar + "&pag_actual=index.html&directorio_actual=" + directorio_actual;
+			    alert(1);
 			}, 1800);
 	   		
 	   	}
@@ -863,7 +893,10 @@
 						window.location = document.getElementById(id_item_clicked).href = "{% url 'delFavoritos' %}?id_archivo=" + Number(id_item_clicked.replace('a','')) + "&pag_actual=index.html&directorio_actual={{directorio_actual}}";
 				}
 				else if(accion == "eliminar")
-					comprobarEliminarArchivo(Number(id_item_clicked.replace('a','')));
+					if(id_item_clicked[0] == 'a')
+						comprobarEliminarArchivo(Number(id_item_clicked.replace('a','')));
+					else
+						comprobarEliminarDirectorio(Number(id_item_clicked.replace('d','')));
 				
 				toggleMenuOff();
 			}

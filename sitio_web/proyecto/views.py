@@ -514,3 +514,15 @@ def copiarDirectorio(request):
 	d.copiarDirectorio(id_directorio_copiar, id_directorio_destino, usuario.username, directorio_actual)
 
 	return render(request, 'index.html', {'pagina_actual':'Documentos', 'usuario':usuario.username, 'directorio_actual':directorio_actual})
+
+#Borrar un directorio
+@login_required(login_url='/accounts/login/')
+def borrarDirectorio(request):
+	id_directorio_eliminar = request.GET.get('id_directorio', '')
+	pag_actual = request.GET.get('pag_actual', '')
+	directorio_actual = request.GET.get('directorio_actual', '')
+	d = DirectorioForm()
+
+	d.borrarDirectorio(id_directorio_eliminar, usuario.username)
+
+	return render(request, 'index.html', {'pagina_actual':'Documentos', 'usuario':usuario.username, 'directorio_actual':directorio_actual})

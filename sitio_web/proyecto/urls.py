@@ -42,4 +42,5 @@ urlpatterns = [
 	url(r'^getDirectoriosMoverDirectorio/$', views.getDirectoriosMoverDirectorio, name='getDirectoriosMoverDirectorio'),
 	url(r'^moverDirectorio/$', views.moverDirectorio, name='moverDirectorio'),
 	url(r'^copiarDirectorio/$', views.copiarDirectorio, name='copiarDirectorio'),
+	url(r'^borrarDirectorio/$', views.borrarDirectorio, name='borrarDirectorio'),
 ]
