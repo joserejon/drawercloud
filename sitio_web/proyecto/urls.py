@@ -43,4 +43,6 @@ urlpatterns = [
 	url(r'^moverDirectorio/$', views.moverDirectorio, name='moverDirectorio'),
 	url(r'^copiarDirectorio/$', views.copiarDirectorio, name='copiarDirectorio'),
 	url(r'^borrarDirectorio/$', views.borrarDirectorio, name='borrarDirectorio'),
+	url(r'^salirGrupo/$', views.salirGrupo, name='salirGrupo'),
+	url(r'^eliminarCuenta/$', views.eliminarCuenta, name='eliminarCuenta'),
 ]

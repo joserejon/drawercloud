@@ -50,7 +50,7 @@ class UsuarioForm():
 	def cargarImgPerfil(self, nombre_archivo, tipo_archivo, username, path):
 		a = ArchivoForm()
 		#Subir el archivo a la base de datos
-		id_archivo = a.save(nombre_archivo, tipo_archivo, "", path)
+		id_archivo = a.save(nombre_archivo, tipo_archivo, "", path, 0)
 		#Añadir fichero al grupo de trabajo
 		Usuario.objects(username=username).update(set__img_perfil=id_archivo)
 
@@ -66,6 +66,22 @@ class UsuarioForm():
 			nombre_img_perfil = "/static/images/img_perfil.png"
 
 		return nombre_img_perfil
+
+	#Eliminar la cuenta de usuario
+	def eliminarCuenta(self, username):
+
+		#Eliminar los directorios y sus archivos desde la raíz
+		d = DirectorioForm()
+		d.borrarDirectorio(0, username)
+
+		#Eliminar usuario de los grupos de trabajo
+		gt = GrupoTrabajoForm()
+		mis_grupos = GrupoTrabajo.objects(usuarios__contains=username)
+		for grupo in mis_grupos:
+			gt.salirGrupo(username, grupo.id_grupo)
+
+		#Eliminar el usuario
+		Usuario.objects(username=username).delete()
 
 
 ################################################################
@@ -297,16 +313,17 @@ class DirectorioForm():
 
 
 		#Borrar directorio del contenido del padre
-		directorio_padre = Directorio.objects(id_directorio=directorio.id_padre, propietario=propietario)[0]
-		contador = 0
-		for contenido in directorio_padre.contenido:
-			#Escoger la tupla que es directorio
-			if contenido[1] == "directorio" and contenido[0] == int(id_directorio_eliminar):
-				del directorio_padre.contenido[contador]
-				directorio_padre.save()
-				break
+		if directorio.id_padre != -1:
+			directorio_padre = Directorio.objects(id_directorio=directorio.id_padre, propietario=propietario)[0]
+			contador = 0
+			for contenido in directorio_padre.contenido:
+				#Escoger la tupla que es directorio
+				if contenido[1] == "directorio" and contenido[0] == int(id_directorio_eliminar):
+					del directorio_padre.contenido[contador]
+					directorio_padre.save()
+					break
 
-			contador += 1
+				contador += 1
 
 		#Borrar la tupla en la BD correspondiente al directorio
 		Directorio.objects(id_directorio=id_directorio_eliminar, propietario=propietario).delete()
@@ -539,14 +556,16 @@ class GrupoTrabajoForm():
 	def subirArchivoGrupo(self, id_grupo, nombre_archivo, tipo_archivo, path):
 		a = ArchivoForm()
 		#Subir el archivo a la base de datos
-		id_archivo = a.save(nombre_archivo, tipo_archivo, "", path)
+		id_archivo = a.save(nombre_archivo, tipo_archivo, "", path, 0)
 		#Añadir fichero al grupo de trabajo
 		GrupoTrabajo.objects(id_grupo=id_grupo).update(add_to_set__archivos=[int(id_archivo)])
 
 	#Borrar un archivo
 	def borrarArchivo(self, id_archivo, id_grupo):
-		a = ArchivoForm()
-		a.borrarArchivo(id_archivo)
+		archivos = list(Archivo.objects.filter(id_archivo=id_archivo))
+		archivos[0].archivo.delete()
+		ArchivoCompartido.objects.filter(id_archivo_compartido=id_archivo).delete()
+		Archivo.objects.filter(id_archivo=id_archivo).delete()
 
 		GrupoTrabajo.objects(id_grupo=id_grupo).update(pull__archivos=int(id_archivo))
 
@@ -565,7 +584,17 @@ class GrupoTrabajoForm():
 
 		return participantes_dic
 
+	#Salir de un grupo de trabajo
+	def salirGrupo(self, username, id_grupo):
+		grupo = GrupoTrabajo.objects(id_grupo=id_grupo)[0]
+		grupo.usuarios.remove(username)
+		grupo.save()
 
+		if len(grupo.usuarios) == 0:
+			for id_archivo in grupo.archivos:
+				self.borrarArchivo(id_archivo, id_grupo)
+
+			GrupoTrabajo.objects(id_grupo=id_grupo).delete()
 
 ################################################################
 def getContentType(tipo_archivo):

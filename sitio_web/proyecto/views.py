@@ -440,7 +440,7 @@ def getDirectoriosMoverArchivo(request):
 	directorio_actual = request.GET.get('directorio_actual', '')
 	d = DirectorioForm()
 
-	resultado = d.getDirectoriosMoverArchivo(usuario.username, directorio_actual)
+	resultado = d.getDirectoriosMoverArchivo(usuario.username, directorio_actual, "documentos")
 
 	return HttpResponse(json.dumps(resultado), content_type="application/json")
 
@@ -526,3 +526,22 @@ def borrarDirectorio(request):
 	d.borrarDirectorio(id_directorio_eliminar, usuario.username)
 
 	return render(request, 'index.html', {'pagina_actual':'Documentos', 'usuario':usuario.username, 'directorio_actual':directorio_actual})
+
+#Salir de un grupo de trabajo
+@login_required(login_url='/accounts/login/')
+def salirGrupo(request):
+	id_grupo = request.GET.get('id_grupo', '')
+	gt = GrupoTrabajoForm()
+
+	gt.salirGrupo(usuario.username, id_grupo)
+
+	return render(request, 'grupoTrabajo.html', {'pagina_actual':'Grupo de Trabajo'})
+
+
+#Eliminar la cuenta de usuario
+@login_required(login_url='/accounts/login/')
+def eliminarCuenta(request):
+	u = UsuarioForm()
+	u.eliminarCuenta(usuario.username)
+
+	return HttpResponse(json.dumps(""), content_type="application/json")

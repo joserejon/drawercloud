@@ -117,6 +117,18 @@
 		</div>
 	</div>
 
+	<!-- PopUp para salir del grupo -->
+	<div id="abrirPopUpSalirGrupo" class="popUp">
+		<div>
+			<a href="#close" title="Close" class="close">X</a>
+			<form action="javascript:salirGrupo();" method="POST">
+				{% csrf_token %}
+				<label>¿Realmente desea salir del grupo de trabajo?</label>
+				<input type="submit" value="Salir del grupo" class="input_file btn btn-default" />
+			</form>
+		</div>
+	</div>
+
 
 	<div id="snackbar" ></div>
 
@@ -197,7 +209,8 @@
 	        html = "<li><a href='#abrirPopUpCrearGrupo'>Crear grupo de trabajo</a></li>" +
 	        	"<li><a href='#abrirPopUpAddParticipante'>Añadir participante al grupo</a></li>" +
 	        	"<li><a href='#abrirPopUp' onclick='subirArchivoAddIDGrupo()'>Subir archivo al grupo</a></li>" +
-	        	"<li><a href='#abrirPopUpVerParticipantes' onclick='getParticipantes()'>Ver participantes del grupo</a></li>";
+	        	"<li><a href='#abrirPopUpVerParticipantes' onclick='getParticipantes()'>Ver participantes del grupo</a></li>" +
+	        	"<li><a href='#abrirPopUpSalirGrupo'>Salir del grupo de trabajo</a></li>";
 	        document.getElementById("menuOpcionesGrupos").innerHTML = html;
 	        document.getElementById("fin_upload").innerHTML = "";
 	        document.getElementById("barra_progreso").innerHTML = "";
@@ -474,6 +487,13 @@
 	                console.log('Petición realizada');
 	            }
 	     	});
+	   	}
+
+	   	function salirGrupo(){
+	   		mostrarSnackbar("Abandonando el grupo...");
+	   		setTimeout(function() {
+			    window.location.href = "{% url 'salirGrupo' %}?id_grupo=" + id_grupo_actual;
+			}, 1800);
 	   	}
 
 	   	/******************* PROGRESS BAR *******************/

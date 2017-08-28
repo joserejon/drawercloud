@@ -14,7 +14,7 @@
 	</div>
 	<div class="info_usuario">
 		<button class="btn btn-primary">Editar información</button>
-		<button class="btn btn-danger">Eliminar cuenta</button>
+		<button class="btn btn-danger" onclick="abrirPopUpEliminarCuenta()">Eliminar cuenta</button>
 		<h4><span class="letra_azul">Username: {{ username }}</span></h4>
 		<h4><span class="letra_azul">Email: {{ email }}</span></h4>
 	</div>
@@ -28,6 +28,18 @@
 				<input type="file" name="file" class="input_file btn btn-default" accept="image/*" required />
 				<br />
 				<input type="submit" value="Establecer como imagen de perfil" class="input_file btn btn-default" />
+			</form>
+		</div>
+	</div>
+
+	<!-- PopUp para eliminar la cuenta -->
+	<div id="abrirPopUpEliminarCuenta" class="popUp">
+		<div>
+			<a href="#close" title="Close" class="close">X</a>
+			<form action="javascript:eliminarCuenta();" method="POST">
+				{% csrf_token %}
+				<label>¿Realmente desea eliminar la cuenta y todos su cotenido?</label>
+				<input type="submit" value="Eliminar cuenta" class="input_file btn btn-default" />
 			</form>
 		</div>
 	</div>
@@ -55,5 +67,30 @@
 		$("#div_img_perfil").click(function(event){
             window.location=document.getElementById('popUpcargarImgPerfil').href = "#popUpcargarImgPerfil";
         });
+
+        function abrirPopUpEliminarCuenta(){
+        	window.location = document.getElementById('abrirPopUpEliminarCuenta').href = "#abrirPopUpEliminarCuenta";
+        }
+
+        function eliminarCuenta(){
+        	$.ajax({
+	            url : "{% url 'eliminarCuenta' %}",
+	            data : {
+	                
+	            },
+	            type : 'GET',
+	            dataType: 'json',
+	            success : function(datos){
+					window.location.href = "{% url 'auth_logout' %}";
+	            },
+	            failure : function(datos){
+	                alert("Error: no se pudo realizar la consulta");
+	            },
+	            complete : function(datos) {
+	                console.log('Petición realizada');
+	            }
+	     	});
+        }
+
 	</script>
 {% endblock %}
