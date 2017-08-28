@@ -18,6 +18,9 @@
                 <a href="#" class="context-menu__link" id="compartir" data-action="compartir">Compartir</a>
             </li>
             <li class="context-menu__item">
+                <a href="#" class="context-menu__link" id="cambiar_nombre" data-action="cambiar_nombre">Cambiar nombre</a>
+            </li>
+            <li class="context-menu__item">
                 <a href="#" class="context-menu__link" id="favorito" data-action="favorito">Añadir a favoritos</a>
             </li>
         </ul>
@@ -49,6 +52,19 @@
             </form>
         </div>
     </div>
+
+    <!-- PopUp para cambir nombre a un archivo -->
+	<div id="abrirPopUpCambiarNombre" class="popUp">
+		<div>
+			<a href="#close" title="Close" class="close">X</a>
+			<form action="javascript:cambiarNombre();" method="POST">
+				{% csrf_token %}
+				<input type="text" id="nuevo_nombre" name="nuevo_nombre" placeholder="Introduzca un nombre nuevo" required/>
+				<input type="hidden" id="id_contenido_cambiar_nombre" name="id_contenido_cambiar_nombre" value="" />
+				<input type="submit" value="Cambiar nombre" class="input_file btn btn-default" />
+			</form>
+		</div>
+	</div>
 
     <div id="snackbar"></div>
 
@@ -184,7 +200,8 @@
 	                                    "</button>" +
 	                                    "<ul class='dropdown-menu' role='menu'>" +
 	                                        "<li><a href='{% url 'descargarArchivo' %}?id_archivo=" + datos[i][0] + "'>Descargar</a></li>" +
-	                                        "<li><a href='#abrirPopUpCompartir' onClick='compartirArchivo(" + datos[i][0] + "); return false;'>Compartir</a></li>";
+	                                        "<li><a href='#abrirPopUpCompartir' onClick='compartirArchivo(" + datos[i][0] + "); return false;'>Compartir</a></li>" +
+	                                        "<li><a href='#abrirPopUpCambiarNombre' onclick='abrirCambiarNombre(" + datos[i][0] + "); return false;'>Cambiar nombre</a></li>";
 	                                        if(favorito == "")
 	                                        	html += "<li><a href='{% url 'addFavoritos' %}?id_archivo=" + datos[i][0] + "&pag_actual=contenidoMultimedia.html&tipo_contenido={{ tipo_contenido }}'>Añadir a favoritos</a></li>";
 	                                        else
@@ -318,6 +335,42 @@
 	            }
 	     	});
 	    }
+
+	    //Llamar al popUp para compartir archivo incluyendo el ID de éste
+	    function abrirCambiarNombre(id_contenido_cambiar_nombre){
+	    	document.getElementById('id_contenido_cambiar_nombre').value = id_contenido_cambiar_nombre;
+	    	window.location = document.getElementById('abrirPopUpCambiarNombre').href = "#abrirPopUpCambiarNombre";
+	    }
+
+	    //Función para cambiar el nombre a un directorio/archivo
+	   	function cambiarNombre(id_contenido_cambiar_nombre){
+	   		var nuevo_nombre = document.getElementById("nuevo_nombre").value;
+	   		var id_contenido_cambiar_nombre = document.getElementById('id_contenido_cambiar_nombre').value;
+
+	   		$.ajax({
+	            url : "{% url 'cambiarNombre' %}",
+	            data : {
+	                nuevo_nombre: nuevo_nombre,
+	                id_contenido_cambiar_nombre: id_contenido_cambiar_nombre,
+	                directorio_actual: -1,
+	                tipo_contenido: ""
+	            },
+	            type : 'GET',
+	            dataType: 'json',
+	            success : function(datos){
+	            	mostrarSnackbar("Nombre cambiado a \"" + nuevo_nombre + "\"");
+					setTimeout(function() {
+				    	window.location.href = "{% url 'contenidoMultimedia' %}?tipo_contenido={{ tipo_contenido }}";
+					}, 1800);
+	            },
+	            failure : function(datos){
+	                alert("Error: no se pudo realizar la consulta");
+	            },
+	            complete : function(datos) {
+	                console.log('Petición realizada');
+	            }
+	     	});
+	   	}
 
 
 	   	/******************* OPCIONES DE BOTÓN DERECHO EN LA LISTA *******************/
@@ -498,6 +551,8 @@
 					window.location=document.getElementById(id_item_clicked).href = "{% url 'descargarArchivo' %}?id_archivo=" + id_item_clicked;
 				else if(accion == "compartir")
 					compartirArchivo(id_item_clicked);
+				else if(accion == "cambiar_nombre")
+					abrirCambiarNombre(id_item_clicked);
 				else if(accion == "favorito"){
 					if(document.getElementById("favorito").innerText == "Añadir a favoritos")
 						window.location=document.getElementById(id_item_clicked).href = "{% url 'addFavoritos' %}?id_archivo=" + id_item_clicked + "&pag_actual=contenidoMultimedia.html&tipo_contenido={{ tipo_contenido }}";

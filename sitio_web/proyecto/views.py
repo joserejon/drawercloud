@@ -537,6 +537,27 @@ def salirGrupo(request):
 
 	return render(request, 'grupoTrabajo.html', {'pagina_actual':'Grupo de Trabajo'})
 
+#Obtener el espacio ocupado por los archivos del usuario
+@login_required(login_url='/accounts/login/')
+def getEspacioOcupado(request):
+	u = UsuarioForm()
+	resultado = u.getEspacioOcupado(usuario.username)
+
+	return HttpResponse(json.dumps(resultado), content_type="application/json")
+
+#Cambiar el nombre a un directorio/archivo
+@login_required(login_url='/accounts/login/')
+def cambiarNombre(request):
+	nuevo_nombre = request.GET.get('nuevo_nombre', '')
+	id_contenido_cambiar_nombre = request.GET.get('id_contenido_cambiar_nombre', '')
+	directorio_actual = request.GET.get('directorio_actual', '')
+	tipo_contenido = request.GET.get('tipo_contenido', '')
+	d = DirectorioForm()
+
+	d.cambiarNombre(nuevo_nombre, id_contenido_cambiar_nombre, directorio_actual, tipo_contenido, usuario.username)
+
+	return HttpResponse(json.dumps(""), content_type="application/json")
+
 
 #Eliminar la cuenta de usuario
 @login_required(login_url='/accounts/login/')

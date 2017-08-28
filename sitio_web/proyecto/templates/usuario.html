@@ -17,6 +17,7 @@
 		<button class="btn btn-danger" onclick="abrirPopUpEliminarCuenta()">Eliminar cuenta</button>
 		<h4><span class="letra_azul">Username: {{ username }}</span></h4>
 		<h4><span class="letra_azul">Email: {{ email }}</span></h4>
+		<h4 id="espacio_ocupado"></h4>
 	</div>
 
 	<!-- PopUp para subir un archivo -->
@@ -46,6 +47,7 @@
 
 	<script type="text/javascript">
 
+		//Obtener la imagen de perfil del usuario
 		$.ajax({
             url : "{% url 'getImgPerfil' %}",
             data : {
@@ -64,14 +66,36 @@
             }
      	});
 
+		//Obtener el espacio ocupado por los archivos del usuario
+     	$.ajax({
+            url : "{% url 'getEspacioOcupado' %}",
+            data : {
+                
+            },
+            type : 'GET',
+            dataType: 'json',
+            success : function(espacio_ocupado){
+				document.getElementById("espacio_ocupado").innerHTML = "<span class='letra_azul'>Espacio ocupado: " + mostrarTam(espacio_ocupado) + " de 2 GB</span>";
+            },
+            failure : function(datos){
+                alert("Error: no se pudo realizar la consulta");
+            },
+            complete : function(datos) {
+                console.log('Petición realizada');
+            }
+     	});
+
+     	//Cargar el PopUp para establecer una nueva imagen de perfil
 		$("#div_img_perfil").click(function(event){
             window.location=document.getElementById('popUpcargarImgPerfil').href = "#popUpcargarImgPerfil";
         });
 
+		//Cargar el PopUp para eliminar la cuenta
         function abrirPopUpEliminarCuenta(){
         	window.location = document.getElementById('abrirPopUpEliminarCuenta').href = "#abrirPopUpEliminarCuenta";
         }
 
+        //Eliminar la cuenta del usuario
         function eliminarCuenta(){
         	$.ajax({
 	            url : "{% url 'eliminarCuenta' %}",
@@ -91,6 +115,30 @@
 	            }
 	     	});
         }
+
+        //Dar formato al tamaño del archivo
+	    function mostrarTam(tam){
+	    	n = parseInt(tam);
+	    	if(n > (1204 * 1024 * 1024)){
+	    		n = n / (1204 * 1024 * 1024)
+	    		res = n.toString();
+	    		return res.substring(0, 5) + " GB";
+	    	}
+	    	else if(n > (1204 * 1024)){
+	    		n = n / (1204 * 1024)
+	    		res = n.toString();
+	    		return res.substring(0, 5) + " MB";
+	    	}
+	    	else if(n > 1204){
+	    		n = n / 1204
+	    		res = n.toString();
+	    		return res.substring(0, 5) + " KB";
+	    	}
+	    	else{
+	    		res = n.toString();
+	    		return res.substring(0, 5) + " B";
+	    	}
+	    }
 
 	</script>
 {% endblock %}

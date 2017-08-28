@@ -18,6 +18,9 @@
                 <a href="#" class="context-menu__link" id="compartir" data-action="compartir">Compartir</a>
             </li>
             <li class="context-menu__item">
+                <a href="#" class="context-menu__link" id="cambiar_nombre" data-action="cambiar_nombre">Cambiar nombre</a>
+            </li>
+            <li class="context-menu__item">
                 <a href="#" class="context-menu__link" id="favorito" data-action="favorito">Eliminar de favoritos</a>
             </li>
         </ul>
@@ -45,6 +48,19 @@
                 <input type="hidden" id="id_archivo_compartir" name="id_archivo_compartir" value="" />
                 <input type="hidden" id="pag_actual" name="pag_actual" value="favoritos.html" />
                 <input type="submit" value="Compartir" class="input_file btn btn-default" />
+            </form>
+        </div>
+    </div>
+
+    <!-- PopUp para cambir nombre a un archivo -->
+    <div id="abrirPopUpCambiarNombre" class="popUp">
+        <div>
+            <a href="#close" title="Close" class="close">X</a>
+            <form action="javascript:cambiarNombre();" method="POST">
+                {% csrf_token %}
+                <input type="text" id="nuevo_nombre" name="nuevo_nombre" placeholder="Introduzca un nombre nuevo" required/>
+                <input type="hidden" id="id_contenido_cambiar_nombre" name="id_contenido_cambiar_nombre" value="" />
+                <input type="submit" value="Cambiar nombre" class="input_file btn btn-default" />
             </form>
         </div>
     </div>
@@ -180,6 +196,7 @@
                                         "<ul class='dropdown-menu' role='menu'>" +
                                             "<li><a href='{% url 'descargarArchivo' %}?id_archivo=" + datos[i][0] + "'>Descargar</a></li>" +
                                             "<li><a href='#abrirPopUpCompartir' onClick='compartirArchivo(" + datos[i][0] + "); return false;'>Compartir</a></li>" +
+                                            "<li><a href='#abrirPopUpCambiarNombre' onclick='abrirCambiarNombre(" + datos[i][0] + "); return false;'>Cambiar nombre</a></li>" +
                                             "<li><a href='{% url 'delFavoritos' %}?id_archivo=" + datos[i][0] + "&pag_actual=favoritos.html'>Eliminar de favoritos</a></li>" +
                                         "</ul>" +
                                     "</div>" +
@@ -301,6 +318,42 @@
                     else{ 
                         mostrarSnackbar("No puedes compartir contigo mismo");
                     }
+                },
+                failure : function(datos){
+                    alert("Error: no se pudo realizar la consulta");
+                },
+                complete : function(datos) {
+                    console.log('Petición realizada');
+                }
+            });
+        }
+
+        //Llamar al popUp para compartir archivo incluyendo el ID de éste
+        function abrirCambiarNombre(id_contenido_cambiar_nombre){
+            document.getElementById('id_contenido_cambiar_nombre').value = id_contenido_cambiar_nombre;
+            window.location = document.getElementById('abrirPopUpCambiarNombre').href = "#abrirPopUpCambiarNombre";
+        }
+
+        //Función para cambiar el nombre a un directorio/archivo
+        function cambiarNombre(id_contenido_cambiar_nombre){
+            var nuevo_nombre = document.getElementById("nuevo_nombre").value;
+            var id_contenido_cambiar_nombre = document.getElementById('id_contenido_cambiar_nombre').value;
+
+            $.ajax({
+                url : "{% url 'cambiarNombre' %}",
+                data : {
+                    nuevo_nombre: nuevo_nombre,
+                    id_contenido_cambiar_nombre: id_contenido_cambiar_nombre,
+                    directorio_actual: -1,
+                    tipo_contenido: ""
+                },
+                type : 'GET',
+                dataType: 'json',
+                success : function(datos){
+                    mostrarSnackbar("Nombre cambiado a \"" + nuevo_nombre + "\"");
+                    setTimeout(function() {
+                        window.location.href = "{% url 'favoritos' %}";
+                    }, 1800);
                 },
                 failure : function(datos){
                     alert("Error: no se pudo realizar la consulta");
@@ -489,6 +542,8 @@
                     window.location=document.getElementById(id_item_clicked).href = "{% url 'descargarArchivo' %}?id_archivo=" + id_item_clicked;
                 else if(accion == "compartir")
                     compartirArchivo(id_item_clicked);
+                else if(accion == "cambiar_nombre")
+                    abrirCambiarNombre(id_item_clicked);
                 else if(accion == "favorito")
                     window.location=document.getElementById(id_item_clicked).href = "{% url 'delFavoritos' %}?id_archivo=" + id_item_clicked + "&pag_actual=favoritos.html";
                 

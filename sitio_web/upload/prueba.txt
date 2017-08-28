@@ -1,3 +1,0 @@
-Hola Mundo.
-
-Documento de prueba para insertar en DrawerCloud.

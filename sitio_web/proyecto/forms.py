@@ -67,6 +67,22 @@ class UsuarioForm():
 
 		return nombre_img_perfil
 
+	#Obtener el espacio ocupado por los archivos del usuario
+	def getEspacioOcupado(self, username):
+		mis_archivos = Archivo.objects(propietario=username)
+
+		espacio_ocupado = 0
+		for archivo in mis_archivos:
+			espacio_ocupado += archivo.tam_archivo
+
+		mis_grupos = GrupoTrabajo.objects(usuarios__contains=username)
+		for grupo in mis_grupos:
+			for id_archivo in grupo.archivos:
+				archivo = Archivo.objects(id_archivo=id_archivo)[0]
+				espacio_ocupado += archivo.tam_archivo
+
+		return float(espacio_ocupado)
+
 	#Eliminar la cuenta de usuario
 	def eliminarCuenta(self, username):
 
@@ -93,7 +109,7 @@ class DirectorioForm():
 		d = Directorio()
 
 		d.id_directorio = 0
-		d.nombre = "raíz"
+		d.nombre = "Documentos"
 		d.id_padre = -1
 		d.propietario = propietario
 		d.identificador_tupla = propietario + str(d.id_directorio)
@@ -328,6 +344,23 @@ class DirectorioForm():
 		#Borrar la tupla en la BD correspondiente al directorio
 		Directorio.objects(id_directorio=id_directorio_eliminar, propietario=propietario).delete()
 
+	#Cambiar nombre a un directorio/archivo
+	def cambiarNombre(self, nuevo_nombre, id_contenido_cambiar_nombre, directorio_actual, tipo_contenido, propietario):
+
+		#Si se está cambiando el nombre desde la página principal
+		if int(directorio_actual) >= 0:
+			directorio = Directorio.objects(id_directorio=directorio_actual, propietario=propietario)[0]
+			for contenido in directorio.contenido:
+				if contenido[0] == int(id_contenido_cambiar_nombre) and contenido[1] == tipo_contenido:
+					if tipo_contenido == "archivo":
+						Archivo.objects(id_archivo=id_contenido_cambiar_nombre).update_one(set__nombre=nuevo_nombre)
+					else:
+						Directorio.objects(id_directorio=id_contenido_cambiar_nombre).update_one(set__nombre=nuevo_nombre)
+					break
+		else:
+			Archivo.objects(id_archivo=id_contenido_cambiar_nombre).update_one(set__nombre=nuevo_nombre)
+
+		
 
 ################################################################
 #Form para la clase Archivo

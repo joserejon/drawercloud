@@ -11,6 +11,9 @@
                 <a href="#" class="context-menu__link" id="compartir" data-action="compartir">Compartir</a>
             </li>
             <li class="context-menu__item">
+                <a href="#" class="context-menu__link" id="cambiar_nombre" data-action="cambiar_nombre">Cambiar nombre</a>
+            </li>
+            <li class="context-menu__item">
                 <a href="#" class="context-menu__link" id="copiar" data-action="copiar">Copiar en</a>
             </li>
             <li class="context-menu__item">
@@ -138,6 +141,20 @@
 			<ul id="ver_directorios_copiar" class="moverA">
 				<!-- Código insertado desde javascript -->
 			</ul>
+		</div>
+	</div>
+
+	<!-- PopUp para cambir nombre a un directorio/archivo -->
+	<div id="abrirPopUpCambiarNombre" class="popUp">
+		<div>
+			<a href="#close" title="Close" class="close">X</a>
+			<form action="javascript:cambiarNombre();" method="POST">
+				{% csrf_token %}
+				<input type="text" id="nuevo_nombre" name="nuevo_nombre" placeholder="Introduzca un nombre nuevo" required/>
+				<input type="hidden" id="id_contenido_cambiar_nombre" name="id_contenido_cambiar_nombre" value="" />
+				<input type="hidden" id="tipo_contenido_cambiar_nombre" name="tipo_contenido_cambiar_nombre" value="" />
+				<input type="submit" value="Cambiar nombre" class="input_file btn btn-default" />
+			</form>
 		</div>
 	</div>
 
@@ -292,6 +309,7 @@
 	                                    "<ul class='dropdown-menu' role='menu'>" +
 	                                        "<li><a href='{% url 'descargarArchivo' %}?id_archivo=" + datos[0][i][0] + "'>Descargar</a></li>" +
 	                                        "<li><a href='#abrirPopUpCompartir' onclick='compartirArchivo(" + datos[0][i][0] + "); return false;'>Compartir</a></li>" +
+	                                        "<li><a href='#abrirPopUpCambiarNombre' onclick='abrirCambiarNombre(" + datos[0][i][0] + ", 0); return false;'>Cambiar nombre</a></li>" +
 	                                        "<li><a href='#abrirPopUpCopiarEn' onclick='getDirectoriosCopiar(" + datos[0][i][0] + ", 0);'>Copiar en</a></li>" +
 	                                        "<li><a href='#abrirPopUpMoverA' onclick='getDirectoriosMoverDirectorio(" + datos[0][i][0] + ");'>Mover a</a></li>" +
 	                                        "<li><a href='#abrirPopUpEliminarDirectorio' onclick='comprobarEliminarDirectorio(" + datos[0][i][0] + "); return false;'>Eliminar</a></li>" +
@@ -319,6 +337,7 @@
 	                                    "<ul class='dropdown-menu' role='menu'>" +
 	                                        "<li><a href='{% url 'descargarArchivo' %}?id_archivo=" + datos[1][i][0] + "'>Descargar</a></li>" +
 	                                        "<li><a href='#abrirPopUpCompartir' onclick='compartirArchivo(" + datos[1][i][0] + "); return false;'>Compartir</a></li>" +
+	                                        "<li><a href='#abrirPopUpCambiarNombre' onclick='abrirCambiarNombre(" + datos[1][i][0] + ", 1); return false;'>Cambiar nombre</a></li>" +
 	                                        "<li><a href='#abrirPopUpCopiarEn' onclick='getDirectoriosCopiar(" + datos[1][i][0] + ", 1);'>Copiar en</a></li>" +
 	                                        "<li><a href='#abrirPopUpMoverA' onclick='getDirectoriosMoverArchivo(" + datos[1][i][0] + ");'>Mover a</a></li>";
 	                                        if(favorito == "")
@@ -639,6 +658,50 @@
 	     	});
 	   	}
 
+	   	//Llamar al popUp para compartir archivo incluyendo el ID de éste
+	    function abrirCambiarNombre(id_contenido_cambiar_nombre, tipo_contenido){
+	    	document.getElementById('id_contenido_cambiar_nombre').value = id_contenido_cambiar_nombre;
+	    	var tipo = "";
+	   		if(!tipo_contenido)
+	   			tipo = "directorio";
+	   		else
+	   			tipo = "archivo";
+	   		document.getElementById('tipo_contenido_cambiar_nombre').value = tipo;
+
+	    	window.location = document.getElementById('abrirPopUpCambiarNombre').href = "#abrirPopUpCambiarNombre";
+	    }
+
+	   	//Función para cambiar el nombre a un directorio/archivo
+	   	function cambiarNombre(id_contenido_cambiar_nombre){
+	   		var nuevo_nombre = document.getElementById("nuevo_nombre").value;
+	   		var id_contenido_cambiar_nombre = document.getElementById('id_contenido_cambiar_nombre').value;
+	   		var tipo = document.getElementById('tipo_contenido_cambiar_nombre').value;
+
+	   		$.ajax({
+	            url : "{% url 'cambiarNombre' %}",
+	            data : {
+	                nuevo_nombre: nuevo_nombre,
+	                id_contenido_cambiar_nombre: id_contenido_cambiar_nombre,
+	                directorio_actual, directorio_actual,
+	                tipo_contenido: tipo
+	            },
+	            type : 'GET',
+	            dataType: 'json',
+	            success : function(datos){
+	            	mostrarSnackbar("Nombre cambiado a \"" + nuevo_nombre + "\"");
+					setTimeout(function() {
+				    	window.location.href = "{% url 'index' %}?directorio_actual=" + directorio_actual;
+					}, 1800);
+	            },
+	            failure : function(datos){
+	                alert("Error: no se pudo realizar la consulta");
+	            },
+	            complete : function(datos) {
+	                console.log('Petición realizada');
+	            }
+	     	});
+	   	}
+
 
 	   	/******************* PROGRESS BAR *******************/
 	   	$('#upload_form').on( "submit", function(event) { 
@@ -877,6 +940,11 @@
 					window.location = document.getElementById(id_item_clicked).href = "{% url 'descargarArchivo' %}?id_archivo=" + Number(id_item_clicked.replace('a',''));
 				else if(accion == "compartir")
 					compartirArchivo(Number(id_item_clicked.replace('a','')));
+				else if(accion == "cambiar_nombre")
+					if(id_item_clicked[0] == 'a')
+						abrirCambiarNombre(Number(id_item_clicked.replace('a','')), 1);
+					else
+						abrirCambiarNombre(Number(id_item_clicked.replace('d','')), 0);
 				else if(accion == "copiar")
 					if(id_item_clicked[0] == 'a')
 						getDirectoriosCopiar(Number(id_item_clicked.replace('a','')), 1);
