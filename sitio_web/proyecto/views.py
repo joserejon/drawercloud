@@ -440,7 +440,7 @@ def getDirectoriosMoverArchivo(request):
 	directorio_actual = request.GET.get('directorio_actual', '')
 	d = DirectorioForm()
 
-	resultado = d.getDirectoriosMoverArchivo(usuario.username, directorio_actual, "documentos")
+	resultado = d.getDirectoriosMoverArchivo(usuario.username, directorio_actual)
 
 	return HttpResponse(json.dumps(resultado), content_type="application/json")
 
@@ -567,6 +567,17 @@ def actualizarBreadcrumb(request):
 	resultado = d.actualizarBreadcrumb(id_directorio, usuario.username)
 
 	return HttpResponse(json.dumps(resultado), content_type="application/json")
+
+#Añadir un archivo compartido conmigo a mi nube
+@login_required(login_url='/accounts/login/')
+def addArchivoMiNube(request):
+	id_archivo = request.GET.get('id_archivo', '')
+	propietario = request.GET.get('propietario', '')
+	a = ArchivoCompartidoForm()
+
+	a.addArchivoMiNube(id_archivo, propietario, usuario.username)
+
+	return render(request, 'index.html', {'pagina_actual':'Documentos', 'usuario':usuario, 'directorio_actual':'0'})
 
 #Eliminar la cuenta de usuario
 @login_required(login_url='/accounts/login/')

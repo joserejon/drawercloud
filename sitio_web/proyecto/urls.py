@@ -48,4 +48,5 @@ urlpatterns = [
 	url(r'^getEspacioOcupado/$', views.getEspacioOcupado, name='getEspacioOcupado'),
 	url(r'^cambiarNombre/$', views.cambiarNombre, name='cambiarNombre'),
 	url(r'^actualizarBreadcrumb/$', views.actualizarBreadcrumb, name='actualizarBreadcrumb'),
+	url(r'^addArchivoMiNube/$', views.addArchivoMiNube, name='addArchivoMiNube'),
 ]

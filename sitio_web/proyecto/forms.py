@@ -279,7 +279,7 @@ class DirectorioForm():
 
 		#Crear copia física del archivo
 		file = open('upload/' + archivo_original.nombre, 'rb+')
-		with open('upload/' + nombre_archivo, 'wb+') as destination:
+		with open('upload/' + "copia " + nombre_archivo, 'wb+') as destination:
 			while True:
 			    piece = file.read(1024)  
 			    if not piece:
@@ -530,6 +530,23 @@ class ArchivoCompartidoForm(Document):
 	#Dejar de compartir un archivo
 	def dejarCompartirArchivo(self, id_archivo, propietario, destino):
 		ArchivoCompartido.objects.filter(id_archivo_compartido=id_archivo, propietario=propietario, destinatario=destino).delete()
+
+	#Añadir un archivo compartido conmigo a mi nube
+	def addArchivoMiNube(self, id_archivo, propietario, username):
+		archivo = Archivo.objects(id_archivo=id_archivo, propietario=propietario)[0]
+
+		#Crear copia física del archivo
+		file = open('upload/' + archivo.nombre, 'rb+')
+		with open('upload/' + archivo.nombre + username, 'wb+') as destination:
+			while True:
+			    piece = file.read(1024)  
+			    if not piece:
+			        break
+			    destination.write(piece)
+			file.close()
+
+		a = ArchivoForm()
+		a.save(archivo.nombre, archivo.tipo_archivo, username, 'upload/' + archivo.nombre + username, 0)
 
 
 ################################################################

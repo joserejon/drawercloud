@@ -221,7 +221,7 @@
 	                    for(var i in datos){
 	                    	var tipo_archivo = comprobarExtension(datos[i][4], "lista");
 	                    	var favorito = "";
-	                    	if(datos[i][7] == true)
+	                    	if((datos[i][7] == true) && (opcion == "compartido_por_mi"))
 	                    		favorito = "<span class='glyphicon glyphicon-star'></span>";
 
 	                        html += "<tr id='" + datos[i][0] + "' class='task' >" +
@@ -240,12 +240,16 @@
 	                                    "<ul class='dropdown-menu' role='menu'>" +
 	                                        "<li><a href='{% url 'descargarArchivo' %}?id_archivo=" + datos[i][0] + "'>Descargar</a></li>" +
 	                                        "<li><a href='#abrirPopUpDejarCompartir' onClick='comprobarDejarCompartirArchivo(" + datos[i][0] + "); return false;'>Dejar de Compartir</a></li>";
-	                                        if(opcion == "compartido_por_mi")
+	                                        if(opcion == "compartido_por_mi"){
 				                            	html += "<li><a href='#abrirPopUpCambiarNombre' onclick='abrirCambiarNombre(" + datos[i][0] + "); return false;'>Cambiar nombre</a></li>";
-	                                        if(favorito == "")
-	                                        	html += "<li><a href='{% url 'addFavoritos' %}?id_archivo=" + datos[i][0] + "&pag_actual=compartido.html'>Añadir a favoritos</a></li>";
-	                                        else
-	                                        	html += "<li><a href='{% url 'delFavoritos' %}?id_archivo=" + datos[i][0] + "&pag_actual=compartido.html'>Eliminar de favoritos</a></li>";
+				                            	if(favorito == "")
+		                                        	html += "<li><a href='{% url 'addFavoritos' %}?id_archivo=" + datos[i][0] + "&pag_actual=compartido.html'>Añadir a favoritos</a></li>";
+		                                        else
+		                                        	html += "<li><a href='{% url 'delFavoritos' %}?id_archivo=" + datos[i][0] + "&pag_actual=compartido.html'>Eliminar de favoritos</a></li>";
+	                                        }
+	                                        else{
+	                                        	html += "<li><a href='{% url 'addArchivoMiNube' %}?id_archivo=" + datos[i][0] + "&propietario=" + datos[i][1] + "'>Añadir a mi nube</a></li>";
+	                                        }
 	                                    html += "</ul>" +
 	                                "</div>" +
 	                            "</td>" +
@@ -451,14 +455,17 @@
 
 					id_item_clicked = e.target.id //Donde se ha hecho click derecho
 
-					//Si el documento está marcado como favorito
-					if(mis_archivos[id_item_clicked][7])
-						document.getElementById("favorito").innerText = "Eliminar de favoritos";
-					else
-						document.getElementById("favorito").innerText = "Añadir a favoritos";
-
-					if(g_opcion == "compartido_conmigo")
+					if(g_opcion == "compartido_conmigo"){
+						document.getElementById("favorito").innerText = "";
 						document.getElementById("cambiar_nombre").innerText = "";
+					}
+					else{
+						//Si el documento está marcado como favorito
+						if(mis_archivos[id_item_clicked][7])
+							document.getElementById("favorito").innerText = "Eliminar de favoritos";
+						else
+							document.getElementById("favorito").innerText = "Añadir a favoritos";
+					}
 					
 					if(taskItemInContext){
 						e.preventDefault();
