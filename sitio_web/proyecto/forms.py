@@ -360,7 +360,18 @@ class DirectorioForm():
 		else:
 			Archivo.objects(id_archivo=id_contenido_cambiar_nombre).update_one(set__nombre=nuevo_nombre)
 
+	#Obtener los datos del breadcrumb
+	def actualizarBreadcrumb(self, id_directorio, propietario):
+		directorio = Directorio.objects(id_directorio=id_directorio, propietario=propietario)[0]
+		directorios_dic = {}
+
+		directorios_dic[int(directorio.id_directorio)] = [int(directorio.id_directorio), directorio.nombre]
+		while directorio.id_padre != -1:
+			directorio = Directorio.objects(id_directorio=directorio.id_padre, propietario=propietario)[0]
+			directorios_dic[int(directorio.id_directorio)] = [int(directorio.id_directorio), directorio.nombre]
 		
+		return directorios_dic
+
 
 ################################################################
 #Form para la clase Archivo

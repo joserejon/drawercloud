@@ -33,6 +33,11 @@
 	    <button id="bt_offcanvas" type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Mostrar opciones</button>
 	</p>
 
+	<!-- Migas de pan -->
+	<ol id="breadcrumb" class="breadcrumb">
+		<!-- Código insertado desde javascript  -->
+	</ol>
+
 	<div id="cambiar_vista">
 	    <!-- Código insertado desde javascript  -->
 	</div>
@@ -195,7 +200,39 @@
 	        var username = "{{ usuario.username }}";
 	        document.getElementById("fin_upload").innerHTML = "";
 	        document.getElementById("barra_progreso").innerHTML = "";
+	        document.getElementById("breadcrumb").innerHTML = "";
+	        actualizarBreadcrumb();
 			getArchivos(username);
+	    }
+
+	    //Actualizar el breadcrumb
+	    function actualizarBreadcrumb(){
+	    	$.ajax({
+	            url : "{% url 'actualizarBreadcrumb' %}",
+	            data : {
+	                id_directorio: directorio_actual
+	            },
+	            type : 'GET',
+	            dataType: 'json',
+	            success : function(datos){
+	            	for(var i in datos){
+	            		if(i == (Object.keys(datos).length - 1)){
+		            		document.getElementById("breadcrumb").innerHTML += "" +
+		            			"<li>" + datos[i][1] + "</li>";
+	            		}
+		            	else{
+		            		document.getElementById("breadcrumb").innerHTML += "" +
+		            			"<li><a href='{% url 'index' %}?directorio_actual= " + datos[i][0] + "'>" + datos[i][1] + "</a></li>";
+		            	}
+	            	}
+	            },
+	            failure : function(datos){
+	                alert("Error: no se pudo realizar la consulta");
+	            },
+	            complete : function(datos) {
+	                console.log('Petición realizada');
+	            }
+	     	});
 	    }
 
 	    //Función que se encarga de pedir y recibir los archivos del usuario

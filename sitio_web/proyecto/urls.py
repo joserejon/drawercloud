@@ -47,4 +47,5 @@ urlpatterns = [
 	url(r'^eliminarCuenta/$', views.eliminarCuenta, name='eliminarCuenta'),
 	url(r'^getEspacioOcupado/$', views.getEspacioOcupado, name='getEspacioOcupado'),
 	url(r'^cambiarNombre/$', views.cambiarNombre, name='cambiarNombre'),
+	url(r'^actualizarBreadcrumb/$', views.actualizarBreadcrumb, name='actualizarBreadcrumb'),
 ]

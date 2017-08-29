@@ -558,6 +558,15 @@ def cambiarNombre(request):
 
 	return HttpResponse(json.dumps(""), content_type="application/json")
 
+#Actualizar el breadcrumb
+@login_required(login_url='/accounts/login/')
+def actualizarBreadcrumb(request):
+	id_directorio = request.GET.get('id_directorio', '')
+	d = DirectorioForm()
+
+	resultado = d.actualizarBreadcrumb(id_directorio, usuario.username)
+
+	return HttpResponse(json.dumps(resultado), content_type="application/json")
 
 #Eliminar la cuenta de usuario
 @login_required(login_url='/accounts/login/')
