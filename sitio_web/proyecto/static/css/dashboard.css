@@ -126,21 +126,12 @@ body {
 
 /* Botones de cambiar vista de documentos */
 
-#volver{
-    margin-left: 2px;
-    color: #333333;
-}
-
 #vista_cuadricula{
     margin-left: 2px;
 }
 
 #vista_lista{
     margin-left: 2px;
-}
-
-#volver:hover{
-    cursor:pointer;
 }
 
 #vista_cuadricula:hover{

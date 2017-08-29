@@ -95,7 +95,6 @@
 				{% csrf_token %}
 				<input type="text" id="username_destino" name="username_destino" placeholder="Username de destino" required/>
 				<input type="hidden" id="id_archivo_compartir" name="id_archivo_compartir" value="" />
-				<input type="hidden" id="pag_actual" name="pag_actual" value="index.html" />
 				<input type="submit" value="Compartir" class="input_file btn btn-default" />
 			</form>
 		</div>
@@ -210,7 +209,8 @@
 	    	$.ajax({
 	            url : "{% url 'actualizarBreadcrumb' %}",
 	            data : {
-	                id_directorio: directorio_actual
+	                id_directorio: directorio_actual,
+	                pag_actual: "index.html"
 	            },
 	            type : 'GET',
 	            dataType: 'json',
@@ -488,7 +488,6 @@
 	    function comprobarUsuarioCompartir(){
 	    	var username = document.getElementById('username_destino').value;
 	    	var id_archivo_compartir = document.getElementById('id_archivo_compartir').value;
-	    	var pag_actual = document.getElementById('pag_actual').value;
 
 	    	$.ajax({
 	            url : "{% url 'comprobarUsuarioCompartir' %}",
@@ -502,7 +501,7 @@
 						mostrarSnackbar("Archivo compartido con " + username);
 						setTimeout(function() {
 						    window.location.href = "{% url 'compartirArchivo' %}?id_archivo_compartir=" + id_archivo_compartir + 
-							"&username_destino=" + username + "&pag_actual=" + pag_actual + "&directorio_actual={{directorio_actual}}";
+							"&username_destino=" + username + "&pag_actual=index.html&directorio_actual={{directorio_actual}}";
 						}, 1800);
 					}
 					else if(datos == 0){ 
@@ -530,7 +529,8 @@
 	            url : "{% url 'comprobarExisteDirectorio' %}",
 	            data : {
 	                nombre_directorio: nombre_directorio,
-	                directorio_actual: directorio_actual
+	                directorio_actual: directorio_actual,
+	                pag_actual: "index.html"
 	            },
 	            type : 'GET',
 	            dataType: 'json',
@@ -539,7 +539,7 @@
 						mostrarSnackbar("Creada la carpeta \"" + nombre_directorio + "\"");
 						setTimeout(function() {
 						    window.location.href = "{% url 'crearDirectorio' %}?nombre_directorio=" + nombre_directorio + 
-							"&directorio_actual=" + directorio_actual;
+							"&directorio_actual=" + directorio_actual + "&pag_actual=index.html";
 						}, 1800);
 					}
 					else{ 
@@ -594,7 +594,8 @@
 	   		$.ajax({
 	            url : "{% url 'getDirectoriosMoverArchivo' %}",
 	            data : {
-	                directorio_actual: directorio_actual
+	                directorio_actual: directorio_actual,
+	                pag_actual: "index.html"
 	            },
 	            type : 'GET',
 	            dataType: 'json',

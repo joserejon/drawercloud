@@ -27,6 +27,8 @@ def index(request):
 	#Comprobar si el directorio raíz existe
 	d = DirectorioForm()
 	d.comprobarExisteDirectorioRaiz(usuario.username)
+	d = DirectorioContenidoMultimediaForm()
+	d.comprobarExisteDirectorioRaizContenidoMultimedia(usuario.username)
 
 	directorio_actual = 0
 	if request.method == 'GET':
@@ -55,22 +57,32 @@ def contenidoMultimedia(request):
 	else:
 		tipo_contenido_titulo = "Vídeos"
 
+	#Comprobar si el directorio raíz existe
+	d = DirectorioContenidoMultimediaForm()
+	d.comprobarExisteDirectorioRaizContenidoMultimedia(usuario.username)
 
-	return render(request, 'contenidoMultimedia.html', {'pagina_actual':tipo_contenido_titulo, 'tipo_contenido':tipo_contenido})
+	directorio_actual = 0
+	if request.method == 'GET':
+		directorio_actual = request.GET.get("directorio_actual", '')
+		if directorio_actual == '':
+			if tipo_contenido == "archivos_musica":
+				directorio_actual = 0
+			elif tipo_contenido == "archivos_imagen":
+				directorio_actual = 1
+			else:
+				directorio_actual = 2
+
+
+	return render(request, 'contenidoMultimedia.html', {'pagina_actual':tipo_contenido_titulo, 
+		'tipo_contenido':tipo_contenido, 'directorio_actual':directorio_actual})
 
 @login_required(login_url='/accounts/login/')
 def contenidoMultimediaAjax(request):
 	tipo_contenido = request.GET.get('tipo_contenido','')
+	id_directorio = request.GET.get('id_directorio', '')
 	g_archivo = ArchivoForm()
 
-	if tipo_contenido == "archivos_musica":
-		extensiones = ['mp3', 'wma']
-	elif tipo_contenido == "archivos_imagen":
-		extensiones = ['png', 'jpeg', 'jpg']
-	else:
-		extensiones = ['mp4', 'avi']
-
-	archivos = g_archivo.getArchivosPorExtension(usuario.username, extensiones)
+	archivos = g_archivo.getArchivosPorExtension(usuario.username, id_directorio)
 	return HttpResponse(json.dumps(archivos), content_type="application/json")
 
 #Mostrar compartido
@@ -253,7 +265,8 @@ def compartirArchivo(request):
 		else:
 			tipo_contenido_titulo = "Vídeos"
 
-		return render(request, 'contenidoMultimedia.html', {'pagina_actual':tipo_contenido_titulo, 'tipo_contenido':tipo_contenido})
+		return render(request, 'contenidoMultimedia.html', {'pagina_actual':tipo_contenido_titulo, 
+		'tipo_contenido':tipo_contenido, 'directorio_actual':directorio_actual})
 	#Si es llamado desde la página index.html
 	elif pag_actual == "index.html":
 		return render(request, "index.html", {'pagina_actual':'Documentos', 'usuario':usuario, 'directorio_actual':directorio_actual})
@@ -417,20 +430,43 @@ def getImgPerfil(request):
 def crearDirectorio(request):
 	nombre_directorio = request.GET.get('nombre_directorio', '')
 	directorio_actual = request.GET.get('directorio_actual', '')
+	pag_actual = request.GET.get('pag_actual', '')
 
-	d = DirectorioForm()
-	d.crearDirectorio(nombre_directorio, directorio_actual, usuario.username)
+	if pag_actual == "index.html":
+		d = DirectorioForm()
+		d.crearDirectorio(nombre_directorio, directorio_actual, usuario.username)
 
-	return render(request, 'index.html', {'pagina_actual':'Documentos', 'usuario':usuario.username, 'directorio_actual':directorio_actual})
+		return render(request, 'index.html', {'pagina_actual':'Documentos', 'usuario':usuario.username, 'directorio_actual':directorio_actual})
+	else:
+		d = DirectorioContenidoMultimediaForm()
+		d.crearDirectorio(nombre_directorio, directorio_actual, usuario.username)
+
+		tipo_contenido = request.GET.get('tipo_contenido','')
+		tipo_contenido_titulo = ""
+		if tipo_contenido == "archivos_musica":
+			tipo_contenido_titulo = "Música"
+		elif tipo_contenido == "archivos_imagen":
+			tipo_contenido_titulo = "Imágenes"
+		else:
+			tipo_contenido_titulo = "Vídeos"
+
+		return render(request, 'contenidoMultimedia.html', {'pagina_actual':tipo_contenido_titulo, 
+		'tipo_contenido':tipo_contenido, 'directorio_actual':directorio_actual})
 
 #Comprobar si existe el directorio a crear
 @login_required(login_url='/accounts/login/')
 def comprobarExisteDirectorio(request):
 	nombre_directorio = request.GET.get('nombre_directorio','')
 	directorio_actual = request.GET.get('directorio_actual','')
-	d = DirectorioForm()
+	pag_actual = request.GET.get('pag_actual','')
+	resultado = None
 
-	resultado = d.comprobarExisteDirectorio(nombre_directorio, directorio_actual, usuario.username)
+	if pag_actual == "index.html":
+		d = DirectorioForm()
+		resultado = d.comprobarExisteDirectorio(nombre_directorio, directorio_actual, usuario.username)
+	else:
+		d = DirectorioContenidoMultimediaForm()
+		resultado = d.comprobarExisteDirectorio(nombre_directorio, directorio_actual, usuario.username)
 
 	return HttpResponse(json.dumps(resultado), content_type="application/json")
 
@@ -438,9 +474,16 @@ def comprobarExisteDirectorio(request):
 @login_required(login_url='/accounts/login/')
 def getDirectoriosMoverArchivo(request):
 	directorio_actual = request.GET.get('directorio_actual', '')
-	d = DirectorioForm()
+	pag_actual = request.GET.get('pag_actual', '')
+	resultado = None
 
-	resultado = d.getDirectoriosMoverArchivo(usuario.username, directorio_actual)
+	if pag_actual == "index.html":
+		d = DirectorioForm()
+		resultado = d.getDirectoriosMoverArchivo(usuario.username, directorio_actual)
+	else:
+		tipo_contenido = request.GET.get('tipo_contenido', '')
+		d = DirectorioContenidoMultimediaForm()
+		resultado = d.getDirectoriosMoverArchivo(usuario.username, directorio_actual, tipo_contenido)
 
 	return HttpResponse(json.dumps(resultado), content_type="application/json")
 
@@ -451,11 +494,28 @@ def moverArchivo(request):
 	id_directorio_dest = request.GET.get('id_directorio_dest', '')
 	pag_actual = request.GET.get('pag_actual', '')
 	directorio_actual = request.GET.get('directorio_actual', '')
-	d = DirectorioForm()
+	pag_actual = request.GET.get('pag_actual', '')
 
-	d.moverArchivo(id_archivo_mover, directorio_actual, id_directorio_dest, usuario.username)
+	if pag_actual == "index.html":
+		d = DirectorioForm()
+		d.moverArchivo(id_archivo_mover, directorio_actual, id_directorio_dest, usuario.username)
 
-	return render(request, 'index.html', {'pagina_actual':'Documentos', 'usuario':usuario.username, 'directorio_actual':directorio_actual})
+		return render(request, 'index.html', {'pagina_actual':'Documentos', 'usuario':usuario.username, 'directorio_actual':directorio_actual})
+	else:
+		d = DirectorioContenidoMultimediaForm()
+		d.moverArchivo(id_archivo_mover, directorio_actual, id_directorio_dest, usuario.username)
+
+		tipo_contenido = request.GET.get('tipo_contenido','')
+		tipo_contenido_titulo = ""
+		if tipo_contenido == "archivos_musica":
+			tipo_contenido_titulo = "Música"
+		elif tipo_contenido == "archivos_imagen":
+			tipo_contenido_titulo = "Imágenes"
+		else:
+			tipo_contenido_titulo = "Vídeos"
+
+		return render(request, 'contenidoMultimedia.html', {'pagina_actual':tipo_contenido_titulo, 
+		'tipo_contenido':tipo_contenido, 'directorio_actual':directorio_actual})
 
 #Obtener los directorios del usuario posibles para copiar un archivo
 @login_required(login_url='/accounts/login/')
@@ -562,9 +622,15 @@ def cambiarNombre(request):
 @login_required(login_url='/accounts/login/')
 def actualizarBreadcrumb(request):
 	id_directorio = request.GET.get('id_directorio', '')
-	d = DirectorioForm()
+	pag_actual = request.GET.get('pag_actual', '')
+	resultado = None
 
-	resultado = d.actualizarBreadcrumb(id_directorio, usuario.username)
+	if pag_actual == "index.html":
+		d = DirectorioForm()
+		resultado = d.actualizarBreadcrumb(id_directorio, usuario.username)
+	else:
+		d = DirectorioContenidoMultimediaForm()
+		resultado = d.actualizarBreadcrumb(id_directorio, usuario.username)
 
 	return HttpResponse(json.dumps(resultado), content_type="application/json")
 

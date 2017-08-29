@@ -242,8 +242,6 @@ class DirectorioForm():
 		#Añadir directorio al directorio destino
 		contenido = (int(id_directorio_mover), 'directorio')
 		self.actualizarContenidoDirectorio(id_directorio_destino, contenido, propietario)
-		#Actualizar directorio padre
-		#Directorio.objects(id_directorio=id_directorio_mover, propietario=propietario).update_one(set__id_padre=id_directorio_destino)
 
 	#Obtener los directorios del usuario posibles para copiar un archivo
 	def getDirectoriosCopiar(self, propietario):
@@ -374,6 +372,302 @@ class DirectorioForm():
 
 
 ################################################################
+#Form para la clase DirectorioContenidoMultimedia
+class DirectorioContenidoMultimediaForm():
+
+	#Crear el directorio raíz
+	def crearDirectorioRaizContenidoMultimedia(self, propietario):
+		#Directorio de la música
+		d = DirectorioContenidoMultimedia()
+		d.id_directorio = 0
+		d.nombre = "Música"
+		d.id_padre = -1
+		d.propietario = propietario
+		d.identificador_tupla = propietario + str(d.id_directorio)
+		d.save()
+
+		#Directorio de las imágenes
+		d = DirectorioContenidoMultimedia()
+		d.id_directorio = 1
+		d.nombre = "Imágenes"
+		d.id_padre = -1
+		d.propietario = propietario
+		d.identificador_tupla = propietario + str(d.id_directorio)
+		d.save()
+
+		#Directorio de los vídeos
+		d = DirectorioContenidoMultimedia()
+		d.id_directorio = 2
+		d.nombre = "Vídeos"
+		d.id_padre = -1
+		d.propietario = propietario
+		d.identificador_tupla = propietario + str(d.id_directorio)
+		d.save()
+
+	#Comprobar si existe el directorio raíz
+	def comprobarExisteDirectorioRaizContenidoMultimedia(self, propietario):
+		directorio = DirectorioContenidoMultimedia.objects(id_directorio=0, propietario=propietario)
+		if len(directorio) == 0:
+			self.crearDirectorioRaizContenidoMultimedia(propietario)
+
+	#Comprobar si existe el directorio a crear
+	def comprobarExisteDirectorio(self, nombre_directorio, directorio_actual, propietario):
+		directorio = list(DirectorioContenidoMultimedia.objects.filter(id_directorio=directorio_actual, propietario=propietario))
+
+		#Recorrer el contenido para directorio_actual
+		for contenido in directorio[0].contenido:
+			#Escoger la tupla que es directorio
+			if contenido[1] == "directorio":
+				#Comprobar, con el id del directorio, su nombre
+				d = DirectorioContenidoMultimedia.objects(id_directorio=contenido[0])
+				if d[0].nombre == nombre_directorio:
+					return True
+
+		return False
+
+
+	#Crear un nuevo directorio
+	def crearDirectorio(self, nombre_directorio, id_padre, propietario):
+		d = DirectorioContenidoMultimedia()
+
+		directorio = DirectorioContenidoMultimedia.objects(propietario=propietario)
+		d.id_directorio = directorio[len(directorio) - 1].id_directorio + 1
+
+		d.nombre = nombre_directorio
+		d.id_padre = id_padre
+		d.propietario = propietario
+		d.identificador_tupla = propietario + str(d.id_directorio)
+
+		contenido = (int(d.id_directorio), 'directorio')
+		self.actualizarContenidoDirectorio(id_padre, contenido, propietario)
+		d.save()
+
+		return d
+
+	#Actualizar contenido de un directorio
+	#nuevo contenido -> tupla con la forma ( id_contenido , tipo_contenido )
+	#tipo contenido indica si es directorio o archivo
+	def actualizarContenidoDirectorio(self, id_directorio, nuevo_contenido, propietario):
+		DirectorioContenidoMultimedia.objects(id_directorio=id_directorio, propietario=propietario).update(add_to_set__contenido=[nuevo_contenido])
+
+	#Obtener los directorios del usuario posibles para mover un archivo
+	def getDirectoriosMoverArchivo(self, propietario, directorio_actual, tipo_contenido):
+		directorios = list(DirectorioContenidoMultimedia.objects.filter(propietario=propietario))
+		directorios_dic = {}
+
+		for directorio in directorios:
+			#Cuando el directorio sea distinto del actual
+			if int(directorio.id_directorio) != int(directorio_actual):
+				if (directorio.id_directorio == 0 and tipo_contenido == "archivos_musica") or (directorio.id_directorio == 1 and tipo_contenido == "archivos_imagen") or (directorio.id_directorio == 2 and tipo_contenido == "archivos_video"):
+					path = directorio.nombre
+					directorio_aux = directorio
+					#Añadir al diccionario el id_directorio y el path
+					directorios_dic[int(directorio.id_directorio)] = [int(directorio.id_directorio), path]
+				elif directorio.id_directorio > 2:
+					path = directorio.nombre
+					directorio_aux = directorio
+					#Recorremos los padres del directorio para añadirlos al path
+					while directorio_aux.id_padre >= 0:
+						directorio_aux = DirectorioContenidoMultimedia.objects(id_directorio=directorio_aux.id_padre, propietario=propietario)
+						directorio_aux = directorio_aux[0]
+						path = directorio_aux.nombre + "/" + path
+						if (directorio_aux.id_directorio == 0 and tipo_contenido != "archivos_musica") or (directorio_aux.id_directorio == 1 and tipo_contenido != "archivos_imagen") or (directorio_aux.id_directorio == 2 and tipo_contenido != "archivos_video"):
+							path = ""
+					
+					#Añadir al diccionario el id_directorio y el path
+					if path != "":
+						directorios_dic[int(directorio.id_directorio)] = [int(directorio.id_directorio), path]
+
+		return directorios_dic
+
+	#Obtener los directorios del usuario posibles para mover un directorio
+	def getDirectoriosMoverDirectorio(self, propietario, directorio_actual, directorio_seleccionado):
+		directorios = list(DirectorioContenidoMultimedia.objects.filter(propietario=propietario))
+		directorios_dic = {}
+
+		for directorio in directorios:
+			#Cuando el directorio sea distinto del actual
+			if int(directorio.id_directorio) != int(directorio_actual) and int(directorio.id_directorio) != int(directorio_seleccionado):
+				path = directorio.nombre
+				directorio_aux = directorio
+				#Recorremos los padres del directorio para añadirlos al path
+				while directorio_aux.id_padre >= 0:
+					directorio_aux = DirectorioContenidoMultimedia.objects(id_directorio=directorio_aux.id_padre, propietario=propietario)
+					directorio_aux = directorio_aux[0]
+					path = directorio_aux.nombre + "/" + path
+				
+				#Añadir al diccionario el id_directorio y el path
+				directorios_dic[int(directorio.id_directorio)] = [int(directorio.id_directorio), path]
+
+		return directorios_dic
+
+	#Mover un archivo a otro directorio
+	def moverArchivo(self, id_archivo_mover, directorio_actual, id_directorio_dest, propietario):
+		directorio = list(DirectorioContenidoMultimedia.objects.filter(id_directorio=directorio_actual, propietario=propietario))
+
+		#Eliminar el archivo del directorio actual
+		contador = 0
+		#Recorrer el contenido para directorio_actual
+		for contenido in directorio[0].contenido:
+			#Escoger la tupla que es archivo
+			if contenido[1] == "archivo" and contenido[0] == int(id_archivo_mover):
+				del directorio[0].contenido[contador]
+				directorio[0].save()
+				break
+
+			contador += 1
+
+		#Añadir el archivo a su nuevo directorio
+		contenido = (int(id_archivo_mover), 'archivo')
+		self.actualizarContenidoDirectorio(id_directorio_dest, contenido, propietario)
+
+	#Mover un directorio
+	def moverDirectorio(self, id_directorio_mover, id_directorio_destino, propietario, directorio_actual):
+		directorio = list(DirectorioContenidoMultimedia.objects.filter(id_directorio=directorio_actual, propietario=propietario))
+		#Eliminar directorio del directorio actual
+		contador = 0
+		#Recorrer el contenido para directorio_actual
+		for contenido in directorio[0].contenido:
+			#Escoger la tupla que es directorio
+			if contenido[1] == "directorio" and contenido[0] == int(id_directorio_mover):
+				del directorio[0].contenido[contador]
+				directorio[0].save()
+				break
+
+			contador += 1
+		#Añadir directorio al directorio destino
+		contenido = (int(id_directorio_mover), 'directorio')
+		self.actualizarContenidoDirectorio(id_directorio_destino, contenido, propietario)
+
+	#Obtener los directorios del usuario posibles para copiar un archivo
+	def getDirectoriosCopiar(self, propietario):
+		directorios = list(DirectorioContenidoMultimedia.objects.filter(propietario=propietario))
+		directorios_dic = {}
+
+		for directorio in directorios:
+			path = directorio.nombre
+			directorio_aux = directorio
+			#Recorremos los padres del directorio para añadirlos al path
+			while directorio_aux.id_padre >= 0:
+				directorio_aux = DirectorioContenidoMultimedia.objects(id_directorio=directorio_aux.id_padre, propietario=propietario)
+				directorio_aux = directorio_aux[0]
+				path = directorio_aux.nombre + "/" + path
+			
+			#Añadir al diccionario el id_directorio y el path
+			directorios_dic[int(directorio.id_directorio)] = [int(directorio.id_directorio), path]
+
+		return directorios_dic
+
+	#Copiar un archivo
+	def copiarArchivo(self, id_archivo_copiar, directorio_actual, id_directorio_dest, propietario):
+		archivo_original = Archivo.objects(id_archivo=id_archivo_copiar)
+		archivo_original = archivo_original[0]
+		a = ArchivoForm()
+
+		#Añadir "copia" al nombre si se copia en el mismo directorios
+		nombre_archivo = ""
+		if int(directorio_actual) != int(id_directorio_dest):
+			nombre_archivo = archivo_original.nombre
+		else:
+			nombre_archivo = "copia " + archivo_original.nombre
+
+		#Crear copia física del archivo
+		file = open('upload/' + archivo_original.nombre, 'rb+')
+		with open('upload/' + "copia " + nombre_archivo, 'wb+') as destination:
+			while True:
+			    piece = file.read(1024)  
+			    if not piece:
+			        break
+			    destination.write(piece)
+			file.close()
+
+		#Crear copia en la BD
+		a.save(nombre_archivo, archivo_original.tipo_archivo, propietario, 'upload/' + archivo_original.nombre, id_directorio_dest)
+
+	#Copiar un directorio
+	def copiarDirectorio(self, id_directorio_copiar, id_directorio_destino, propietario, directorio_actual):
+		directorios = DirectorioContenidoMultimedia.objects(propietario=propietario).order_by('id_directorio')
+		directorio_original = DirectorioContenidoMultimedia.objects(id_directorio=id_directorio_copiar, propietario=propietario)
+		directorio_nuevo = DirectorioContenidoMultimedia()
+
+		directorio_nuevo.id_directorio = directorios[len(directorios) - 1].id_directorio + 1
+		directorio_nuevo.identificador_tupla = propietario + str(directorio_nuevo.id_directorio)
+		directorio_nuevo.id_padre = id_directorio_destino
+		directorio_nuevo.propietario = propietario
+		if int(directorio_actual) == int(id_directorio_destino):
+			directorio_nuevo.nombre = "copia " + directorio_original[0].nombre
+		else:
+			directorio_nuevo.nombre = directorio_original[0].nombre
+
+		directorio_nuevo.contenido = directorio_original[0].contenido
+
+		for contenido in directorio_original[0].contenido:
+			if contenido[1] == "archivo":
+				self.copiarArchivo(int(contenido[0]), directorio_actual, directorio_nuevo.id_directorio, propietario)
+
+		contenido = (int(directorio_nuevo.id_directorio), 'directorio')
+		self.actualizarContenidoDirectorio(id_directorio_destino, contenido, propietario)
+		directorio_nuevo.save()
+
+	#Borrar un directorio
+	def borrarDirectorio(self, id_directorio_eliminar, propietario):
+		directorio = DirectorioContenidoMultimedia.objects(id_directorio=id_directorio_eliminar, propietario=propietario)[0]
+		a = ArchivoForm()
+
+		#Borrar contenido del directorio a eliminar
+		for contenido in directorio.contenido:
+			if contenido[1] == "archivo":
+				a.borrarArchivo(contenido[0], id_directorio_eliminar, propietario)
+			elif contenido[1] == "directorio":
+				self.borrarDirectorio(contenido[0], propietario)
+
+
+		#Borrar directorio del contenido del padre
+		if directorio.id_padre != -1:
+			directorio_padre = DirectorioContenidoMultimedia.objects(id_directorio=directorio.id_padre, propietario=propietario)[0]
+			contador = 0
+			for contenido in directorio_padre.contenido:
+				#Escoger la tupla que es directorio
+				if contenido[1] == "directorio" and contenido[0] == int(id_directorio_eliminar):
+					del directorio_padre.contenido[contador]
+					directorio_padre.save()
+					break
+
+				contador += 1
+
+		#Borrar la tupla en la BD correspondiente al directorio
+		DirectorioContenidoMultimedia.objects(id_directorio=id_directorio_eliminar, propietario=propietario).delete()
+
+	#Cambiar nombre a un directorio/archivo
+	def cambiarNombre(self, nuevo_nombre, id_contenido_cambiar_nombre, directorio_actual, tipo_contenido, propietario):
+
+		#Si se está cambiando el nombre desde la página principal
+		if int(directorio_actual) >= 0:
+			directorio = DirectorioContenidoMultimedia.objects(id_directorio=directorio_actual, propietario=propietario)[0]
+			for contenido in directorio.contenido:
+				if contenido[0] == int(id_contenido_cambiar_nombre) and contenido[1] == tipo_contenido:
+					if tipo_contenido == "archivo":
+						Archivo.objects(id_archivo=id_contenido_cambiar_nombre).update_one(set__nombre=nuevo_nombre)
+					else:
+						DirectorioContenidoMultimedia.objects(id_directorio=id_contenido_cambiar_nombre).update_one(set__nombre=nuevo_nombre)
+					break
+		else:
+			Archivo.objects(id_archivo=id_contenido_cambiar_nombre).update_one(set__nombre=nuevo_nombre)
+
+	#Obtener los datos del breadcrumb
+	def actualizarBreadcrumb(self, id_directorio, propietario):
+		directorio = DirectorioContenidoMultimedia.objects(id_directorio=id_directorio, propietario=propietario)[0]
+		directorios_dic = {}
+
+		directorios_dic[int(directorio.id_directorio)] = [int(directorio.id_directorio), directorio.nombre]
+		while directorio.id_padre != -1:
+			directorio = DirectorioContenidoMultimedia.objects(id_directorio=directorio.id_padre, propietario=propietario)[0]
+			directorios_dic[int(directorio.id_directorio)] = [int(directorio.id_directorio), directorio.nombre]
+		
+		return directorios_dic
+
+
+################################################################
 #Form para la clase Archivo
 class ArchivoForm():
 
@@ -401,6 +695,14 @@ class ArchivoForm():
 		d = DirectorioForm()
 		contenido = (int(a.id_archivo), 'archivo')
 		d.actualizarContenidoDirectorio(id_directorio, contenido, username)
+
+		d = DirectorioContenidoMultimediaForm()
+		if tipo_archivo == 'mp3' or tipo_archivo == 'wma':
+			d.actualizarContenidoDirectorio(0, contenido, username)
+		elif tipo_archivo == 'jpeg' or tipo_archivo == 'jpg' or tipo_archivo == 'png':
+			d.actualizarContenidoDirectorio(1, contenido, username)
+		elif tipo_archivo == 'avi' or tipo_archivo == 'mp4':
+			d.actualizarContenidoDirectorio(2, contenido, username)
 
 		return a.id_archivo
 
@@ -434,16 +736,29 @@ class ArchivoForm():
 		return archivo[0].nombre
 
 	#Devolver una lista con los archivos del usuario buscando por extension
-	def getArchivosPorExtension(self, username, extension):
+	def getArchivosPorExtension(self, username, id_directorio):
 
-		archivos = list(Archivo.objects.filter(propietario=username, tipo_archivo__in=extension))
 		archivos_dic = {}
+		subdirectorios_dic = {}
+		directorio = list(DirectorioContenidoMultimedia.objects.filter(id_directorio=id_directorio, propietario=username))
 
-		for item in archivos:
-			archivos_dic[int(item.id_archivo)] = [int(item.id_archivo), item.nombre, item.tipo_archivo,
-			str(item.fecha_subida), str(item.tam_archivo), item.favorito]
+		#Recorrer el contenido para directorio_actual
+		for contenido in directorio[0].contenido:
+			#Escoger la tupla que es archivo
+			if contenido[1] == "archivo":
+				archivo = Archivo.objects(id_archivo=contenido[0])
+				archivo = archivo[0]
+				archivos_dic[int(archivo.id_archivo)] = [int(archivo.id_archivo), archivo.nombre, archivo.tipo_archivo, 
+				str(archivo.fecha_subida), str(archivo.tam_archivo), archivo.favorito]
+			else:
+				subdirectorio = DirectorioContenidoMultimedia.objects(id_directorio=contenido[0])
+				subdirectorio = subdirectorio[0]
 
-		return archivos_dic
+				subdirectorios_dic[int(subdirectorio.id_directorio)] = [int(subdirectorio.id_directorio), subdirectorio.nombre]
+
+		contenido = (subdirectorios_dic, archivos_dic)
+
+		return contenido
 
 	#Añadir un archivo a favoritos
 	def addFavoritos(self, id_archivo):
@@ -662,7 +977,7 @@ def getContentType(tipo_archivo):
 	ct = ""
 	if tipo_archivo == 'odt':
 		ct = 'application/vnd.oasis.opendocument.text'
-	elif tipo_archivo == 'jpeg' or tipo_archivo == 'jpg':
+	elif tipo_archivo == 'jpeg' or tipo_archivo == 'jpg' or tipo_archivo == 'png':
 		ct = 'image/jpeg'
 	elif tipo_archivo == 'mp3':
 		ct = 'audio/mpeg'
