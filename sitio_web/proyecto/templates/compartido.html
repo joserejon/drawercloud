@@ -23,6 +23,9 @@
             <li class="context-menu__item">
                 <a href="#" class="context-menu__link" id="favorito" data-action="favorito">Añadir a favoritos</a>
             </li>
+            <li class="context-menu__item">
+                <a href="#" class="context-menu__link" id="add_nube" data-action="add_nube">Añadir a mi nube</a>
+            </li>
         </ul>
     </nav>
 
@@ -589,7 +592,9 @@
 					else
 						window.location=document.getElementById(id_item_clicked).href = "{% url 'delFavoritos' %}?id_archivo=" + id_item_clicked + "&pag_actual=compartido.html";
 				}
-				
+				else if(accion == "add_nube")
+					window.location=document.getElementById(id_item_clicked).href = "{% url 'addArchivoMiNube' %}?id_archivo=" + mis_archivos[id_item_clicked][0] + "&propietario=" + mis_archivos[id_item_clicked][1];
+
 				toggleMenuOff();
 			}
 

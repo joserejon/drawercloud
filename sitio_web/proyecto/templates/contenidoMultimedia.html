@@ -21,7 +21,16 @@
                 <a href="#" class="context-menu__link" id="cambiar_nombre" data-action="cambiar_nombre">Cambiar nombre</a>
             </li>
             <li class="context-menu__item">
+                <a href="#" class="context-menu__link" id="copiar" data-action="copiar">Copiar en</a>
+            </li>
+            <li class="context-menu__item">
+                <a href="#" class="context-menu__link" id="mover" data-action="mover">Mover a</a>
+            </li>
+            <li class="context-menu__item">
                 <a href="#" class="context-menu__link" id="favorito" data-action="favorito">Añadir a favoritos</a>
+            </li>
+            <li class="context-menu__item">
+                <a href="#" class="context-menu__link" id="eliminar" data-action="eliminar">Eliminar</a>
             </li>
         </ul>
     </nav>
@@ -58,7 +67,14 @@
 			<a id="bt_close_popup" href="#close" title="Close" class="close">X</a>
 			<form action="{% url 'upload' %}" method="POST" enctype="multipart/form-data" id="upload_form">
 				{% csrf_token %} 
-				<input type="file" name="file" class="input_file btn btn-default" required/>
+				{% if tipo_contenido == 'archivos_musica' %}
+					<input type="file" name="file" class="input_file btn btn-default" accept="audio/*" required/>
+				{% elif tipo_contenido == 'archivos_imagen' %}
+					<input type="file" name="file" class="input_file btn btn-default" accept="image/*" required/>
+				{% else %}
+					<input type="file" name="file" class="input_file btn btn-default" accept="video/*" required/>
+				{% endif %}
+				<input type="hidden" id="pag_actual" name="pag_actual" value="contenidoMultimedia.html" />
 				<input type="hidden" id="id_directorio" name="id_directorio" value="{{ directorio_actual }}" />
 				<input id="bt_upload" type="submit" value="Subir archivo" class="input_file btn btn-default" />
 			</form>
@@ -105,6 +121,7 @@
 			<form action="javascript:eliminarArchivo();" method="POST">
 				{% csrf_token %}
 				<label>¿Realmente desea eliminar el archivo?</label>
+				<label>Atención: se eliminará de tu espacio permanentemente</label>
 				<input type="hidden" id="id_archivo_eliminar" name="id_archivo_eliminar" value="" />
 				<input type="submit" value="Eliminar" class="input_file btn btn-default" />
 			</form>
@@ -118,6 +135,7 @@
 			<form action="javascript:eliminarDirectorio();" method="POST">
 				{% csrf_token %}
 				<label>¿Realmente desea eliminar el directorio y todo su contenido?</label>
+				<label>Atención: se eliminará de tu espacio permanentemente</label>
 				<input type="hidden" id="id_directorio_eliminar" name="id_directorio_eliminar" value="" />
 				<input type="submit" value="Eliminar" class="input_file btn btn-default" />
 			</form>
@@ -146,7 +164,7 @@
 		</div>
 	</div>
 
-    <!-- PopUp para cambir nombre a un archivo -->
+    <!-- PopUp para cambir nombre a un directorio/archivo -->
 	<div id="abrirPopUpCambiarNombre" class="popUp">
 		<div>
 			<a href="#close" title="Close" class="close">X</a>
@@ -154,6 +172,7 @@
 				{% csrf_token %}
 				<input type="text" id="nuevo_nombre" name="nuevo_nombre" placeholder="Introduzca un nombre nuevo" required/>
 				<input type="hidden" id="id_contenido_cambiar_nombre" name="id_contenido_cambiar_nombre" value="" />
+				<input type="hidden" id="tipo_contenido_cambiar_nombre" name="tipo_contenido_cambiar_nombre" value="" />
 				<input type="submit" value="Cambiar nombre" class="input_file btn btn-default" />
 			</form>
 		</div>
@@ -350,8 +369,6 @@
 	                                    "Más <span class='caret'></span>" +
 	                                    "</button>" +
 	                                    "<ul class='dropdown-menu' role='menu'>" +
-	                                        "<li><a href='{% url 'descargarArchivo' %}?id_archivo=" + datos[0][i][0] + "'>Descargar</a></li>" +
-	                                        "<li><a href='#abrirPopUpCompartir' onclick='compartirArchivo(" + datos[0][i][0] + "); return false;'>Compartir</a></li>" +
 	                                        "<li><a href='#abrirPopUpCambiarNombre' onclick='abrirCambiarNombre(" + datos[0][i][0] + ", 0); return false;'>Cambiar nombre</a></li>" +
 	                                        "<li><a href='#abrirPopUpCopiarEn' onclick='getDirectoriosCopiar(" + datos[0][i][0] + ", 0);'>Copiar en</a></li>" +
 	                                        "<li><a href='#abrirPopUpMoverA' onclick='getDirectoriosMoverDirectorio(" + datos[0][i][0] + ");'>Mover a</a></li>" +
@@ -594,31 +611,117 @@
 	     	});
 	   	}
 
-	    //Llamar al popUp para compartir archivo incluyendo el ID de éste
-	    function abrirCambiarNombre(id_contenido_cambiar_nombre){
+	   	//Obtener los directorios del usuario posibles para copiar
+	   	// tipo_contenido == 0 => directorio; tipo_contenido == 1 => archivo
+	   	function getDirectoriosCopiar(id_contenido_copiar, tipo_contenido){
+	   		window.location = document.getElementById('abrirPopUpCopiarEn').href = "#abrirPopUpCopiarEn";
+	   		$.ajax({
+	            url : "{% url 'getDirectoriosCopiar' %}",
+	            data : {
+	            	tipo_contenido: "{{ tipo_contenido }}",
+	            	pag_actual: "contenidoMultimedia.html"
+	            },
+	            type : 'GET',
+	            dataType: 'json',
+	            success : function(datos){
+	            	document.getElementById('ver_directorios_copiar').innerHTML = "";
+					for(var i in datos){
+						document.getElementById('ver_directorios_copiar').innerHTML += "<li id='" + datos[i][0] + "'>" + datos[i][1] + "</li>";
+					}
+
+					$("#ver_directorios_copiar li").click(function( event ) {
+						id_directorio_dest = this.id;
+						if(!tipo_contenido)
+							mostrarSnackbar("Directorio copiado en \"" + datos[id_directorio_dest][1] + "\"");
+						else
+							mostrarSnackbar("Archivo copiado en \"" + datos[id_directorio_dest][1] + "\"");
+						setTimeout(function() {
+							if(!tipo_contenido)
+								window.location.href = "{% url 'copiarDirectorio' %}?id_archivo=" + id_contenido_copiar + "&id_directorio_dest=" + id_directorio_dest + "&pag_actual=contenidoMultimedia.html&tipo_contenido={{ tipo_contenido }}&directorio_actual=" + directorio_actual;
+							else
+						    	window.location.href = "{% url 'copiarArchivo' %}?id_archivo=" + id_contenido_copiar + "&id_directorio_dest=" + id_directorio_dest + "&pag_actual=contenidoMultimedia.html&tipo_contenido={{ tipo_contenido }}&directorio_actual=" + directorio_actual;
+						}, 1800);
+					});
+	            },
+	            failure : function(datos){
+	                alert("Error: no se pudo realizar la consulta");
+	            },
+	            complete : function(datos) {
+	                console.log('Petición realizada');
+	            }
+	     	});
+	   	}
+
+	   	//Obtener los directorios del usuario posibles para mover un directorio
+	   	function getDirectoriosMoverDirectorio(id_directorio_mover){
+	   		window.location = document.getElementById('abrirPopUpMoverA').href = "#abrirPopUpMoverA";
+	   		$.ajax({
+	            url : "{% url 'getDirectoriosMoverDirectorio' %}",
+	            data : {
+	                directorio_actual: directorio_actual,
+	                directorio_seleccionado: id_directorio_mover,
+	                pag_actual: "contenidoMultimedia.html",
+	                tipo_contenido: "{{ tipo_contenido }}"
+	            },
+	            type : 'GET',
+	            dataType: 'json',
+	            success : function(datos){
+	            	document.getElementById('ver_directorios_mover').innerHTML = "";
+					for(var i in datos){
+						document.getElementById('ver_directorios_mover').innerHTML += "<li id='" + datos[i][0] + "'>" + datos[i][1] + "</li>";
+					}
+
+					$("#ver_directorios_mover li").click(function( event ) {
+						id_directorio_dest = this.id;
+						mostrarSnackbar("Archivo movido a \"" + datos[id_directorio_dest][1] + "\"");
+						setTimeout(function() {
+					    	window.location.href = "{% url 'moverDirectorio' %}?id_archivo=" + id_directorio_mover + "&id_directorio_dest=" + id_directorio_dest + "&pag_actual=contenidoMultimedia.html&tipo_contenido={{ tipo_contenido }}&directorio_actual=" + directorio_actual;
+						}, 1800);
+					});
+	            },
+	            failure : function(datos){
+	                alert("Error: no se pudo realizar la consulta");
+	            },
+	            complete : function(datos) {
+	                console.log('Petición realizada');
+	            }
+	     	});
+	   	}
+
+	   	//Llamar al popUp para compartir archivo incluyendo el ID de éste
+	    function abrirCambiarNombre(id_contenido_cambiar_nombre, tipo_contenido){
 	    	document.getElementById('id_contenido_cambiar_nombre').value = id_contenido_cambiar_nombre;
+	    	var tipo = "";
+	   		if(!tipo_contenido)
+	   			tipo = "directorio";
+	   		else
+	   			tipo = "archivo";
+	   		document.getElementById('tipo_contenido_cambiar_nombre').value = tipo;
+
 	    	window.location = document.getElementById('abrirPopUpCambiarNombre').href = "#abrirPopUpCambiarNombre";
 	    }
 
-	    //Función para cambiar el nombre a un directorio/archivo
+	   	//Función para cambiar el nombre a un directorio/archivo
 	   	function cambiarNombre(id_contenido_cambiar_nombre){
 	   		var nuevo_nombre = document.getElementById("nuevo_nombre").value;
 	   		var id_contenido_cambiar_nombre = document.getElementById('id_contenido_cambiar_nombre').value;
+	   		var tipo = document.getElementById('tipo_contenido_cambiar_nombre').value;
 
 	   		$.ajax({
 	            url : "{% url 'cambiarNombre' %}",
 	            data : {
 	                nuevo_nombre: nuevo_nombre,
 	                id_contenido_cambiar_nombre: id_contenido_cambiar_nombre,
-	                directorio_actual: -1,
-	                tipo_contenido: ""
+	                directorio_actual, directorio_actual,
+	                tipo_contenido: tipo,
+	                pag_actual: "contenidoMultimedia.html"
 	            },
 	            type : 'GET',
 	            dataType: 'json',
 	            success : function(datos){
 	            	mostrarSnackbar("Nombre cambiado a \"" + nuevo_nombre + "\"");
 					setTimeout(function() {
-				    	window.location.href = "{% url 'contenidoMultimedia' %}?tipo_contenido={{ tipo_contenido }}";
+				    	window.location.href = "{% url 'contenidoMultimedia' %}?tipo_contenido={{ tipo_contenido }}&directorio_actual=" + directorio_actual;
 					}, 1800);
 	            },
 	            failure : function(datos){
@@ -630,15 +733,101 @@
 	     	});
 	   	}
 
+	   	//Llamar al popUp para eliminar archivo incluyendo el ID de éste
+	    function comprobarEliminarArchivo(id_archivo) {
+	    	document.getElementById('id_archivo_eliminar').value = id_archivo;
+	    	window.location = document.getElementById('abrirPopUpEliminar').href = "#abrirPopUpEliminar";
+	    }
 
-	   	/******************* OPCIONES DE BOTÓN DERECHO EN LA LISTA *******************/
+	    //Llamar al popUp para compartir archivo incluyendo el ID de éste
+	    function comprobarEliminarDirectorio(id_directorio) {
+	    	document.getElementById('id_directorio_eliminar').value = id_directorio;
+	    	window.location = document.getElementById('abrirPopUpEliminarDirectorio').href = "#abrirPopUpEliminarDirectorio";
+	    }
+
+	   	//Preguntar al usuario si realmente quiere eliminar el archivo
+	   	function eliminarArchivo(){
+	   		var id_archivo_eliminar = document.getElementById('id_archivo_eliminar').value;
+	   		mostrarSnackbar("Archivo eliminado");
+	   		setTimeout(function() {
+			    window.location.href = "{% url 'borrarArchivo' %}?id_archivo=" + id_archivo_eliminar + "&pag_actual=contenidoMultimedia.html&tipo_contenido={{ tipo_contenido }}&directorio_actual=" + directorio_actual;
+			}, 1800);
+	   		
+	   	}
+
+	   	//Preguntar al usuario si realmente quiere eliminar el archivo
+	   	function eliminarDirectorio(){
+	   		var id_directorio_eliminar = document.getElementById('id_directorio_eliminar').value;
+	   		mostrarSnackbar("Directorio eliminado");
+	   		setTimeout(function() {
+			    window.location.href = "{% url 'borrarDirectorio' %}?id_directorio=" + id_directorio_eliminar + "&pag_actual=contenidoMultimedia.html&tipo_contenido={{ tipo_contenido }}&directorio_actual=" + directorio_actual;
+			    alert(1);
+			}, 1800);
+	   		
+	   	}
+
+
+	   	/******************* PROGRESS BAR *******************/
+	   	$('#upload_form').on( "submit", function(event) { 
+			event.preventDefault();
+			var proceed = true; //set proceed flag
+			var error = [];	//errors
+			var total_files_size = 0;
+			var progress_bar_id = '#progress-wrp';
+			//reset progressbar
+			$(progress_bar_id +" .progress-bar").css("width", "0%");
+			$(progress_bar_id + " .status").text("0%");
+									
+			var form_data = new FormData(this); //Creates new FormData object
+			var post_url = $(this).attr("action"); //get action URL of form
+
+			document.getElementById("barra_progreso").innerHTML = "<div id='progress-wrp'><div class='progress-bar'></div><div class='status'>0%</div></div>";
+			$('#bt_close_popup').hide();
+
+			//jQuery Ajax to Post form data
+			$.ajax({
+				url : post_url,
+				type: "POST",
+				data : form_data,
+				contentType: false,
+				cache: false,
+				processData:false,
+				xhr: function(){
+					//upload Progress
+					var xhr = $.ajaxSettings.xhr();
+					if (xhr.upload) {
+						xhr.upload.addEventListener('progress', function(event) {
+							var percent = 0;
+							var position = event.loaded || event.position;
+							var total = event.total;
+							if (event.lengthComputable) {
+								percent = Math.ceil(position / total * 100);
+							}
+							//update progressbar
+							$(progress_bar_id +" .progress-bar").css("width", + percent +"%");
+							$(progress_bar_id + " .status").text(percent +"%");
+						}, true);
+					}
+					return xhr;
+				},
+				mimeType:"multipart/form-data",
+				complete: function (data) {
+			    	document.getElementById("fin_upload").innerHTML = "<a id='bt_fin_upload' class='btn btn-default' href='{% url 'contenidoMultimedia' %}?tipo_contenido={{ tipo_contenido }}&directorio_actual=" + directorio_actual + "'>Continuar</a>";
+			    	document.getElementById("barra_progreso").innerHTML = "<div class='alert alert-success'>Archivo subido con éxito</div>";
+			    	$('#bt_close_popup').show();
+			    }
+			});
+		});
+
+
+	   	/******************* OPCIONES DE BOTÓN DERECHO *******************/
 		(function() {
 
 			"use strict";
 
 			function clickInsideElement( e, className ) {
 				var el = e.srcElement || e.target;
-				
+
 				if(el.classList.contains(className))
 					return el;
 				else{
@@ -687,16 +876,26 @@
 			//Identificar donde se produce el click
 			function contextListener(){
 				document.addEventListener("contextmenu", function(e){
-					
 					taskItemInContext = clickInsideElement(e, taskItemClassName);
+					
+					id_item_clicked = e.target.id; //Donde se ha hecho click derecho
 
-					id_item_clicked = e.target.id //Donde se ha hecho click derecho
+					if(id_item_clicked[0] == 'a'){
+						//Si el documento está marcado como favorito
+						if(mis_archivos[1][Number(id_item_clicked.replace('a',''))][5])
+							document.getElementById("favorito").innerText = "Eliminar de favoritos";
+						else
+							document.getElementById("favorito").innerText = "Añadir a favoritos";
 
-					//Si el documento está marcado como favorito
-					if(mis_archivos[id_item_clicked][5])
-						document.getElementById("favorito").innerText = "Eliminar de favoritos";
-					else
+						document.getElementById("descargar").innerText = "Descargar";
+						document.getElementById("compartir").innerText = "Compartir";
 						document.getElementById("favorito").innerText = "Añadir a favoritos";
+					}
+					else{
+						document.getElementById("descargar").innerText = "";
+						document.getElementById("compartir").innerText = "";
+						document.getElementById("favorito").innerText = "";
+					}
 					
 					if(taskItemInContext){
 						e.preventDefault();
@@ -806,17 +1005,36 @@
 				var accion = link.getAttribute("data-action"); //Contiene la acción seleccionada en el menú
 
 				if(accion == "descargar")
-					window.location=document.getElementById(id_item_clicked).href = "{% url 'descargarArchivo' %}?id_archivo=" + id_item_clicked;
+					window.location = document.getElementById(id_item_clicked).href = "{% url 'descargarArchivo' %}?id_archivo=" + Number(id_item_clicked.replace('a',''));
 				else if(accion == "compartir")
-					compartirArchivo(id_item_clicked);
+					compartirArchivo(Number(id_item_clicked.replace('a','')));
 				else if(accion == "cambiar_nombre")
-					abrirCambiarNombre(id_item_clicked);
+					if(id_item_clicked[0] == 'a')
+						abrirCambiarNombre(Number(id_item_clicked.replace('a','')), 1);
+					else
+						abrirCambiarNombre(Number(id_item_clicked.replace('d','')), 0);
+				else if(accion == "copiar")
+					if(id_item_clicked[0] == 'a')
+						getDirectoriosCopiar(Number(id_item_clicked.replace('a','')), 1);
+					else
+						getDirectoriosCopiar(Number(id_item_clicked.replace('d','')), 0);
+				else if(accion == "mover"){
+					if(id_item_clicked[0] == 'a')
+						getDirectoriosMoverArchivo(Number(id_item_clicked.replace('a','')));
+					else
+						getDirectoriosMoverDirectorio(Number(id_item_clicked.replace('d','')));
+				}
 				else if(accion == "favorito"){
 					if(document.getElementById("favorito").innerText == "Añadir a favoritos")
-						window.location=document.getElementById(id_item_clicked).href = "{% url 'addFavoritos' %}?id_archivo=" + id_item_clicked + "&pag_actual=contenidoMultimedia.html&tipo_contenido={{ tipo_contenido }}";
+						window.location = document.getElementById(id_item_clicked).href = "{% url 'addFavoritos' %}?id_archivo=" + Number(id_item_clicked.replace('a','')) + "&pag_actual=index.html&directorio_actual={{directorio_actual}}";
 					else
-						window.location=document.getElementById(id_item_clicked).href = "{% url 'delFavoritos' %}?id_archivo=" + id_item_clicked + "&pag_actual=contenidoMultimedia.html&tipo_contenido={{ tipo_contenido }}";
+						window.location = document.getElementById(id_item_clicked).href = "{% url 'delFavoritos' %}?id_archivo=" + Number(id_item_clicked.replace('a','')) + "&pag_actual=index.html&directorio_actual={{directorio_actual}}";
 				}
+				else if(accion == "eliminar")
+					if(id_item_clicked[0] == 'a')
+						comprobarEliminarArchivo(Number(id_item_clicked.replace('a','')));
+					else
+						comprobarEliminarDirectorio(Number(id_item_clicked.replace('d','')));
 				
 				toggleMenuOff();
 			}

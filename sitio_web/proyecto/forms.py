@@ -4,6 +4,7 @@ from django import forms
 from mongoengine import *
 import datetime
 from .models import *
+import os
 
 #Form para la clase Usuario
 class UsuarioForm():
@@ -50,7 +51,7 @@ class UsuarioForm():
 	def cargarImgPerfil(self, nombre_archivo, tipo_archivo, username, path):
 		a = ArchivoForm()
 		#Subir el archivo a la base de datos
-		id_archivo = a.save(nombre_archivo, tipo_archivo, "", path, 0)
+		id_archivo = a.save(nombre_archivo, tipo_archivo, "", path, 0, "DirectorioForm")
 		#Añadir fichero al grupo de trabajo
 		Usuario.objects(username=username).update(set__img_perfil=id_archivo)
 
@@ -89,6 +90,11 @@ class UsuarioForm():
 		#Eliminar los directorios y sus archivos desde la raíz
 		d = DirectorioForm()
 		d.borrarDirectorio(0, username)
+		#Eliminar los directorios multimedia y sus archivos desde la raíz
+		d = DirectorioContenidoMultimediaForm()
+		d.borrarDirectorio(0, username)
+		d.borrarDirectorio(1, username)
+		d.borrarDirectorio(2, username)
 
 		#Eliminar usuario de los grupos de trabajo
 		gt = GrupoTrabajoForm()
@@ -276,8 +282,12 @@ class DirectorioForm():
 			nombre_archivo = "copia " + archivo_original.nombre
 
 		#Crear copia física del archivo
-		file = open('upload/' + archivo_original.nombre, 'rb+')
-		with open('upload/' + "copia " + nombre_archivo, 'wb+') as destination:
+		if not os.path.exists('upload/' + propietario + '/'):
+			os.mkdir('upload/' + propietario + '/')
+
+		path = 'upload/' + propietario + '/' + str(a.getProximoIdArchivo()) + nombre_archivo
+		file = open('upload/' + propietario + '/' + str(int(archivo_original.id_archivo)) + archivo_original.nombre, 'rb+')
+		with open(path, 'wb+') as destination:
 			while True:
 			    piece = file.read(1024)  
 			    if not piece:
@@ -286,7 +296,7 @@ class DirectorioForm():
 			file.close()
 
 		#Crear copia en la BD
-		a.save(nombre_archivo, archivo_original.tipo_archivo, propietario, 'upload/' + archivo_original.nombre, id_directorio_dest)
+		a.save(nombre_archivo, archivo_original.tipo_archivo, propietario, path, id_directorio_dest, "DirectorioForm")
 
 	#Copiar un directorio
 	def copiarDirectorio(self, id_directorio_copiar, id_directorio_destino, propietario, directorio_actual):
@@ -321,7 +331,7 @@ class DirectorioForm():
 		#Borrar contenido del directorio a eliminar
 		for contenido in directorio.contenido:
 			if contenido[1] == "archivo":
-				a.borrarArchivo(contenido[0], id_directorio_eliminar, propietario)
+				a.borrarArchivo(contenido[0], id_directorio_eliminar, propietario, "DirectorioForm")
 			elif contenido[1] == "directorio":
 				self.borrarDirectorio(contenido[0], propietario)
 
@@ -351,7 +361,12 @@ class DirectorioForm():
 			for contenido in directorio.contenido:
 				if contenido[0] == int(id_contenido_cambiar_nombre) and contenido[1] == tipo_contenido:
 					if tipo_contenido == "archivo":
+						archivo_original = Archivo.objects(id_archivo=id_contenido_cambiar_nombre)[0]
 						Archivo.objects(id_archivo=id_contenido_cambiar_nombre).update_one(set__nombre=nuevo_nombre)
+
+						old_path = 'upload/' + propietario + '/' + str(int(id_contenido_cambiar_nombre)) + archivo_original.nombre
+						new_path = 'upload/' + propietario + '/' + str(int(id_contenido_cambiar_nombre)) + nuevo_nombre
+						os.rename(old_path, new_path)
 					else:
 						Directorio.objects(id_directorio=id_contenido_cambiar_nombre).update_one(set__nombre=nuevo_nombre)
 					break
@@ -429,9 +444,9 @@ class DirectorioContenidoMultimediaForm():
 	#Crear un nuevo directorio
 	def crearDirectorio(self, nombre_directorio, id_padre, propietario):
 		d = DirectorioContenidoMultimedia()
+		directorios = DirectorioContenidoMultimedia.objects(propietario=propietario).order_by('id_directorio')
 
-		directorio = DirectorioContenidoMultimedia.objects(propietario=propietario)
-		d.id_directorio = directorio[len(directorio) - 1].id_directorio + 1
+		d.id_directorio = directorios[len(directorios) - 1].id_directorio + 1
 
 		d.nombre = nombre_directorio
 		d.id_padre = id_padre
@@ -481,23 +496,32 @@ class DirectorioContenidoMultimediaForm():
 		return directorios_dic
 
 	#Obtener los directorios del usuario posibles para mover un directorio
-	def getDirectoriosMoverDirectorio(self, propietario, directorio_actual, directorio_seleccionado):
+	def getDirectoriosMoverDirectorio(self, propietario, directorio_actual, directorio_seleccionado, tipo_contenido):
 		directorios = list(DirectorioContenidoMultimedia.objects.filter(propietario=propietario))
 		directorios_dic = {}
 
 		for directorio in directorios:
 			#Cuando el directorio sea distinto del actual
 			if int(directorio.id_directorio) != int(directorio_actual) and int(directorio.id_directorio) != int(directorio_seleccionado):
-				path = directorio.nombre
-				directorio_aux = directorio
-				#Recorremos los padres del directorio para añadirlos al path
-				while directorio_aux.id_padre >= 0:
-					directorio_aux = DirectorioContenidoMultimedia.objects(id_directorio=directorio_aux.id_padre, propietario=propietario)
-					directorio_aux = directorio_aux[0]
-					path = directorio_aux.nombre + "/" + path
-				
-				#Añadir al diccionario el id_directorio y el path
-				directorios_dic[int(directorio.id_directorio)] = [int(directorio.id_directorio), path]
+				if (directorio.id_directorio == 0 and tipo_contenido == "archivos_musica") or (directorio.id_directorio == 1 and tipo_contenido == "archivos_imagen") or (directorio.id_directorio == 2 and tipo_contenido == "archivos_video"):
+					path = directorio.nombre
+					directorio_aux = directorio
+					#Añadir al diccionario el id_directorio y el path
+					directorios_dic[int(directorio.id_directorio)] = [int(directorio.id_directorio), path]
+				elif directorio.id_directorio > 2:
+					path = directorio.nombre
+					directorio_aux = directorio
+					#Recorremos los padres del directorio para añadirlos al path
+					while directorio_aux.id_padre >= 0:
+						directorio_aux = DirectorioContenidoMultimedia.objects(id_directorio=directorio_aux.id_padre, propietario=propietario)
+						directorio_aux = directorio_aux[0]
+						path = directorio_aux.nombre + "/" + path
+						if (directorio_aux.id_directorio == 0 and tipo_contenido != "archivos_musica") or (directorio_aux.id_directorio == 1 and tipo_contenido != "archivos_imagen") or (directorio_aux.id_directorio == 2 and tipo_contenido != "archivos_video"):
+							path = ""
+					
+					#Añadir al diccionario el id_directorio y el path
+					if path != "":
+						directorios_dic[int(directorio.id_directorio)] = [int(directorio.id_directorio), path]
 
 		return directorios_dic
 
@@ -540,21 +564,31 @@ class DirectorioContenidoMultimediaForm():
 		self.actualizarContenidoDirectorio(id_directorio_destino, contenido, propietario)
 
 	#Obtener los directorios del usuario posibles para copiar un archivo
-	def getDirectoriosCopiar(self, propietario):
+	def getDirectoriosCopiar(self, propietario, tipo_contenido):
 		directorios = list(DirectorioContenidoMultimedia.objects.filter(propietario=propietario))
 		directorios_dic = {}
 
 		for directorio in directorios:
-			path = directorio.nombre
-			directorio_aux = directorio
-			#Recorremos los padres del directorio para añadirlos al path
-			while directorio_aux.id_padre >= 0:
-				directorio_aux = DirectorioContenidoMultimedia.objects(id_directorio=directorio_aux.id_padre, propietario=propietario)
-				directorio_aux = directorio_aux[0]
-				path = directorio_aux.nombre + "/" + path
-			
-			#Añadir al diccionario el id_directorio y el path
-			directorios_dic[int(directorio.id_directorio)] = [int(directorio.id_directorio), path]
+			#Cuando el directorio sea distinto del actual
+			if (directorio.id_directorio == 0 and tipo_contenido == "archivos_musica") or (directorio.id_directorio == 1 and tipo_contenido == "archivos_imagen") or (directorio.id_directorio == 2 and tipo_contenido == "archivos_video"):
+				path = directorio.nombre
+				directorio_aux = directorio
+				#Añadir al diccionario el id_directorio y el path
+				directorios_dic[int(directorio.id_directorio)] = [int(directorio.id_directorio), path]
+			elif directorio.id_directorio > 2:
+				path = directorio.nombre
+				directorio_aux = directorio
+				#Recorremos los padres del directorio para añadirlos al path
+				while directorio_aux.id_padre >= 0:
+					directorio_aux = DirectorioContenidoMultimedia.objects(id_directorio=directorio_aux.id_padre, propietario=propietario)
+					directorio_aux = directorio_aux[0]
+					path = directorio_aux.nombre + "/" + path
+					if (directorio_aux.id_directorio == 0 and tipo_contenido != "archivos_musica") or (directorio_aux.id_directorio == 1 and tipo_contenido != "archivos_imagen") or (directorio_aux.id_directorio == 2 and tipo_contenido != "archivos_video"):
+						path = ""
+				
+				#Añadir al diccionario el id_directorio y el path
+				if path != "":
+					directorios_dic[int(directorio.id_directorio)] = [int(directorio.id_directorio), path]
 
 		return directorios_dic
 
@@ -572,8 +606,12 @@ class DirectorioContenidoMultimediaForm():
 			nombre_archivo = "copia " + archivo_original.nombre
 
 		#Crear copia física del archivo
-		file = open('upload/' + archivo_original.nombre, 'rb+')
-		with open('upload/' + "copia " + nombre_archivo, 'wb+') as destination:
+		if not os.path.exists('upload/' + propietario + '/'):
+			os.mkdir('upload/' + propietario + '/')
+
+		path = 'upload/' + propietario + '/' + str(a.getProximoIdArchivo()) + nombre_archivo
+		file = open('upload/' + propietario + '/' + str(int(archivo_original.id_archivo)) + archivo_original.nombre, 'rb+')
+		with open(path, 'wb+') as destination:
 			while True:
 			    piece = file.read(1024)  
 			    if not piece:
@@ -582,7 +620,7 @@ class DirectorioContenidoMultimediaForm():
 			file.close()
 
 		#Crear copia en la BD
-		a.save(nombre_archivo, archivo_original.tipo_archivo, propietario, 'upload/' + archivo_original.nombre, id_directorio_dest)
+		a.save(nombre_archivo, archivo_original.tipo_archivo, propietario, path, id_directorio_dest, "DirectorioContenidoMultimediaForm")
 
 	#Copiar un directorio
 	def copiarDirectorio(self, id_directorio_copiar, id_directorio_destino, propietario, directorio_actual):
@@ -617,7 +655,7 @@ class DirectorioContenidoMultimediaForm():
 		#Borrar contenido del directorio a eliminar
 		for contenido in directorio.contenido:
 			if contenido[1] == "archivo":
-				a.borrarArchivo(contenido[0], id_directorio_eliminar, propietario)
+				a.borrarArchivo(contenido[0], id_directorio_eliminar, propietario, "DirectorioContenidoMultimediaForm")
 			elif contenido[1] == "directorio":
 				self.borrarDirectorio(contenido[0], propietario)
 
@@ -671,16 +709,23 @@ class DirectorioContenidoMultimediaForm():
 #Form para la clase Archivo
 class ArchivoForm():
 
+	def getProximoIdArchivo(self):
+		archivo = Archivo.objects.all()
+		id_archivo = 0
+
+		try:
+			id_archivo = archivo[len(archivo) - 1].id_archivo + 1
+		except:
+			id_archivo = 1
+			pass
+
+		return int(id_archivo)
+
 	#Guardar un nuevo archivo
-	def save(self, nombre_archivo, tipo_archivo, username, path, id_directorio):
+	def save(self, nombre_archivo, tipo_archivo, username, path, id_directorio, opcion):
 		a = Archivo()
 
-		archivo = Archivo.objects.all()
-		try:
-			a.id_archivo = archivo[len(archivo) - 1].id_archivo + 1
-		except:
-			a.id_archivo = 1
-			pass
+		a.id_archivo = self.getProximoIdArchivo()
 		a.nombre = nombre_archivo
 		a.tipo_archivo = tipo_archivo
 		a.fecha_subida = str(datetime.datetime.now().replace(microsecond=0))
@@ -692,17 +737,30 @@ class ArchivoForm():
 		a.favorito = False
 		a.save()
 
-		d = DirectorioForm()
-		contenido = (int(a.id_archivo), 'archivo')
-		d.actualizarContenidoDirectorio(id_directorio, contenido, username)
+		if opcion == "DirectorioForm":
+			d = DirectorioForm()
+			contenido = (int(a.id_archivo), 'archivo')
+			d.actualizarContenidoDirectorio(id_directorio, contenido, username)
 
-		d = DirectorioContenidoMultimediaForm()
-		if tipo_archivo == 'mp3' or tipo_archivo == 'wma':
+			d = DirectorioContenidoMultimediaForm()
+			if tipo_archivo == 'mp3' or tipo_archivo == 'wma':
+				d.actualizarContenidoDirectorio(0, contenido, username)
+			elif tipo_archivo == 'jpeg' or tipo_archivo == 'jpg' or tipo_archivo == 'png':
+				d.actualizarContenidoDirectorio(1, contenido, username)
+			elif tipo_archivo == 'avi' or tipo_archivo == 'mp4':
+				d.actualizarContenidoDirectorio(2, contenido, username)
+		else:
+			d = DirectorioForm()
+			contenido = (int(a.id_archivo), 'archivo')
 			d.actualizarContenidoDirectorio(0, contenido, username)
-		elif tipo_archivo == 'jpeg' or tipo_archivo == 'jpg' or tipo_archivo == 'png':
-			d.actualizarContenidoDirectorio(1, contenido, username)
-		elif tipo_archivo == 'avi' or tipo_archivo == 'mp4':
-			d.actualizarContenidoDirectorio(2, contenido, username)
+
+			d = DirectorioContenidoMultimediaForm()
+			if tipo_archivo == 'mp3' or tipo_archivo == 'wma':
+				d.actualizarContenidoDirectorio(id_directorio, contenido, username)
+			elif tipo_archivo == 'jpeg' or tipo_archivo == 'jpg' or tipo_archivo == 'png':
+				d.actualizarContenidoDirectorio(id_directorio, contenido, username)
+			elif tipo_archivo == 'avi' or tipo_archivo == 'mp4':
+				d.actualizarContenidoDirectorio(id_directorio, contenido, username)
 
 		return a.id_archivo
 
@@ -780,24 +838,62 @@ class ArchivoForm():
 		return archivos_dic
 
 	#Borrar un archivo
-	def borrarArchivo(self, id_archivo, id_directorio, propietario):
+	def borrarArchivo(self, id_archivo, id_directorio, propietario, opcion):
 		archivos = list(Archivo.objects.filter(id_archivo=id_archivo))
+		os.remove('upload/' + propietario + '/' + str(int(id_archivo)) + archivos[0].nombre)
 		archivos[0].archivo.delete()
 		ArchivoCompartido.objects.filter(id_archivo_compartido=id_archivo).delete()
 		Archivo.objects.filter(id_archivo=id_archivo).delete()
 		contenido = (id_archivo, 'archivo')
-		directorio = list(Directorio.objects.filter(id_directorio=id_directorio, propietario=propietario))
 
-		contador = 0
-		#Recorrer el contenido para directorio_actual
-		for contenido in directorio[0].contenido:
-			#Escoger la tupla que es directorio
-			if contenido[1] == "archivo" and contenido[0] == int(id_archivo):
-				del directorio[0].contenido[contador]
-				directorio[0].save()
-				break
+		if opcion == "DirectorioForm":
+			directorio = list(Directorio.objects.filter(id_directorio=id_directorio, propietario=propietario))
+			contador = 0
+			#Recorrer el contenido para directorio_actual
+			for contenido in directorio[0].contenido:
+				#Escoger la tupla que es directorio
+				if contenido[1] == "archivo" and contenido[0] == int(id_archivo):
+					del directorio[0].contenido[contador]
+					directorio[0].save()
+					break
 
-			contador += 1
+				contador += 1
+
+			directorios = list(DirectorioContenidoMultimedia.objects.filter(propietario=propietario))
+			for directorio in directorios:
+				contador = 0
+				for contenido in directorio.contenido:
+					#Escoger la tupla que es directorio
+					if contenido[1] == "archivo" and contenido[0] == int(id_archivo):
+						del directorio.contenido[contador]
+						directorio.save()
+						break
+
+					contador += 1
+		else:
+			directorio = list(DirectorioContenidoMultimedia.objects.filter(id_directorio=id_directorio, propietario=propietario))
+			contador = 0
+			#Recorrer el contenido para directorio_actual
+			for contenido in directorio[0].contenido:
+				#Escoger la tupla que es directorio
+				if contenido[1] == "archivo" and contenido[0] == int(id_archivo):
+					del directorio[0].contenido[contador]
+					directorio[0].save()
+					break
+
+				contador += 1
+
+			directorios = list(Directorio.objects.filter(propietario=propietario))
+			for directorio in directorios:
+				contador = 0
+				for contenido in directorio.contenido:
+					#Escoger la tupla que es directorio
+					if contenido[1] == "archivo" and contenido[0] == int(id_archivo):
+						del directorio.contenido[contador]
+						directorio.save()
+						break
+
+					contador += 1
 
 
 ################################################################
@@ -848,11 +944,16 @@ class ArchivoCompartidoForm(Document):
 
 	#Añadir un archivo compartido conmigo a mi nube
 	def addArchivoMiNube(self, id_archivo, propietario, username):
+		a = ArchivoForm()
 		archivo = Archivo.objects(id_archivo=id_archivo, propietario=propietario)[0]
 
 		#Crear copia física del archivo
-		file = open('upload/' + archivo.nombre, 'rb+')
-		with open('upload/' + archivo.nombre + username, 'wb+') as destination:
+		if not os.path.exists('upload/' + username + '/'):
+			os.mkdir('upload/' + username + '/')
+
+		path = 'upload/' + username + '/' + str(a.getProximoIdArchivo()) + archivo.nombre
+		file = open('upload/' + propietario + '/' + str(int(archivo.id_archivo)) + archivo.nombre, 'rb+')
+		with open(path, 'wb+') as destination:
 			while True:
 			    piece = file.read(1024)  
 			    if not piece:
@@ -860,8 +961,7 @@ class ArchivoCompartidoForm(Document):
 			    destination.write(piece)
 			file.close()
 
-		a = ArchivoForm()
-		a.save(archivo.nombre, archivo.tipo_archivo, username, 'upload/' + archivo.nombre + username, 0)
+		a.save(archivo.nombre, archivo.tipo_archivo, username, path, 0, "DirectorioForm")
 
 
 ################################################################
@@ -932,7 +1032,7 @@ class GrupoTrabajoForm():
 	def subirArchivoGrupo(self, id_grupo, nombre_archivo, tipo_archivo, path):
 		a = ArchivoForm()
 		#Subir el archivo a la base de datos
-		id_archivo = a.save(nombre_archivo, tipo_archivo, "", path, 0)
+		id_archivo = a.save(nombre_archivo, tipo_archivo, "", path, 0, "DirectorioForm")
 		#Añadir fichero al grupo de trabajo
 		GrupoTrabajo.objects(id_grupo=id_grupo).update(add_to_set__archivos=[int(id_archivo)])
 
@@ -985,6 +1085,8 @@ def getContentType(tipo_archivo):
 		ct = 'text/plain'
 	elif tipo_archivo == 'pdf':
 		ct = 'application/pdf'
+	elif tipo_archivo == 'avi':
+		ct = 'video/x-msvideo'
 	else:
 		ct = 'application/octet-stream'
 

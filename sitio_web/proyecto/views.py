@@ -48,14 +48,7 @@ def multimedia(request):
 @login_required(login_url='/accounts/login/')
 def contenidoMultimedia(request):
 	tipo_contenido = request.GET.get('tipo_contenido','')
-	tipo_contenido_titulo = ""
-	
-	if tipo_contenido == "archivos_musica":
-		tipo_contenido_titulo = "Música"
-	elif tipo_contenido == "archivos_imagen":
-		tipo_contenido_titulo = "Imágenes"
-	else:
-		tipo_contenido_titulo = "Vídeos"
+	tipo_contenido_titulo = getTipoContenidoTitulo(tipo_contenido)
 
 	#Comprobar si el directorio raíz existe
 	d = DirectorioContenidoMultimediaForm()
@@ -119,22 +112,27 @@ def usuario(request):
 @login_required(login_url='/accounts/login/')
 def upload(request):
 	if request.method == 'POST':
+		pag_actual = request.POST.get('pag_actual', '')
 		id_directorio = request.POST.get('id_directorio', '')
-		handle_uploaded_file(request.FILES['file'], request, id_directorio)
+		handle_uploaded_file(request.FILES['file'], request, id_directorio, pag_actual)
 		return render(request, 'index.html', {'pagina_actual':'Documentos', 'usuario':usuario})
 
 	return render(request, 'index.html', {'pagina_actual':'Documentos', 'usuario':usuario, 'directorio_actual':id_directorio})
 
-def handle_uploaded_file(file, request, id_directorio):
-	if not os.path.exists('upload/'):
-		os.mkdir('upload/')
+def handle_uploaded_file(file, request, id_directorio, pag_actual):
+	if not os.path.exists('upload/' + usuario.username + '/'):
+		os.mkdir('upload/' + usuario.username + '/')
 
 	filename = str(file)
-	with open('upload/' + filename, 'wb+') as destination:
+	path = 'upload/' + usuario.username + '/' + str(g_archivo.getProximoIdArchivo()) + filename
+	with open(path, 'wb+') as destination:
 		for chunk in file.chunks():
 			destination.write(chunk)
 
-		g_archivo.save(filename, getTipoArchivo(filename), usuario.username, 'upload/' + filename, id_directorio)
+		if pag_actual == "index.html":
+			g_archivo.save(filename, getTipoArchivo(filename), usuario.username, path, id_directorio, "DirectorioForm")
+		else:
+			g_archivo.save(filename, getTipoArchivo(filename), usuario.username, path, id_directorio, "DirectorioContenidoMultimediaForm")
 
 #Obtener la extensión de un archivo
 def getTipoArchivo(nombre_archivo):
@@ -184,14 +182,7 @@ def addFavoritos(request):
 	#Si es llamado desde la página contenidoMultimedia.html
 	if pag_actual == "contenidoMultimedia.html":
 		tipo_contenido = request.GET.get('tipo_contenido','')
-		tipo_contenido_titulo = ""
-		
-		if tipo_contenido == "archivos_musica":
-			tipo_contenido_titulo = "Música"
-		elif tipo_contenido == "archivos_imagen":
-			tipo_contenido_titulo = "Imágenes"
-		else:
-			tipo_contenido_titulo = "Vídeos"
+		tipo_contenido_titulo = getTipoContenidoTitulo(tipo_contenido)
 
 		return render(request, 'contenidoMultimedia.html', {'pagina_actual':tipo_contenido_titulo, 'tipo_contenido':tipo_contenido})
 	#Si es llamado desde la página index.html
@@ -215,14 +206,7 @@ def delFavoritos(request):
 	#Si es llamado desde la página contenidoMultimedia.html
 	if pag_actual == "contenidoMultimedia.html":
 		tipo_contenido = request.GET.get('tipo_contenido','')
-		tipo_contenido_titulo = ""
-		
-		if tipo_contenido == "archivos_musica":
-			tipo_contenido_titulo = "Música"
-		elif tipo_contenido == "archivos_imagen":
-			tipo_contenido_titulo = "Imágenes"
-		else:
-			tipo_contenido_titulo = "Vídeos"
+		tipo_contenido_titulo = getTipoContenidoTitulo(tipo_contenido)
 
 		return render(request, 'contenidoMultimedia.html', {'pagina_actual':tipo_contenido_titulo, 'tipo_contenido':tipo_contenido})
 	#Si es llamado desde la página index.html
@@ -256,14 +240,7 @@ def compartirArchivo(request):
 	#Si es llamado desde la página contenidoMultimedia.html
 	if pag_actual == "contenidoMultimedia.html":
 		tipo_contenido = request.GET.get('tipo_contenido','')
-		tipo_contenido_titulo = ""
-		
-		if tipo_contenido == "archivos_musica":
-			tipo_contenido_titulo = "Música"
-		elif tipo_contenido == "archivos_imagen":
-			tipo_contenido_titulo = "Imágenes"
-		else:
-			tipo_contenido_titulo = "Vídeos"
+		tipo_contenido_titulo = getTipoContenidoTitulo(tipo_contenido)
 
 		return render(request, 'contenidoMultimedia.html', {'pagina_actual':tipo_contenido_titulo, 
 		'tipo_contenido':tipo_contenido, 'directorio_actual':directorio_actual})
@@ -291,8 +268,15 @@ def borrarArchivo(request):
 	directorio_actual = request.GET.get('directorio_actual','')
 
 	if pag_actual == "index.html":
-		g_archivo.borrarArchivo(id_archivo, directorio_actual, usuario.username)
+		g_archivo.borrarArchivo(id_archivo, directorio_actual, usuario.username, "DirectorioForm")
 		return render(request, "index.html", {'pagina_actual':'Documentos', 'usuario':usuario, 'directorio_actual':directorio_actual})
+	elif pag_actual == "contenidoMultimedia.html":
+		g_archivo.borrarArchivo(id_archivo, directorio_actual, usuario.username, "DirectorioContenidoMultimediaForm")
+		tipo_contenido = request.GET.get('tipo_contenido','')
+		tipo_contenido_titulo = getTipoContenidoTitulo(tipo_contenido)
+
+		return render(request, 'contenidoMultimedia.html', {'pagina_actual':tipo_contenido_titulo, 
+		'tipo_contenido':tipo_contenido, 'directorio_actual':directorio_actual})
 	elif pag_actual == "grupoTrabajo.html":
 		id_grupo = request.GET.get('id_grupo','')
 		gt = GrupoTrabajoForm()
@@ -379,16 +363,16 @@ def subirArchivoGrupo(request):
 	return render(request, 'grupoTrabajo.html', {'pagina_actual':'Grupo de Trabajo'})
 
 def handle_uploaded_file2(file, request, id_grupo):
-	if not os.path.exists('upload/'):
-		os.mkdir('upload/')
+	if not os.path.exists('upload/' + usuario.username + '/'):
+		os.mkdir('upload/' + usuario.username + '/')
 
 	gt = GrupoTrabajoForm()		
 	filename = str(file)
-	with open('upload/' + filename, 'wb+') as destination:
+	with open('upload/' + usuario.username + '/' + filename, 'wb+') as destination:
 		for chunk in file.chunks():
 			destination.write(chunk)
 
-		gt.subirArchivoGrupo(id_grupo, filename, getTipoArchivo(filename), 'upload/' + filename)
+		gt.subirArchivoGrupo(id_grupo, filename, getTipoArchivo(filename), 'upload/' + usuario.username + '/' + filename)
 
 #Obtener los participantes de un grupo
 @login_required(login_url='/accounts/login/')
@@ -442,13 +426,7 @@ def crearDirectorio(request):
 		d.crearDirectorio(nombre_directorio, directorio_actual, usuario.username)
 
 		tipo_contenido = request.GET.get('tipo_contenido','')
-		tipo_contenido_titulo = ""
-		if tipo_contenido == "archivos_musica":
-			tipo_contenido_titulo = "Música"
-		elif tipo_contenido == "archivos_imagen":
-			tipo_contenido_titulo = "Imágenes"
-		else:
-			tipo_contenido_titulo = "Vídeos"
+		tipo_contenido_titulo = getTipoContenidoTitulo(tipo_contenido)
 
 		return render(request, 'contenidoMultimedia.html', {'pagina_actual':tipo_contenido_titulo, 
 		'tipo_contenido':tipo_contenido, 'directorio_actual':directorio_actual})
@@ -506,13 +484,7 @@ def moverArchivo(request):
 		d.moverArchivo(id_archivo_mover, directorio_actual, id_directorio_dest, usuario.username)
 
 		tipo_contenido = request.GET.get('tipo_contenido','')
-		tipo_contenido_titulo = ""
-		if tipo_contenido == "archivos_musica":
-			tipo_contenido_titulo = "Música"
-		elif tipo_contenido == "archivos_imagen":
-			tipo_contenido_titulo = "Imágenes"
-		else:
-			tipo_contenido_titulo = "Vídeos"
+		tipo_contenido_titulo = getTipoContenidoTitulo(tipo_contenido)
 
 		return render(request, 'contenidoMultimedia.html', {'pagina_actual':tipo_contenido_titulo, 
 		'tipo_contenido':tipo_contenido, 'directorio_actual':directorio_actual})
@@ -520,8 +492,16 @@ def moverArchivo(request):
 #Obtener los directorios del usuario posibles para copiar un archivo
 @login_required(login_url='/accounts/login/')
 def getDirectoriosCopiar(request):
-	d = DirectorioForm()
-	resultado = d.getDirectoriosCopiar(usuario.username)
+	pag_actual = request.GET.get('pag_actual', '')
+	resultado = None
+
+	if pag_actual == "index.html":
+		d = DirectorioForm()
+		resultado = d.getDirectoriosCopiar(usuario.username)
+	else:
+		tipo_contenido = request.GET.get('tipo_contenido', '')
+		d = DirectorioContenidoMultimediaForm()
+		resultado = d.getDirectoriosCopiar(usuario.username, tipo_contenido)
 
 	return HttpResponse(json.dumps(resultado), content_type="application/json")
 
@@ -532,20 +512,37 @@ def copiarArchivo(request):
 	id_directorio_dest = request.GET.get('id_directorio_dest', '')
 	pag_actual = request.GET.get('pag_actual', '')
 	directorio_actual = request.GET.get('directorio_actual', '')
-	d = DirectorioForm()
+	
+	if pag_actual == "index.html":
+		d = DirectorioForm()
+		d.copiarArchivo(id_archivo_copiar, directorio_actual, id_directorio_dest, usuario.username)
 
-	d.copiarArchivo(id_archivo_copiar, directorio_actual, id_directorio_dest, usuario.username)
+		return render(request, 'index.html', {'pagina_actual':'Documentos', 'usuario':usuario.username, 'directorio_actual':directorio_actual})
+	else:
+		d = DirectorioContenidoMultimediaForm()
+		d.copiarArchivo(id_archivo_copiar, directorio_actual, id_directorio_dest, usuario.username)
 
-	return render(request, 'index.html', {'pagina_actual':'Documentos', 'usuario':usuario.username, 'directorio_actual':directorio_actual})
+		tipo_contenido = request.GET.get('tipo_contenido','')
+		tipo_contenido_titulo = getTipoContenidoTitulo(tipo_contenido)
+
+		return render(request, 'contenidoMultimedia.html', {'pagina_actual':tipo_contenido_titulo, 
+		'tipo_contenido':tipo_contenido, 'directorio_actual':directorio_actual})
 
 #Obtener los directorios del usuario posibles para mover un directorio
 @login_required(login_url='/accounts/login/')
 def getDirectoriosMoverDirectorio(request):
 	directorio_actual = request.GET.get('directorio_actual', '')
 	directorio_seleccionado = request.GET.get('directorio_seleccionado', '')
-	d = DirectorioForm()
+	pag_actual = request.GET.get('pag_actual', '')
+	resultado = None
 
-	resultado = d.getDirectoriosMoverDirectorio(usuario.username, directorio_actual, directorio_seleccionado)
+	if pag_actual == "index.html":
+		d = DirectorioForm()
+		resultado = d.getDirectoriosMoverDirectorio(usuario.username, directorio_actual, directorio_seleccionado)
+	else:
+		tipo_contenido = request.GET.get('tipo_contenido', '')
+		d = DirectorioContenidoMultimediaForm()
+		resultado = d.getDirectoriosMoverDirectorio(usuario.username, directorio_actual, directorio_seleccionado, tipo_contenido)
 
 	return HttpResponse(json.dumps(resultado), content_type="application/json")
 
@@ -556,9 +553,21 @@ def moverDirectorio(request):
 	id_directorio_destino = request.GET.get('id_directorio_dest', '')
 	pag_actual = request.GET.get('pag_actual', '')
 	directorio_actual = request.GET.get('directorio_actual', '')
-	d = DirectorioForm()
 
-	d.moverDirectorio(id_directorio_mover, id_directorio_destino, usuario.username, directorio_actual)
+	if pag_actual == "index.html":
+		d = DirectorioForm()
+		d.moverDirectorio(id_directorio_mover, id_directorio_destino, usuario.username, directorio_actual)
+
+		return render(request, 'index.html', {'pagina_actual':'Documentos', 'usuario':usuario.username, 'directorio_actual':directorio_actual})
+	else:
+		d = DirectorioContenidoMultimediaForm()
+		d.moverDirectorio(id_directorio_mover, id_directorio_destino, usuario.username, directorio_actual)
+
+		tipo_contenido = request.GET.get('tipo_contenido','')
+		tipo_contenido_titulo = getTipoContenidoTitulo(tipo_contenido)
+
+		return render(request, 'contenidoMultimedia.html', {'pagina_actual':tipo_contenido_titulo, 
+		'tipo_contenido':tipo_contenido, 'directorio_actual':directorio_actual})
 
 	return render(request, 'index.html', {'pagina_actual':'Documentos', 'usuario':usuario.username, 'directorio_actual':directorio_actual})
 
@@ -569,11 +578,21 @@ def copiarDirectorio(request):
 	id_directorio_destino = request.GET.get('id_directorio_dest', '')
 	pag_actual = request.GET.get('pag_actual', '')
 	directorio_actual = request.GET.get('directorio_actual', '')
-	d = DirectorioForm()
 
-	d.copiarDirectorio(id_directorio_copiar, id_directorio_destino, usuario.username, directorio_actual)
+	if pag_actual == "index.html":
+		d = DirectorioForm()
+		d.copiarDirectorio(id_directorio_copiar, id_directorio_destino, usuario.username, directorio_actual)
 
-	return render(request, 'index.html', {'pagina_actual':'Documentos', 'usuario':usuario.username, 'directorio_actual':directorio_actual})
+		return render(request, 'index.html', {'pagina_actual':'Documentos', 'usuario':usuario.username, 'directorio_actual':directorio_actual})
+	else:
+		d = DirectorioContenidoMultimediaForm()
+		d.copiarDirectorio(id_directorio_copiar, id_directorio_destino, usuario.username, directorio_actual)
+
+		tipo_contenido = request.GET.get('tipo_contenido','')
+		tipo_contenido_titulo = getTipoContenidoTitulo(tipo_contenido)
+
+		return render(request, 'contenidoMultimedia.html', {'pagina_actual':tipo_contenido_titulo, 
+		'tipo_contenido':tipo_contenido, 'directorio_actual':directorio_actual})
 
 #Borrar un directorio
 @login_required(login_url='/accounts/login/')
@@ -581,11 +600,21 @@ def borrarDirectorio(request):
 	id_directorio_eliminar = request.GET.get('id_directorio', '')
 	pag_actual = request.GET.get('pag_actual', '')
 	directorio_actual = request.GET.get('directorio_actual', '')
-	d = DirectorioForm()
 
-	d.borrarDirectorio(id_directorio_eliminar, usuario.username)
+	
+	if pag_actual == "index.html":
+		d = DirectorioForm()
+		d.borrarDirectorio(id_directorio_eliminar, usuario.username)
+		return render(request, "index.html", {'pagina_actual':'Documentos', 'usuario':usuario, 'directorio_actual':directorio_actual})
+	elif pag_actual == "contenidoMultimedia.html":
+		d = DirectorioContenidoMultimediaForm()
+		d.borrarDirectorio(id_directorio_eliminar, usuario.username)
 
-	return render(request, 'index.html', {'pagina_actual':'Documentos', 'usuario':usuario.username, 'directorio_actual':directorio_actual})
+		tipo_contenido = request.GET.get('tipo_contenido','')
+		tipo_contenido_titulo = getTipoContenidoTitulo(tipo_contenido)
+
+		return render(request, 'contenidoMultimedia.html', {'pagina_actual':tipo_contenido_titulo, 
+		'tipo_contenido':tipo_contenido, 'directorio_actual':directorio_actual})
 
 #Salir de un grupo de trabajo
 @login_required(login_url='/accounts/login/')
@@ -612,9 +641,14 @@ def cambiarNombre(request):
 	id_contenido_cambiar_nombre = request.GET.get('id_contenido_cambiar_nombre', '')
 	directorio_actual = request.GET.get('directorio_actual', '')
 	tipo_contenido = request.GET.get('tipo_contenido', '')
-	d = DirectorioForm()
+	pag_actual = request.GET.get('pag_actual', '')
 
-	d.cambiarNombre(nuevo_nombre, id_contenido_cambiar_nombre, directorio_actual, tipo_contenido, usuario.username)
+	if pag_actual == "index.html":
+		d = DirectorioForm()
+		d.cambiarNombre(nuevo_nombre, id_contenido_cambiar_nombre, directorio_actual, tipo_contenido, usuario.username)
+	else:
+		d = DirectorioContenidoMultimediaForm()
+		d.cambiarNombre(nuevo_nombre, id_contenido_cambiar_nombre, directorio_actual, tipo_contenido, usuario.username)
 
 	return HttpResponse(json.dumps(""), content_type="application/json")
 
@@ -652,3 +686,11 @@ def eliminarCuenta(request):
 	u.eliminarCuenta(usuario.username)
 
 	return HttpResponse(json.dumps(""), content_type="application/json")
+
+def getTipoContenidoTitulo(tipo_contenido):
+	if tipo_contenido == "archivos_musica":
+		return "Música"
+	elif tipo_contenido == "archivos_imagen":
+		return "Imágenes"
+	else:
+		return "Vídeos"

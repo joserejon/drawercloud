@@ -61,6 +61,7 @@
 			<form action="{% url 'upload' %}" method="POST" enctype="multipart/form-data" id="upload_form">
 				{% csrf_token %} 
 				<input type="file" name="file" class="input_file btn btn-default" required/>
+				<input type="hidden" id="pag_actual" name="pag_actual" value="index.html" />
 				<input type="hidden" id="id_directorio" name="id_directorio" value="{{ directorio_actual }}" />
 				<input id="bt_upload" type="submit" value="Subir archivo" class="input_file btn btn-default" />
 			</form>
@@ -344,8 +345,6 @@
 	                                    "Más <span class='caret'></span>" +
 	                                    "</button>" +
 	                                    "<ul class='dropdown-menu' role='menu'>" +
-	                                        "<li><a href='{% url 'descargarArchivo' %}?id_archivo=" + datos[0][i][0] + "'>Descargar</a></li>" +
-	                                        "<li><a href='#abrirPopUpCompartir' onclick='compartirArchivo(" + datos[0][i][0] + "); return false;'>Compartir</a></li>" +
 	                                        "<li><a href='#abrirPopUpCambiarNombre' onclick='abrirCambiarNombre(" + datos[0][i][0] + ", 0); return false;'>Cambiar nombre</a></li>" +
 	                                        "<li><a href='#abrirPopUpCopiarEn' onclick='getDirectoriosCopiar(" + datos[0][i][0] + ", 0);'>Copiar en</a></li>" +
 	                                        "<li><a href='#abrirPopUpMoverA' onclick='getDirectoriosMoverDirectorio(" + datos[0][i][0] + ");'>Mover a</a></li>" +
@@ -629,7 +628,7 @@
 	   		$.ajax({
 	            url : "{% url 'getDirectoriosCopiar' %}",
 	            data : {
-
+	            	pag_actual: "index.html"
 	            },
 	            type : 'GET',
 	            dataType: 'json',
@@ -669,7 +668,8 @@
 	            url : "{% url 'getDirectoriosMoverDirectorio' %}",
 	            data : {
 	                directorio_actual: directorio_actual,
-	                directorio_seleccionado: id_directorio_mover
+	                directorio_seleccionado: id_directorio_mover,
+	                pag_actual: "index.html"
 	            },
 	            type : 'GET',
 	            dataType: 'json',
@@ -721,7 +721,8 @@
 	                nuevo_nombre: nuevo_nombre,
 	                id_contenido_cambiar_nombre: id_contenido_cambiar_nombre,
 	                directorio_actual, directorio_actual,
-	                tipo_contenido: tipo
+	                tipo_contenido: tipo,
+	                pag_actual: "index.html"
 	            },
 	            type : 'GET',
 	            dataType: 'json',
@@ -860,6 +861,10 @@
 							document.getElementById("favorito").innerText = "Eliminar de favoritos";
 						else
 							document.getElementById("favorito").innerText = "Añadir a favoritos";
+
+						document.getElementById("descargar").innerText = "Descargar";
+						document.getElementById("compartir").innerText = "Compartir";
+						document.getElementById("favorito").innerText = "Añadir a favoritos";
 					}
 					else{
 						document.getElementById("descargar").innerText = "";
