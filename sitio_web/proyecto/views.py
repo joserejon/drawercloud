@@ -93,6 +93,21 @@ def favoritos(request):
 def grupoTrabajo(request):
 	return render(request, 'grupoTrabajo.html', {'pagina_actual':'Grupo de Trabajo'})
 
+#Mostrar el cotenido de un grupo de trabajo
+@login_required(login_url='/accounts/login/')
+def contenidoGrupoTrabajo(request):
+	id_grupo = request.GET.get('id_grupo', '')
+	nombre_grupo = request.GET.get('nombre_grupo', '')
+
+	directorio_actual = 0
+	if request.method == 'GET':
+		directorio_actual = request.GET.get("directorio_actual", '')
+		if directorio_actual == '':
+			directorio_actual = 0
+
+	return render(request, 'contenidoGrupoTrabajo.html', {'pagina_actual':nombre_grupo, 'id_grupo':id_grupo, 
+		'directorio_actual':directorio_actual})
+
 #Mostrar registro histórico
 @login_required(login_url='/accounts/login/')
 def registroHistorico(request):
@@ -184,7 +199,8 @@ def addFavoritos(request):
 		tipo_contenido = request.GET.get('tipo_contenido','')
 		tipo_contenido_titulo = getTipoContenidoTitulo(tipo_contenido)
 
-		return render(request, 'contenidoMultimedia.html', {'pagina_actual':tipo_contenido_titulo, 'tipo_contenido':tipo_contenido})
+		return render(request, 'contenidoMultimedia.html', {'pagina_actual':tipo_contenido_titulo, 
+		'tipo_contenido':tipo_contenido, 'directorio_actual':directorio_actual})
 	#Si es llamado desde la página index.html
 	elif pag_actual == "index.html":
 		return render(request, "index.html", {'pagina_actual':'Documentos', 'usuario':usuario, 'directorio_actual':directorio_actual})
@@ -208,7 +224,8 @@ def delFavoritos(request):
 		tipo_contenido = request.GET.get('tipo_contenido','')
 		tipo_contenido_titulo = getTipoContenidoTitulo(tipo_contenido)
 
-		return render(request, 'contenidoMultimedia.html', {'pagina_actual':tipo_contenido_titulo, 'tipo_contenido':tipo_contenido})
+		return render(request, 'contenidoMultimedia.html', {'pagina_actual':tipo_contenido_titulo, 
+		'tipo_contenido':tipo_contenido, 'directorio_actual':directorio_actual})
 	#Si es llamado desde la página index.html
 	elif pag_actual == "index.html":
 		return render(request, "index.html", {'pagina_actual':'Documentos', 'usuario':usuario, 'directorio_actual':directorio_actual})
@@ -277,11 +294,15 @@ def borrarArchivo(request):
 
 		return render(request, 'contenidoMultimedia.html', {'pagina_actual':tipo_contenido_titulo, 
 		'tipo_contenido':tipo_contenido, 'directorio_actual':directorio_actual})
-	elif pag_actual == "grupoTrabajo.html":
+	else:
 		id_grupo = request.GET.get('id_grupo','')
+		nombre_grupo = request.GET.get('pagina_actual','')
+
 		gt = GrupoTrabajoForm()
-		gt.borrarArchivo(id_archivo, id_grupo)
-		return render(request, "grupoTrabajo.html", {'pagina_actual':'Grupo de Trabajo'})
+		gt.borrarArchivo(id_archivo, id_grupo, nombre_grupo, directorio_actual)
+		
+		return render(request, 'contenidoGrupoTrabajo.html', {'pagina_actual':nombre_grupo, 'id_grupo':id_grupo, 
+			'directorio_actual':directorio_actual})
 
 
 #Comprobar si existe el usuario introducido
@@ -309,11 +330,12 @@ def dejarCompartirArchivo(request):
 @login_required(login_url='/accounts/login/')
 def crearGrupoTrabajo(request):
 	nombre_grupo = request.GET.get('nombre_grupo', '')
+	directorio_actual = request.GET.get('directorio_actual', '')
 
 	grupo = GrupoTrabajoForm()
 	grupo.crearGrupoTrabajo(nombre_grupo, usuario.username)
 
-	return render(request, 'grupoTrabajo.html', {'pagina_actual':'Grupo de Trabajo'})
+	return render(request, 'grupoTrabajo.html', {'pagina_actual':'Grupo de Trabajo', 'directorio_actual':directorio_actual})
 
 #Obtener los grupos de trabajo
 @login_required(login_url='/accounts/login/')
@@ -338,17 +360,22 @@ def comprobarParticipante(request):
 def addParticipante(request):
 	id_grupo = request.GET.get('id_grupo','')
 	participante = request.GET.get('participante','')
+	directorio_actual = request.GET.get('directorio_actual','')
+	nombre_grupo = request.GET.get('pagina_actual','')
 	gt = GrupoTrabajoForm()
 	gt.addParticipante(id_grupo, participante)
 
-	return render(request, 'grupoTrabajo.html', {'pagina_actual':'Grupo de Trabajo'})
+	return render(request, 'contenidoGrupoTrabajo.html', {'pagina_actual':nombre_grupo, 'id_grupo':id_grupo, 
+		'directorio_actual':directorio_actual})
 
 #Obtener los archivos de un grupo de trabajo
 @login_required(login_url='/accounts/login/')
 def getArchivosGrupoTrabajo(request):
 	id_grupo = request.GET.get('id_grupo','')
+	directorio_actual = request.GET.get('directorio_actual','')
+
 	gt = GrupoTrabajoForm()
-	resultado = gt.getArchivosGrupoTrabajo(id_grupo)
+	resultado = gt.getArchivosGrupoTrabajo(id_grupo, directorio_actual)
 
 	return HttpResponse(json.dumps(resultado), content_type="application/json")
 
@@ -357,22 +384,26 @@ def getArchivosGrupoTrabajo(request):
 def subirArchivoGrupo(request):
 	if request.method == 'POST':
 		id_grupo = request.POST.get('id_grupo_upload','')
-		handle_uploaded_file2(request.FILES['file'], request, id_grupo)
-		return render(request, 'grupoTrabajo.html', {'pagina_actual':'Grupo de Trabajo'})
+		directorio_actual = request.POST.get('directorio_actual','')
+		nombre_grupo = request.POST.get('pagina_actual','')
+		handle_uploaded_file2(request.FILES['file'], request, id_grupo, directorio_actual, nombre_grupo)
 
-	return render(request, 'grupoTrabajo.html', {'pagina_actual':'Grupo de Trabajo'})
+		return render(request, 'contenidoGrupoTrabajo.html', {'pagina_actual':nombre_grupo, 'id_grupo':id_grupo, 'directorio_actual':directorio_actual})
 
-def handle_uploaded_file2(file, request, id_grupo):
-	if not os.path.exists('upload/' + usuario.username + '/'):
-		os.mkdir('upload/' + usuario.username + '/')
+	return render(request, 'contenidoGrupoTrabajo.html', {'pagina_actual':nombre_grupo, 'id_grupo':id_grupo, 'directorio_actual':directorio_actual})
 
-	gt = GrupoTrabajoForm()		
+def handle_uploaded_file2(file, request, id_grupo, directorio_actual, nombre_grupo):
+	if not os.path.exists('upload/' + str(id_grupo) + nombre_grupo + '/'):
+		os.mkdir('upload/' + str(id_grupo) + nombre_grupo + '/')
+
+	gt = GrupoTrabajoForm()
 	filename = str(file)
-	with open('upload/' + usuario.username + '/' + filename, 'wb+') as destination:
+	path = 'upload/' + str(id_grupo) + nombre_grupo + '/' + str(g_archivo.getProximoIdArchivo()) + filename
+	with open(path, 'wb+') as destination:
 		for chunk in file.chunks():
 			destination.write(chunk)
 
-		gt.subirArchivoGrupo(id_grupo, filename, getTipoArchivo(filename), 'upload/' + usuario.username + '/' + filename)
+		gt.subirArchivoGrupo(id_grupo, filename, getTipoArchivo(filename), path, directorio_actual)
 
 #Obtener los participantes de un grupo
 @login_required(login_url='/accounts/login/')
@@ -421,7 +452,7 @@ def crearDirectorio(request):
 		d.crearDirectorio(nombre_directorio, directorio_actual, usuario.username)
 
 		return render(request, 'index.html', {'pagina_actual':'Documentos', 'usuario':usuario.username, 'directorio_actual':directorio_actual})
-	else:
+	elif pag_actual == "contenidoMultimedia.html":
 		d = DirectorioContenidoMultimediaForm()
 		d.crearDirectorio(nombre_directorio, directorio_actual, usuario.username)
 
@@ -430,6 +461,15 @@ def crearDirectorio(request):
 
 		return render(request, 'contenidoMultimedia.html', {'pagina_actual':tipo_contenido_titulo, 
 		'tipo_contenido':tipo_contenido, 'directorio_actual':directorio_actual})
+	else:
+		id_grupo = request.GET.get('id_grupo', '')
+		nombre_grupo = request.GET.get('nombre_grupo', '')
+		d = DirectorioGrupoTrabajoForm()
+		d.crearDirectorio(nombre_directorio, directorio_actual, id_grupo)
+
+		return render(request, 'contenidoGrupoTrabajo.html', {'pagina_actual':nombre_grupo, 'id_grupo':id_grupo, 
+		'directorio_actual':directorio_actual})
+
 
 #Comprobar si existe el directorio a crear
 @login_required(login_url='/accounts/login/')
@@ -442,9 +482,13 @@ def comprobarExisteDirectorio(request):
 	if pag_actual == "index.html":
 		d = DirectorioForm()
 		resultado = d.comprobarExisteDirectorio(nombre_directorio, directorio_actual, usuario.username)
-	else:
+	elif pag_actual == "contenidoMultimedia.html":
 		d = DirectorioContenidoMultimediaForm()
 		resultado = d.comprobarExisteDirectorio(nombre_directorio, directorio_actual, usuario.username)
+	else:
+		id_grupo = request.GET.get('id_grupo','')
+		d = DirectorioGrupoTrabajoForm()
+		resultado = d.comprobarExisteDirectorio(nombre_directorio, directorio_actual, id_grupo)
 
 	return HttpResponse(json.dumps(resultado), content_type="application/json")
 
@@ -458,10 +502,14 @@ def getDirectoriosMoverArchivo(request):
 	if pag_actual == "index.html":
 		d = DirectorioForm()
 		resultado = d.getDirectoriosMoverArchivo(usuario.username, directorio_actual)
-	else:
+	elif pag_actual == "contenidoMultimedia.html":
 		tipo_contenido = request.GET.get('tipo_contenido', '')
 		d = DirectorioContenidoMultimediaForm()
 		resultado = d.getDirectoriosMoverArchivo(usuario.username, directorio_actual, tipo_contenido)
+	else:
+		id_grupo = request.GET.get('id_grupo', '')
+		d = DirectorioGrupoTrabajoForm()
+		resultado = d.getDirectoriosMoverArchivo(id_grupo, directorio_actual)
 
 	return HttpResponse(json.dumps(resultado), content_type="application/json")
 
@@ -479,7 +527,7 @@ def moverArchivo(request):
 		d.moverArchivo(id_archivo_mover, directorio_actual, id_directorio_dest, usuario.username)
 
 		return render(request, 'index.html', {'pagina_actual':'Documentos', 'usuario':usuario.username, 'directorio_actual':directorio_actual})
-	else:
+	elif pag_actual == "contenidoMultimedia.html":
 		d = DirectorioContenidoMultimediaForm()
 		d.moverArchivo(id_archivo_mover, directorio_actual, id_directorio_dest, usuario.username)
 
@@ -488,6 +536,14 @@ def moverArchivo(request):
 
 		return render(request, 'contenidoMultimedia.html', {'pagina_actual':tipo_contenido_titulo, 
 		'tipo_contenido':tipo_contenido, 'directorio_actual':directorio_actual})
+	else:
+		id_grupo = request.GET.get('id_grupo', '')
+		nombre_grupo = request.GET.get('pagina_actual', '')
+		d = DirectorioGrupoTrabajoForm()
+		d.moverArchivo(id_archivo_mover, directorio_actual, id_directorio_dest, id_grupo)
+
+		return render(request, 'contenidoGrupoTrabajo.html', {'pagina_actual':nombre_grupo, 'id_grupo':id_grupo, 
+		'directorio_actual':directorio_actual})
 
 #Obtener los directorios del usuario posibles para copiar un archivo
 @login_required(login_url='/accounts/login/')
@@ -498,10 +554,14 @@ def getDirectoriosCopiar(request):
 	if pag_actual == "index.html":
 		d = DirectorioForm()
 		resultado = d.getDirectoriosCopiar(usuario.username)
-	else:
+	elif pag_actual == "contenidoMultimedia.html":
 		tipo_contenido = request.GET.get('tipo_contenido', '')
 		d = DirectorioContenidoMultimediaForm()
 		resultado = d.getDirectoriosCopiar(usuario.username, tipo_contenido)
+	else:
+		id_grupo = request.GET.get('id_grupo', '')
+		d = DirectorioGrupoTrabajoForm()
+		resultado = d.getDirectoriosCopiar(id_grupo)
 
 	return HttpResponse(json.dumps(resultado), content_type="application/json")
 
@@ -518,7 +578,7 @@ def copiarArchivo(request):
 		d.copiarArchivo(id_archivo_copiar, directorio_actual, id_directorio_dest, usuario.username)
 
 		return render(request, 'index.html', {'pagina_actual':'Documentos', 'usuario':usuario.username, 'directorio_actual':directorio_actual})
-	else:
+	elif pag_actual == "contenidoMultimedia.html":
 		d = DirectorioContenidoMultimediaForm()
 		d.copiarArchivo(id_archivo_copiar, directorio_actual, id_directorio_dest, usuario.username)
 
@@ -527,6 +587,14 @@ def copiarArchivo(request):
 
 		return render(request, 'contenidoMultimedia.html', {'pagina_actual':tipo_contenido_titulo, 
 		'tipo_contenido':tipo_contenido, 'directorio_actual':directorio_actual})
+	else:
+		id_grupo = request.GET.get('id_grupo', '')
+		nombre_grupo = request.GET.get('pagina_actual', '')
+		d = DirectorioGrupoTrabajoForm()
+		d.copiarArchivo(id_archivo_copiar, directorio_actual, id_directorio_dest, id_grupo, nombre_grupo)
+
+		return render(request, 'contenidoGrupoTrabajo.html', {'pagina_actual':nombre_grupo, 'id_grupo':id_grupo, 
+		'directorio_actual':directorio_actual})
 
 #Obtener los directorios del usuario posibles para mover un directorio
 @login_required(login_url='/accounts/login/')
@@ -539,10 +607,14 @@ def getDirectoriosMoverDirectorio(request):
 	if pag_actual == "index.html":
 		d = DirectorioForm()
 		resultado = d.getDirectoriosMoverDirectorio(usuario.username, directorio_actual, directorio_seleccionado)
-	else:
+	elif pag_actual == "contenidoMultimedia.html":
 		tipo_contenido = request.GET.get('tipo_contenido', '')
 		d = DirectorioContenidoMultimediaForm()
 		resultado = d.getDirectoriosMoverDirectorio(usuario.username, directorio_actual, directorio_seleccionado, tipo_contenido)
+	else:
+		id_grupo = request.GET.get('id_grupo', '')
+		d = DirectorioGrupoTrabajoForm()
+		resultado = d.getDirectoriosMoverDirectorio(id_grupo, directorio_actual, directorio_seleccionado)
 
 	return HttpResponse(json.dumps(resultado), content_type="application/json")
 
@@ -559,7 +631,7 @@ def moverDirectorio(request):
 		d.moverDirectorio(id_directorio_mover, id_directorio_destino, usuario.username, directorio_actual)
 
 		return render(request, 'index.html', {'pagina_actual':'Documentos', 'usuario':usuario.username, 'directorio_actual':directorio_actual})
-	else:
+	elif pag_actual == "contenidoMultimedia.html":
 		d = DirectorioContenidoMultimediaForm()
 		d.moverDirectorio(id_directorio_mover, id_directorio_destino, usuario.username, directorio_actual)
 
@@ -569,7 +641,14 @@ def moverDirectorio(request):
 		return render(request, 'contenidoMultimedia.html', {'pagina_actual':tipo_contenido_titulo, 
 		'tipo_contenido':tipo_contenido, 'directorio_actual':directorio_actual})
 
-	return render(request, 'index.html', {'pagina_actual':'Documentos', 'usuario':usuario.username, 'directorio_actual':directorio_actual})
+	else:
+		id_grupo = request.GET.get('id_grupo', '')
+		nombre_grupo = request.GET.get('pagina_actual', '')
+		d = DirectorioGrupoTrabajoForm()
+		d.moverDirectorio(id_directorio_mover, id_directorio_destino, id_grupo, directorio_actual)
+
+		return render(request, 'contenidoGrupoTrabajo.html', {'pagina_actual':nombre_grupo, 'id_grupo':id_grupo, 
+		'directorio_actual':directorio_actual})
 
 #Copiar un directorio
 @login_required(login_url='/accounts/login/')
@@ -584,7 +663,7 @@ def copiarDirectorio(request):
 		d.copiarDirectorio(id_directorio_copiar, id_directorio_destino, usuario.username, directorio_actual)
 
 		return render(request, 'index.html', {'pagina_actual':'Documentos', 'usuario':usuario.username, 'directorio_actual':directorio_actual})
-	else:
+	elif pag_actual == "contenidoMultimedia.html":
 		d = DirectorioContenidoMultimediaForm()
 		d.copiarDirectorio(id_directorio_copiar, id_directorio_destino, usuario.username, directorio_actual)
 
@@ -593,6 +672,14 @@ def copiarDirectorio(request):
 
 		return render(request, 'contenidoMultimedia.html', {'pagina_actual':tipo_contenido_titulo, 
 		'tipo_contenido':tipo_contenido, 'directorio_actual':directorio_actual})
+	else:
+		id_grupo = request.GET.get('id_grupo', '')
+		nombre_grupo = request.GET.get('pagina_actual', '')
+		d = DirectorioGrupoTrabajoForm()
+		d.copiarDirectorio(id_directorio_copiar, id_directorio_destino, id_grupo, directorio_actual, nombre_grupo)
+
+		return render(request, 'contenidoGrupoTrabajo.html', {'pagina_actual':nombre_grupo, 'id_grupo':id_grupo, 
+		'directorio_actual':directorio_actual})
 
 #Borrar un directorio
 @login_required(login_url='/accounts/login/')
@@ -615,14 +702,23 @@ def borrarDirectorio(request):
 
 		return render(request, 'contenidoMultimedia.html', {'pagina_actual':tipo_contenido_titulo, 
 		'tipo_contenido':tipo_contenido, 'directorio_actual':directorio_actual})
+	else:
+		id_grupo = request.GET.get('id_grupo', '')
+		nombre_grupo = request.GET.get('nombre_grupo', '')
+		d = DirectorioGrupoTrabajoForm()
+		d.borrarDirectorio(id_directorio_eliminar, id_grupo, nombre_grupo)
+
+		return render(request, 'contenidoGrupoTrabajo.html', {'pagina_actual':nombre_grupo, 'id_grupo':id_grupo, 
+		'directorio_actual':directorio_actual})		
 
 #Salir de un grupo de trabajo
 @login_required(login_url='/accounts/login/')
 def salirGrupo(request):
 	id_grupo = request.GET.get('id_grupo', '')
+	nombre_grupo = request.GET.get('pagina_actual', '')
 	gt = GrupoTrabajoForm()
 
-	gt.salirGrupo(usuario.username, id_grupo)
+	gt.salirGrupo(usuario.username, id_grupo, nombre_grupo)
 
 	return render(request, 'grupoTrabajo.html', {'pagina_actual':'Grupo de Trabajo'})
 
@@ -646,9 +742,14 @@ def cambiarNombre(request):
 	if pag_actual == "index.html":
 		d = DirectorioForm()
 		d.cambiarNombre(nuevo_nombre, id_contenido_cambiar_nombre, directorio_actual, tipo_contenido, usuario.username)
-	else:
+	elif pag_actual == "contenidoMultimedia.html":
 		d = DirectorioContenidoMultimediaForm()
 		d.cambiarNombre(nuevo_nombre, id_contenido_cambiar_nombre, directorio_actual, tipo_contenido, usuario.username)
+	else:
+		id_grupo = request.GET.get('id_grupo', '')
+		nombre_grupo = request.GET.get('nombre_grupo', '')
+		d = DirectorioGrupoTrabajoForm()
+		d.cambiarNombre(nuevo_nombre, id_contenido_cambiar_nombre, directorio_actual, tipo_contenido, id_grupo, nombre_grupo)
 
 	return HttpResponse(json.dumps(""), content_type="application/json")
 
@@ -657,14 +758,18 @@ def cambiarNombre(request):
 def actualizarBreadcrumb(request):
 	id_directorio = request.GET.get('id_directorio', '')
 	pag_actual = request.GET.get('pag_actual', '')
+	id_grupo = request.GET.get('id_grupo', '')
 	resultado = None
 
 	if pag_actual == "index.html":
 		d = DirectorioForm()
 		resultado = d.actualizarBreadcrumb(id_directorio, usuario.username)
-	else:
+	elif pag_actual == "contenidoMultimedia.html":
 		d = DirectorioContenidoMultimediaForm()
 		resultado = d.actualizarBreadcrumb(id_directorio, usuario.username)
+	else:
+		d = DirectorioGrupoTrabajoForm()
+		resultado = d.actualizarBreadcrumb(id_directorio, id_grupo)
 
 	return HttpResponse(json.dumps(resultado), content_type="application/json")
 

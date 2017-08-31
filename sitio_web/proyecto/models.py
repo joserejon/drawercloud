@@ -26,6 +26,14 @@ class DirectorioContenidoMultimedia(Document):
 	contenido = ListField()
 	propietario = StringField()
 
+class DirectorioGrupoTrabajo(Document):
+	identificador_tupla = StringField(required=True, unique=True)
+	id_directorio = DecimalField(required=True)
+	nombre = StringField(required=True)
+	id_padre = DecimalField(required=True)
+	contenido = ListField()
+	id_grupo = DecimalField(required=True)
+
 class Archivo(Document):
 	id_archivo = DecimalField()
 	nombre = StringField()

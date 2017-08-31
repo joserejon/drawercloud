@@ -774,13 +774,11 @@ class ArchivoForm():
 		for contenido in directorio[0].contenido:
 			#Escoger la tupla que es archivo
 			if contenido[1] == "archivo":
-				archivo = Archivo.objects(id_archivo=contenido[0])
-				archivo = archivo[0]
+				archivo = Archivo.objects(id_archivo=contenido[0])[0]
 				archivos_dic[int(archivo.id_archivo)] = [int(archivo.id_archivo), archivo.nombre, archivo.tipo_archivo, 
 				str(archivo.fecha_subida), str(archivo.tam_archivo), archivo.favorito]
 			else:
-				subdirectorio = Directorio.objects(id_directorio=contenido[0])
-				subdirectorio = subdirectorio[0]
+				subdirectorio = Directorio.objects(id_directorio=contenido[0])[0]
 
 				subdirectorios_dic[int(subdirectorio.id_directorio)] = [int(subdirectorio.id_directorio), subdirectorio.nombre]
 
@@ -804,13 +802,11 @@ class ArchivoForm():
 		for contenido in directorio[0].contenido:
 			#Escoger la tupla que es archivo
 			if contenido[1] == "archivo":
-				archivo = Archivo.objects(id_archivo=contenido[0])
-				archivo = archivo[0]
+				archivo = Archivo.objects(id_archivo=contenido[0])[0]
 				archivos_dic[int(archivo.id_archivo)] = [int(archivo.id_archivo), archivo.nombre, archivo.tipo_archivo, 
 				str(archivo.fecha_subida), str(archivo.tam_archivo), archivo.favorito]
 			else:
-				subdirectorio = DirectorioContenidoMultimedia.objects(id_directorio=contenido[0])
-				subdirectorio = subdirectorio[0]
+				subdirectorio = DirectorioContenidoMultimedia.objects(id_directorio=contenido[0])[0]
 
 				subdirectorios_dic[int(subdirectorio.id_directorio)] = [int(subdirectorio.id_directorio), subdirectorio.nombre]
 
@@ -983,6 +979,9 @@ class GrupoTrabajoForm():
 		gt.save()
 		GrupoTrabajo.objects(id_grupo=gt.id_grupo).update(add_to_set__usuarios=[propietario])
 
+		d = DirectorioGrupoTrabajoForm()
+		d.comprobarExisteDirectorioRaizGrupoTrabajo(gt.id_grupo, nombre_grupo)
+
 	#Obtener los grupos de trabajo donde esté el usuario
 	def getGruposTrabajo(self, username):
 		grupos = GrupoTrabajo.objects(usuarios__contains=username)
@@ -996,7 +995,7 @@ class GrupoTrabajoForm():
 	#Comprobar si existe el usuario- y no pertenece ya al grupo
 	# 0 == no existe; -1 == el usuario ya forma parte del grupo; 1 == éxito
 	def comprobarParticipante(self, id_grupo, participante):
-		participantes = GrupoTrabajo.objects(usuarios__contains=participante)
+		participantes = GrupoTrabajo.objects(id_grupo=id_grupo, usuarios__contains=participante)
 
 		if len(participantes) > 0:
 			return -1
@@ -1012,38 +1011,65 @@ class GrupoTrabajoForm():
 		GrupoTrabajo.objects(id_grupo=id_grupo).update(add_to_set__usuarios=[participante])
 
 	#Obtener los archivos de un grupo de trabajo
-	def getArchivosGrupoTrabajo(self, id_grupo):
-		grupo = list(GrupoTrabajo.objects.filter(id_grupo=id_grupo))
+	def getArchivosGrupoTrabajo(self, id_grupo, id_directorio):
 		archivos_dic = {}
+		subdirectorios_dic = {}
+		directorio = DirectorioGrupoTrabajo.objects(id_grupo=id_grupo, id_directorio=id_directorio)[0]
+		
+		#Recorrer el contenido para directorio_actual
+		for contenido in directorio.contenido:
+			#Escoger la tupla que es archivo
+			if contenido[1] == "archivo":
+				archivo = Archivo.objects(id_archivo=contenido[0])[0]
+				archivos_dic[int(archivo.id_archivo)] = [int(archivo.id_archivo), archivo.nombre, archivo.tipo_archivo, 
+				str(archivo.fecha_subida), str(archivo.tam_archivo), archivo.favorito]
+			else:
+				subdirectorio = DirectorioGrupoTrabajo.objects(id_directorio=contenido[0], id_grupo=id_grupo)[0]
+				subdirectorios_dic[int(subdirectorio.id_directorio)] = [int(subdirectorio.id_directorio), subdirectorio.nombre]
 
-		#Almacenar los archivos del grupo X en un diccionario
-		for id_archivo in grupo[0].archivos:
-			#Obtener el archivo por ID
-			archivo = Archivo.objects(id_archivo=id_archivo)
-			archivo = archivo[0]
-			#Añadir el archivo al diccionario
-			archivos_dic[id_archivo] = [int(archivo.id_archivo), archivo.nombre, archivo.tipo_archivo, 
-			str(archivo.fecha_subida), str(archivo.tam_archivo), archivo.favorito]
+		contenido = (subdirectorios_dic, archivos_dic)
 
-		return archivos_dic
+		return contenido
 
 
 	#Subir un archivo a un grupo
-	def subirArchivoGrupo(self, id_grupo, nombre_archivo, tipo_archivo, path):
+	def subirArchivoGrupo(self, id_grupo, nombre_archivo, tipo_archivo, path, directorio_actual):
+		archivo = Archivo()
 		a = ArchivoForm()
-		#Subir el archivo a la base de datos
-		id_archivo = a.save(nombre_archivo, tipo_archivo, "", path, 0, "DirectorioForm")
-		#Añadir fichero al grupo de trabajo
-		GrupoTrabajo.objects(id_grupo=id_grupo).update(add_to_set__archivos=[int(id_archivo)])
+		archivo.id_archivo = a.getProximoIdArchivo()
+		archivo.nombre = nombre_archivo
+		archivo.tipo_archivo = tipo_archivo
+		archivo.fecha_subida = str(datetime.datetime.now().replace(microsecond=0))
+		archivo.propietario = ""
+		data = open(path, 'rb')
+		ct = getContentType(tipo_archivo)
+		archivo.archivo.put(data, content_type = ct)
+		archivo.tam_archivo = archivo.archivo.length
+		archivo.favorito = False
+		archivo.save()
+
+		d = DirectorioGrupoTrabajoForm()
+		contenido = (int(archivo.id_archivo), 'archivo')
+		d.actualizarContenidoDirectorio(directorio_actual, contenido, id_grupo)
 
 	#Borrar un archivo
-	def borrarArchivo(self, id_archivo, id_grupo):
+	def borrarArchivo(self, id_archivo, id_grupo, nombre_grupo, id_directorio):
 		archivos = list(Archivo.objects.filter(id_archivo=id_archivo))
+		os.remove('upload/' + str(id_grupo) + nombre_grupo + '/' + str(int(id_archivo)) + archivos[0].nombre)
 		archivos[0].archivo.delete()
-		ArchivoCompartido.objects.filter(id_archivo_compartido=id_archivo).delete()
 		Archivo.objects.filter(id_archivo=id_archivo).delete()
 
-		GrupoTrabajo.objects(id_grupo=id_grupo).update(pull__archivos=int(id_archivo))
+		directorio = list(DirectorioGrupoTrabajo.objects.filter(id_directorio=id_directorio, id_grupo=id_grupo))
+		contador = 0
+		#Recorrer el contenido para directorio_actual
+		for contenido in directorio[0].contenido:
+			#Escoger la tupla que es directorio
+			if contenido[1] == "archivo" and contenido[0] == int(id_archivo):
+				del directorio[0].contenido[contador]
+				directorio[0].save()
+				break
+
+			contador += 1
 
 	#Obtener los participantes de un grupo
 	def getParticipantes(self, id_grupo):
@@ -1061,16 +1087,297 @@ class GrupoTrabajoForm():
 		return participantes_dic
 
 	#Salir de un grupo de trabajo
-	def salirGrupo(self, username, id_grupo):
+	def salirGrupo(self, username, id_grupo, nombre_grupo):
 		grupo = GrupoTrabajo.objects(id_grupo=id_grupo)[0]
 		grupo.usuarios.remove(username)
 		grupo.save()
 
 		if len(grupo.usuarios) == 0:
-			for id_archivo in grupo.archivos:
-				self.borrarArchivo(id_archivo, id_grupo)
-
+			d = DirectorioGrupoTrabajoForm()
+			d.borrarDirectorio(0, id_grupo, nombre_grupo)
 			GrupoTrabajo.objects(id_grupo=id_grupo).delete()
+
+
+################################################################
+#Form para la clase DirectorioGrupoTrabajo
+class DirectorioGrupoTrabajoForm():
+
+	#Crear el directorio raíz
+	def crearDirectorioRaizGrupoTrabajo(self, id_grupo, nombre_directorio):
+		d = DirectorioGrupoTrabajo()
+
+		d.id_directorio = 0
+		d.nombre = nombre_directorio
+		d.id_padre = -1
+		d.id_grupo = id_grupo
+		d.identificador_tupla = str(int(id_grupo)) + str(d.id_directorio) + nombre_directorio
+		d.save()
+
+		return d
+
+	#Comprobar si existe el directorio raíz
+	def comprobarExisteDirectorioRaizGrupoTrabajo(self, id_grupo, nombre_directorio):
+		directorio = DirectorioGrupoTrabajo.objects(id_directorio=0, id_grupo=id_grupo, nombre=nombre_directorio)
+		if len(directorio) == 0:
+			self.crearDirectorioRaizGrupoTrabajo(id_grupo, nombre_directorio)
+
+	#Comprobar si existe el directorio a crear
+	def comprobarExisteDirectorio(self, nombre_directorio, directorio_actual, id_grupo):
+		directorio = list(DirectorioGrupoTrabajo.objects.filter(id_directorio=directorio_actual, id_grupo=id_grupo))
+
+		#Recorrer el contenido para directorio_actual
+		for contenido in directorio[0].contenido:
+			#Escoger la tupla que es directorio
+			if contenido[1] == "directorio":
+				#Comprobar, con el id del directorio, su nombre
+				d = DirectorioGrupoTrabajo.objects(id_directorio=contenido[0])
+				if d[0].nombre == nombre_directorio:
+					return True
+
+		return False
+
+
+	#Crear un nuevo directorio
+	def crearDirectorio(self, nombre_directorio, id_padre, id_grupo):
+		d = DirectorioGrupoTrabajo()
+
+		directorios = DirectorioGrupoTrabajo.objects(id_grupo=id_grupo).order_by('id_directorio')
+		d.id_directorio = directorios[len(directorios) - 1].id_directorio + 1
+
+		d.nombre = nombre_directorio
+		d.id_padre = id_padre
+		d.id_grupo = id_grupo
+		d.identificador_tupla = str(int(id_grupo)) + str(int(d.id_directorio)) + nombre_directorio
+
+		contenido = (int(d.id_directorio), 'directorio')
+		self.actualizarContenidoDirectorio(id_padre, contenido, id_grupo)
+		d.save()
+
+		return d
+
+	#Actualizar contenido de un directorio
+	#nuevo contenido -> tupla con la forma ( id_contenido , tipo_contenido )
+	#tipo contenido indica si es directorio o archivo
+	def actualizarContenidoDirectorio(self, id_directorio, nuevo_contenido, id_grupo):
+		DirectorioGrupoTrabajo.objects(id_directorio=id_directorio, id_grupo=id_grupo).update(add_to_set__contenido=[nuevo_contenido])
+
+	#Obtener los directorios del usuario posibles para mover un archivo
+	def getDirectoriosMoverArchivo(self, id_grupo, directorio_actual):
+		directorios = list(DirectorioGrupoTrabajo.objects.filter(id_grupo=id_grupo))
+		directorios_dic = {}
+
+		for directorio in directorios:
+			#Cuando el directorio sea distinto del actual
+			if int(directorio.id_directorio) != int(directorio_actual):
+				path = directorio.nombre
+				directorio_aux = directorio
+				#Recorremos los padres del directorio para añadirlos al path
+				while directorio_aux.id_padre >= 0:
+					directorio_aux = DirectorioGrupoTrabajo.objects(id_directorio=directorio_aux.id_padre, id_grupo=id_grupo)
+					directorio_aux = directorio_aux[0]
+					path = directorio_aux.nombre + "/" + path
+				
+				#Añadir al diccionario el id_directorio y el path
+				directorios_dic[int(directorio.id_directorio)] = [int(directorio.id_directorio), path]
+
+		return directorios_dic
+
+	#Obtener los directorios del usuario posibles para mover un directorio
+	def getDirectoriosMoverDirectorio(self, id_grupo, directorio_actual, directorio_seleccionado):
+		directorios = list(DirectorioGrupoTrabajo.objects.filter(id_grupo=id_grupo))
+		directorios_dic = {}
+
+		for directorio in directorios:
+			#Cuando el directorio sea distinto del actual
+			if int(directorio.id_directorio) != int(directorio_actual) and int(directorio.id_directorio) != int(directorio_seleccionado):
+				path = directorio.nombre
+				directorio_aux = directorio
+				#Recorremos los padres del directorio para añadirlos al path
+				while directorio_aux.id_padre >= 0:
+					directorio_aux = DirectorioGrupoTrabajo.objects(id_directorio=directorio_aux.id_padre, id_grupo=id_grupo)
+					directorio_aux = directorio_aux[0]
+					path = directorio_aux.nombre + "/" + path
+				
+				#Añadir al diccionario el id_directorio y el path
+				directorios_dic[int(directorio.id_directorio)] = [int(directorio.id_directorio), path]
+
+		return directorios_dic
+
+	#Mover un archivo a otro directorio
+	def moverArchivo(self, id_archivo_mover, directorio_actual, id_directorio_dest, id_grupo):
+		directorio = list(DirectorioGrupoTrabajo.objects.filter(id_directorio=directorio_actual, id_grupo=id_grupo))
+
+		#Eliminar el archivo del directorio actual
+		contador = 0
+		#Recorrer el contenido para directorio_actual
+		for contenido in directorio[0].contenido:
+			#Escoger la tupla que es archivo
+			if contenido[1] == "archivo" and contenido[0] == int(id_archivo_mover):
+				del directorio[0].contenido[contador]
+				directorio[0].save()
+				break
+
+			contador += 1
+
+		#Añadir el archivo a su nuevo directorio
+		contenido = (int(id_archivo_mover), 'archivo')
+		self.actualizarContenidoDirectorio(id_directorio_dest, contenido, id_grupo)
+
+	#Mover un directorio
+	def moverDirectorio(self, id_directorio_mover, id_directorio_destino, id_grupo, directorio_actual):
+		directorio = list(DirectorioGrupoTrabajo.objects.filter(id_directorio=directorio_actual, id_grupo=id_grupo))
+		#Eliminar directorio del directorio actual
+		contador = 0
+		#Recorrer el contenido para directorio_actual
+		for contenido in directorio[0].contenido:
+			#Escoger la tupla que es directorio
+			if contenido[1] == "directorio" and contenido[0] == int(id_directorio_mover):
+				del directorio[0].contenido[contador]
+				directorio[0].save()
+				break
+
+			contador += 1
+		#Añadir directorio al directorio destino
+		contenido = (int(id_directorio_mover), 'directorio')
+		self.actualizarContenidoDirectorio(id_directorio_destino, contenido, id_grupo)
+
+	#Obtener los directorios del usuario posibles para copiar un archivo
+	def getDirectoriosCopiar(self, id_grupo):
+		directorios = list(DirectorioGrupoTrabajo.objects.filter(id_grupo=id_grupo))
+		directorios_dic = {}
+
+		for directorio in directorios:
+			path = directorio.nombre
+			directorio_aux = directorio
+			#Recorremos los padres del directorio para añadirlos al path
+			while directorio_aux.id_padre >= 0:
+				directorio_aux = DirectorioGrupoTrabajo.objects(id_directorio=directorio_aux.id_padre, id_grupo=id_grupo)
+				directorio_aux = directorio_aux[0]
+				path = directorio_aux.nombre + "/" + path
+			
+			#Añadir al diccionario el id_directorio y el path
+			directorios_dic[int(directorio.id_directorio)] = [int(directorio.id_directorio), path]
+
+		return directorios_dic
+
+	#Copiar un archivo
+	def copiarArchivo(self, id_archivo_copiar, directorio_actual, id_directorio_dest, id_grupo, nombre_grupo):
+		archivo_original = Archivo.objects(id_archivo=id_archivo_copiar)
+		archivo_original = archivo_original[0]
+		a = ArchivoForm()
+
+		#Añadir "copia" al nombre si se copia en el mismo directorios
+		nombre_archivo = ""
+		if int(directorio_actual) != int(id_directorio_dest):
+			nombre_archivo = archivo_original.nombre
+		else:
+			nombre_archivo = "copia " + archivo_original.nombre
+
+		#Crear copia física del archivo
+		if not os.path.exists('upload/' + str(id_grupo) + nombre_grupo + '/'):
+			os.mkdir('upload/' + str(id_grupo) + nombre_grupo + '/')
+
+		path = 'upload/' + str(id_grupo) + nombre_grupo + '/' + str(a.getProximoIdArchivo()) + nombre_archivo
+		file = open('upload/' + str(id_grupo) + nombre_grupo + '/' + str(int(archivo_original.id_archivo)) + archivo_original.nombre, 'rb+')
+		with open(path, 'wb+') as destination:
+			while True:
+			    piece = file.read(1024)  
+			    if not piece:
+			        break
+			    destination.write(piece)
+			file.close()
+
+		#Crear copia en la BD
+		gt = GrupoTrabajoForm()
+		gt.subirArchivoGrupo(id_grupo, nombre_archivo, archivo_original.tipo_archivo, path, id_directorio_dest)
+
+	#Copiar un directorio
+	def copiarDirectorio(self, id_directorio_copiar, id_directorio_destino, id_grupo, directorio_actual, nombre_grupo):
+		directorios = DirectorioGrupoTrabajo.objects(id_grupo=id_grupo).order_by('id_directorio')
+		directorio_original = DirectorioGrupoTrabajo.objects(id_directorio=id_directorio_copiar, id_grupo=id_grupo)
+		directorio_nuevo = DirectorioGrupoTrabajo()
+
+		directorio_nuevo.id_directorio = directorios[len(directorios) - 1].id_directorio + 1
+		directorio_nuevo.identificador_tupla = id_grupo + str(directorio_nuevo.id_directorio)
+		directorio_nuevo.id_padre = id_directorio_destino
+		directorio_nuevo.id_grupo = id_grupo
+		if int(directorio_actual) == int(id_directorio_destino):
+			directorio_nuevo.nombre = "copia " + directorio_original[0].nombre
+		else:
+			directorio_nuevo.nombre = directorio_original[0].nombre
+
+		directorio_nuevo.contenido = directorio_original[0].contenido
+
+		for contenido in directorio_original[0].contenido:
+			if contenido[1] == "archivo":
+				self.copiarArchivo(int(contenido[0]), directorio_actual, directorio_nuevo.id_directorio, id_grupo, nombre_grupo)
+
+		contenido = (int(directorio_nuevo.id_directorio), 'directorio')
+		self.actualizarContenidoDirectorio(id_directorio_destino, contenido, id_grupo)
+		directorio_nuevo.save()
+
+	#Borrar un directorio
+	def borrarDirectorio(self, id_directorio_eliminar, id_grupo, nombre_grupo):
+		directorio = DirectorioGrupoTrabajo.objects(id_directorio=id_directorio_eliminar, id_grupo=id_grupo)[0]
+		gt = GrupoTrabajoForm()
+
+		#Borrar contenido del directorio a eliminar
+		for contenido in directorio.contenido:
+			if contenido[1] == "archivo":
+				gt.borrarArchivo(contenido[0], id_grupo, nombre_grupo, id_directorio_eliminar)
+			elif contenido[1] == "directorio":
+				self.borrarDirectorio(contenido[0], id_grupo, nombre_grupo)
+
+
+		#Borrar directorio del contenido del padre
+		if directorio.id_padre != -1:
+			directorio_padre = DirectorioGrupoTrabajo.objects(id_directorio=directorio.id_padre, id_grupo=id_grupo)[0]
+			contador = 0
+			for contenido in directorio_padre.contenido:
+				#Escoger la tupla que es directorio
+				if contenido[1] == "directorio" and contenido[0] == int(id_directorio_eliminar):
+					del directorio_padre.contenido[contador]
+					directorio_padre.save()
+					break
+
+				contador += 1
+
+		#Borrar la tupla en la BD correspondiente al directorio
+		DirectorioGrupoTrabajo.objects(id_directorio=id_directorio_eliminar, id_grupo=id_grupo).delete()
+
+	#Cambiar nombre a un directorio/archivo
+	def cambiarNombre(self, nuevo_nombre, id_contenido_cambiar_nombre, directorio_actual, tipo_contenido, id_grupo, nombre_grupo):
+
+		#Si se está cambiando el nombre desde la página principal
+		if int(directorio_actual) >= 0:
+			directorio = DirectorioGrupoTrabajo.objects(id_directorio=directorio_actual, id_grupo=id_grupo)[0]
+			for contenido in directorio.contenido:
+				if contenido[0] == int(id_contenido_cambiar_nombre) and contenido[1] == tipo_contenido:
+					if tipo_contenido == "archivo":
+						archivo_original = Archivo.objects(id_archivo=id_contenido_cambiar_nombre)[0]
+						Archivo.objects(id_archivo=id_contenido_cambiar_nombre).update_one(set__nombre=nuevo_nombre)
+
+						old_path = 'upload/' + str(id_grupo) + nombre_grupo + '/' + str(int(id_contenido_cambiar_nombre)) + archivo_original.nombre
+						new_path = 'upload/' + str(id_grupo) + nombre_grupo + '/' + str(int(id_contenido_cambiar_nombre)) + nuevo_nombre
+						os.rename(old_path, new_path)
+					else:
+						DirectorioGrupoTrabajo.objects(id_directorio=id_contenido_cambiar_nombre).update_one(set__nombre=nuevo_nombre)
+					break
+		else:
+			Archivo.objects(id_archivo=id_contenido_cambiar_nombre).update_one(set__nombre=nuevo_nombre)
+
+	#Obtener los datos del breadcrumb
+	def actualizarBreadcrumb(self, id_directorio, id_grupo):
+		directorio = DirectorioGrupoTrabajo.objects(id_directorio=id_directorio, id_grupo=id_grupo)[0]
+		directorios_dic = {}
+
+		directorios_dic[int(directorio.id_directorio)] = [int(directorio.id_directorio), directorio.nombre]
+		while directorio.id_padre != -1:
+			directorio = DirectorioGrupoTrabajo.objects(id_directorio=directorio.id_padre, id_grupo=id_grupo)[0]
+			directorios_dic[int(directorio.id_directorio)] = [int(directorio.id_directorio), directorio.nombre]
+		
+		return directorios_dic
+
 
 ################################################################
 def getContentType(tipo_archivo):

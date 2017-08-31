@@ -7,6 +7,7 @@ urlpatterns = [
 	url(r'^compartido/$', views.compartido, name='compartido'),
 	url(r'^favoritos/$', views.favoritos, name='favoritos'),
 	url(r'^grupoTrabajo/$', views.grupoTrabajo, name='grupoTrabajo'),
+	url(r'^contenidoGrupoTrabajo/$', views.contenidoGrupoTrabajo, name='contenidoGrupoTrabajo'),
 	url(r'^registroHistorico/$', views.registroHistorico, name='registroHistorico'),
 	url(r'^ayuda/$', views.ayuda, name='ayuda'),
 	url(r'^usuario/$', views.usuario, name='usuario'),

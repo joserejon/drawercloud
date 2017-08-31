@@ -7,46 +7,32 @@
     <li class="active"><a href="">Grupo de trabajo</a></li>
 {% endblock %}
 {% block contenido_body %}
-
-	<!-- Menú botón derecho sobre archivos -->
-    <nav id="context-menu" class="context-menu">
-        <ul class="context-menu__items">
-            <li class="context-menu__item">
-                <a href="#" class="context-menu__link" id="descargar" data-action="descargar">Descargar</a>
-            </li>
-            <li class="context-menu__item">
-                <a href="#" class="context-menu__link" id="cambiar_nombre" data-action="cambiar_nombre">Cambiar nombre</a>
-            </li>
-            <li class="context-menu__item">
-                <a href="#" class="context-menu__link" id="eliminar" data-action="eliminar">Eliminar</a>
-            </li>
-        </ul>
-    </nav>
-
-	<div class="btn-group btn-desplegables-gt">
-		<button id="bt_grupos" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" onclick="getGruposTrabajo();">
-		Seleccione grupo de trabajo <span class="caret"></span>
-		</button>
-		<!-- <a href="#abrirPopUpCrearGrupo"><button id="bt_crear_grupo" class="btn btn-default dropdown-toggle bts_grupo_trabajo">Crear Grupo de trabajo</button></a> -->
-		<a id="add_participante" href="#abrirPopUpAddParticipante"></a>
-
-		<ul id="menuGrupos" class="dropdown-menu" role="menu">
-			<!-- Código insertado desde javascript -->
-		</ul>
+	<div class='container-fluid'>
+		<div class='row'>
+			<div id='ver_grupos' class='col-xs-12 col-md-6 col-lg-6'>
+				<div class="opciones_gt">
+					<img src='/static/images/group.png'>
+					<h3>Ver mis grupos</h3>
+				</div>
+			</div>
+			<div id='crear_grupo' class='col-xs-12 col-md-6 col-lg-6'>
+				<div class="opciones_gt">
+					<img src='/static/images/add-group.png'>
+					<h3>Crear un grupo</h3>
+				</div>
+			</div>
+		</div>
 	</div>
 
-	<div class="btn-group btn-desplegables-gt">
-		<button id="bt_opciones_grupos" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" onclick="">
-		Opciones <span class="caret"></span>
-		</button>
-		<ul id="menuOpcionesGrupos" class="dropdown-menu" role="menu">
-			<li><a href="#abrirPopUpCrearGrupo">Crear grupo de trabajo</a></li>
-		</ul>
-	</div>
-
-	<br>
-	<div id="contenidoTab" class="tab-content">
-		<!-- Código insertado desde javascript -->
+	<!-- PopUp para ver los grupos del usuario -->
+	<div id="abrirPopUpVerGrupos" class="popUp">
+		<div>
+			<a href="#close" title="Close" class="close">X</a>
+			<label id="num_grupos"></label>
+			<ul id="grupos" class="verGrupos">
+				<!-- Código insertado desde javascript -->
+			</ul>
+		</div>
 	</div>
 
 	<!-- PopUp para crear un grupo de trabajo -->
@@ -61,96 +47,10 @@
 		</div>
 	</div>
 
-	<!-- PopUp para añadir un participante al grupo -->
-	<div id="abrirPopUpAddParticipante" class="popUp">
-		<div>
-			<a href="#close" title="Close" class="close">X</a>
-			<form action="javascript:comprobarParticipante();" method="POST">
-				{% csrf_token %}
-				<input type="text" id="participante" name="participante" placeholder="Username del participante" required/>
-				<input type="hidden" id="id_grupo" name="id_grupo" value="" />
-				<input type="hidden" id="nombre_grupo_actual" name="nombre_grupo_actual" value="" />
-				<input type="submit" value="Añadir" class="input_file btn btn-default" />
-			</form>
-		</div>
-	</div>
-
-	<!-- PopUp para subir un archivo -->
-	<div id="abrirPopUp" class="popUp">
-		<div>
-			<a id="bt_close_popup" href="#close" title="Close" class="close">X</a>
-			<form action="{% url 'subirArchivoGrupo' %}" method="POST" enctype="multipart/form-data" id="upload_form">
-				{% csrf_token %} 
-				<input type="file" name="file" class="input_file btn btn-default" required/>
-				<input type="hidden" id="id_grupo_upload" name="id_grupo_upload" value="" required/>
-				<br />
-				<input type="submit" value="Subir archivo" class="input_file btn btn-default" />
-			</form>
-			<div id="barra_progreso">
-				<!-- Código insertado desde javascript  -->
-			</div>
-			<div id="fin_upload">
-				<!-- Código insertado desde javascript  -->
-			</div>
-		</div>
-	</div>
-
-	<!-- PopUp para eliminar un archivo -->
-	<div id="abrirPopUpEliminar" class="popUp">
-		<div>
-			<a href="#close" title="Close" class="close">X</a>
-			<!-- <form action="{% url 'compartirArchivo' %}" method="POST"> -->
-			<form action="javascript:eliminarArchivo();" method="POST">
-				{% csrf_token %}
-				<label>¿Realmente desea eliminar el archivo?</label>
-				<input type="hidden" id="id_archivo_eliminar" name="id_archivo_eliminar" value="" />
-				<input type="submit" value="Eliminar" class="input_file btn btn-default" />
-			</form>
-		</div>
-	</div>
-
-	<!-- PopUp para ver los participantes del grupo -->
-	<div id="abrirPopUpVerParticipantes" class="popUp">
-		<div>
-			<a href="#close" title="Close" class="close">X</a>
-			<label id="num_participantes"></label>
-			<ul id="participantes" class="verParticipantes">
-				<!-- Código insertado desde javascript -->
-			</ul>
-		</div>
-	</div>
-
-	<!-- PopUp para salir del grupo -->
-	<div id="abrirPopUpSalirGrupo" class="popUp">
-		<div>
-			<a href="#close" title="Close" class="close">X</a>
-			<form action="javascript:salirGrupo();" method="POST">
-				{% csrf_token %}
-				<label>¿Realmente desea salir del grupo de trabajo?</label>
-				<input type="submit" value="Salir del grupo" class="input_file btn btn-default" />
-			</form>
-		</div>
-	</div>
-
-	<!-- PopUp para cambir nombre a un archivo -->
-    <div id="abrirPopUpCambiarNombre" class="popUp">
-        <div>
-            <a href="#close" title="Close" class="close">X</a>
-            <form action="javascript:cambiarNombre();" method="POST">
-                {% csrf_token %}
-                <input type="text" id="nuevo_nombre" name="nuevo_nombre" placeholder="Introduzca un nombre nuevo" required/>
-                <input type="hidden" id="id_contenido_cambiar_nombre" name="id_contenido_cambiar_nombre" value="" />
-                <input type="submit" value="Cambiar nombre" class="input_file btn btn-default" />
-            </form>
-        </div>
-    </div>
-
-
 	<div id="snackbar" ></div>
 
+	
 	<script type="text/javascript">
-
-		var id_grupo_actual = 0;
 
 		function mostrarSnackbar(texto) {
 			var x = document.getElementById("snackbar")
@@ -159,8 +59,16 @@
 			setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
 		}
 
-	    //Función que se encarga de pedir y recibir los archivos del usuario
-	    function getGruposTrabajo() {
+		$('#ver_grupos').click(function(event){
+			getGruposTrabajo();
+		})
+
+		$('#crear_grupo').click(function(event){
+			window.location = document.getElementById('abrirPopUpCrearGrupo').href = "#abrirPopUpCrearGrupo";
+		})
+
+		//Función que se encarga de pedir y recibir los archivos del usuario
+	    function getGruposTrabajo(){
 	        $.ajax({
 	            url : "{% url 'getGruposTrabajo' %}",
 	            data : {
@@ -169,45 +77,21 @@
 	            type : 'GET',
 	            dataType: 'json',
 	            success : function(datos){
-	            	var html = "";
-	            	for(i in datos)
-	            		html += "<li id='"+ datos[i][0] +"' data-toggle='tab' data-target='#" + datos[i][0] + "'><a>" + datos[i][1] + "</a></li>"
-	            	document.getElementById('menuGrupos').innerHTML = html;
+	            	document.getElementById('grupos').innerHTML = "";
+	            	var num_grupos = 0;
+ 					for(var i in datos){
+						document.getElementById('grupos').innerHTML += "<li id='"+ datos[i][0] +"' data-toggle='tab' data-target='#" + datos[i][0] + "'>" + datos[i][1] + "</li>";
+						num_grupos++;
+ 					}
+ 					document.getElementById('num_grupos').innerHTML = "Perteneces a : " + num_grupos + " grupos";
+
+ 					window.location = document.getElementById('abrirPopUpVerGrupos').href = "#abrirPopUpVerGrupos";
 
 	            	//Acción al pulsar sobre un elemento del menú
-	            	$("#menuGrupos li").click(function( event ) {
+	            	$("#grupos li").click(function( event ) {
 			            var id = this.id;
 			        	if(id != 0){
-			        		id_grupo_actual = datos[id][0];
-			        		var html = ""+
-				            	"<div id='" + datos[id][0] + "' class='tab-pane fade in active'>" +
-									"<h3>Contenido del grupo <span class='letra_azul'><b>" + datos[id][1] + "</b></span></h3>" +
-									"<!-- Añadir el botón para cambiar a vista lista/cuadricula -->" +
-									"<div id='cambiar_vista'>" +
-									    "<!-- Código insertado desde javascript  -->" +
-									"</div>" +
-
-									"<div id='vista_documentos' class='col-xs-12 col-md-12 col-lg-12'>" +
-									    "<!-- Código insertado desde javascript  -->" +
-									"</div> <!-- vista_documentos -->" +
-								"</div>";
-
-							document.getElementById("id_grupo").value = datos[id][0];
-							document.getElementById("nombre_grupo_actual").value = datos[id][1];
-							document.getElementById('contenidoTab').innerHTML = html;
-							actualizaVista();
-
-							//Cambiar a vista lista
-						    $("#cambiar_vista").on("click","#vista_cuadricula", function(){
-						        localStorage.setItem("modo_vista", "cuadricula");
-						        actualizaVista();
-						    });
-
-						    //Cambiar a vista cuadrícula
-						    $("#cambiar_vista").on("click","#vista_lista", function(){
-						        localStorage.setItem("modo_vista", "lista");
-						        actualizaVista();
-						    });
+			        		window.location.href = "{% url 'contenidoGrupoTrabajo' %}?id_grupo=" + id + "&directorio_actual=0&nombre_grupo=" + datos[id][1];
 			        	}
 			        });
 	            },
@@ -220,569 +104,14 @@
 	     	});
 	    }
 
-	    function actualizaVista(){
-	        var html = "";
-	        html = "<li><a href='#abrirPopUpCrearGrupo'>Crear grupo de trabajo</a></li>" +
-	        	"<li><a href='#abrirPopUpAddParticipante'>Añadir participante al grupo</a></li>" +
-	        	"<li><a href='#abrirPopUp' onclick='subirArchivoAddIDGrupo()'>Subir archivo al grupo</a></li>" +
-	        	"<li><a href='#abrirPopUpVerParticipantes' onclick='getParticipantes()'>Ver participantes del grupo</a></li>" +
-	        	"<li><a href='#abrirPopUpSalirGrupo'>Salir del grupo de trabajo</a></li>";
-	        document.getElementById("menuOpcionesGrupos").innerHTML = html;
-	        document.getElementById("fin_upload").innerHTML = "";
-	        document.getElementById("barra_progreso").innerHTML = "";
-			getArchivos();
-	    }
-
-	    //Función que se encarga de pedir y recibir los archivos del usuario
-	    function getArchivos() {
-	        $.ajax({
-	            url : "{% url 'getArchivosGrupoTrabajo' %}",
-	            data : {
-	                id_grupo: id_grupo_actual
-	            },
-	            type : 'GET',
-	            dataType: 'json',
-	            success : function(datos){
-					if (localStorage.getItem("modo_vista") == "cuadricula"){
-						html = "<span id='vista_lista' title='ver lista' class='glyphicon glyphicon-th-list'></span>";
-						vistaCuadricula(datos);
-					}
-					else{ 
-						html = "<span id='vista_cuadricula' title='ver iconos' class='glyphicon glyphicon-th-large'></span>";
-						vistaLista(datos);
-					}
-
-					document.getElementById('cambiar_vista').innerHTML = html;
-	            },
-	            failure : function(datos){
-	                alert("Error: no se pudo realizar la consulta");
-	            },
-	            complete : function(datos) {
-	                console.log('Petición realizada');
-	            }
-	     	});
-	    }
-
-	    function vistaCuadricula(datos){
-	        var html = "" +
-	            "<div class='container-fluid cuadricula'>" +
-	                "<div class='row'>";
-	                for(var i in datos){
-	                    var tipo_archivo = comprobarExtension(datos[i][2], "cuadricula");
-	                    var favorito = "";
-	                    if(datos[i][5] == true)
-	                    	favorito = "<span class='glyphicon glyphicon-star'></span>";
-
-	                    html += "<div id='documento_vista_cuadricula' class='col-xs-4 col-md-3 col-lg-2'>" +
-	                        "<div id='" + datos[i][0] + "' class='task' title='" + datos[i][1] + "'>" +
-	                            "<img id='" + datos[i][0] + "' src='" + tipo_archivo + "'>" +
-	                            "<h5 id='" + datos[i][0] + "'>" + datos[i][1] + "" + favorito + "</h5>" +
-	                        "</div>" +
-	                    "</div>";
-	                }
-	                html += "</div>" +
-	            "</div> <!--> <!-- container -->";
-
-	        document.getElementById('vista_documentos').innerHTML = html;
-
-	        //Acción al pulsar sobre un documento
-	        $("#documento_vista_cuadricula div").click(function( event ) {
-	            var id = this.id;
-	        	if(id != 0){
-	        		window.location=document.getElementById(id).href = "{% url 'verArchivo' %}?id_archivo=" + datos[id][0];
-	        	}
-	        });
-	    }
-
-	    function vistaLista(datos){
-	        var html = "" +
-	            "<div class='table-responsive'>" +
-	                "<table id='tabla' class='table'>" +
-	                    "<thead>" +
-	                        "<tr>" +
-	                            "<th>Nombre archivo</th>" +
-	                            "<th>Tamaño</th>" +
-	                            "<th>Última modificación</th>" +
-	                            "<th class='hidden-xs'>Opciones</th>" +
-	                        "</tr>" +
-	                    "</thead>" +
-	                    "<tbody>";
-	                    for(var i in datos){
-	                    	var tipo_archivo = comprobarExtension(datos[i][2], "lista");
-	                    	var favorito = "";
-	                    	if(datos[i][5] == true)
-	                    		favorito = "<span class='glyphicon glyphicon-star'></span>";
-
-	                        html += "<tr id='" + datos[i][0] + "' class='task' >" +
-	                            "<td id='" + datos[i][0] + "'><img src='" + tipo_archivo + "' class='img-rounded img_lista'>" + datos[i][1] + "" + favorito + "</td>" +
-	                            "<td id='" + datos[i][0] + "' class='center'>" + mostrarTam(datos[i][4]) + "</td>" +
-	                            "<td id='" + datos[i][0] + "' class='center'>" + datos[i][3] + "</td>" +
-	                            "<td class='hidden-xs'>" +
-	                                "<div class='btn-group'>" +
-	                                    "<button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>" +
-	                                    "Más <span class='caret'></span>" +
-	                                    "</button>" +
-	                                    "<ul class='dropdown-menu' role='menu'>" +
-	                                        "<li><a href='{% url 'descargarArchivo' %}?id_archivo=" + datos[i][0] + "'>Descargar</a></li>" +
-	                                        "<li><a href='#abrirPopUpCambiarNombre' onclick='abrirCambiarNombre(" + datos[i][0] + "); return false;'>Cambiar nombre</a></li>" +
-	                                        "<li><a href='#abrirPopUpEliminar' onClick='comprobarEliminarArchivo(" + datos[i][0] + "); return false;'>Eliminar</a></li>" +
-	                                    "</ul>" +
-	                                "</div>" +
-	                            "</td>" +
-	                        "</tr>";
-	                    }
-	                    html += "</tbody>" +
-	                "</table>" +
-	            "</div> <!-- table-responsive -->";
-
-	        document.getElementById('vista_documentos').innerHTML = html;
-
-	        //Al pulsar sobre una fila llamamos a la función para ver/descargar el archivo
-	        $("#tabla td").click(function( event ) {
-	        	var id = this.id;
-	        	if(id != 0){
-	        		window.location=document.getElementById(id).href = "{% url 'verArchivo' %}?id_archivo=" + datos[id][0];
-	        	}
-	        });
-	    }
-	    //localStorage.clear();
-
-	    //Dar formato al tamaño del archivo
-	    function mostrarTam(tam){
-	    	n = parseInt(tam);
-	    	if(n > (1204 * 1024 * 1024)){
-	    		n = n / (1204 * 1024 * 1024)
-	    		res = n.toString();
-	    		return res.substring(0, 5) + " GB";
-	    	}
-	    	else if(n > (1204 * 1024)){
-	    		n = n / (1204 * 1024)
-	    		res = n.toString();
-	    		return res.substring(0, 5) + " MB";
-	    	}
-	    	else if(n > 1204){
-	    		n = n / 1204
-	    		res = n.toString();
-	    		return res.substring(0, 5) + " KB";
-	    	}
-	    	else{
-	    		res = n.toString();
-	    		return res.substring(0, 5) + " B";
-	    	}
-	    }
-
-	    //Función para obtener la imagen según el tipo de documento
-	    function comprobarExtension(extension, vista){
-	    	resultado = "";
-	    	if(vista == "lista"){
-	    		if((extension == "txt") || (extension == "odt") || (extension == "doc"))
-	    			resultado = "/static/images/files_icons/icon_file_txt_lista.png";
-	    		else if((extension == "mp3") || (extension == "wma"))
-	    			resultado = "/static/images/files_icons/icon_file_music_lista.png";
-	    		else if((extension == "png") || (extension == "jpg") || (extension == "jpeg"))
-	    			resultado = "/static/images/files_icons/icon_file_img_lista.png";
-	    		else if((extension == "mp3") || (extension == "wma"))
-	    			resultado = "/static/images/files_icons/icon_file_music_lista.png";
-	    		else if((extension == "mp4") || (extension == "avi") || (extension == "mkv"))
-	    			resultado = "/static/images/files_icons/icon_file_video_lista.png";
-	    		else if((extension == "pptx") || (extension == "odp"))
-	    			resultado = "/static/images/files_icons/icon_file_presentation_lista.png";
-	    		else if(extension == "pdf")
-	    			resultado = "/static/images/files_icons/icon_file_pdf_lista.png";
-	    		else
-	    			resultado = "/static/images/files_icons/icon_file_base_lista.png";
-	    	}
-	    	else{
-	    		if((extension == "txt") || (extension == "odt") || (extension == "doc"))
-	    			resultado = "/static/images/files_icons/icon_file_txt.png";
-	    		else if((extension == "mp3") || (extension == "wma"))
-	    			resultado = "/static/images/files_icons/icon_file_music.png";
-	    		else if((extension == "png") || (extension == "jpg") || (extension == "jpeg"))
-	    			resultado = "/static/images/files_icons/icon_file_img.png";
-	    		else if((extension == "mp3") || (extension == "wma"))
-	    			resultado = "/static/images/files_icons/icon_file_music.png";
-	    		else if((extension == "mp4") || (extension == "avi") || (extension == "mkv"))
-	    			resultado = "/static/images/files_icons/icon_file_video.png";
-	    		else if((extension == "pptx") || (extension == "odp"))
-	    			resultado = "/static/images/files_icons/icon_file_presentation.png";
-	    		else if(extension == "pdf")
-	    			resultado = "/static/images/files_icons/icon_file_pdf.png";
-	    		else
-	    			resultado = "/static/images/files_icons/icon_file_base.png";
-	    	}
-
-	    	return resultado;
-	   	}
-
-	   	function subirArchivoAddIDGrupo(){
-	   		document.getElementById("id_grupo_upload").value = id_grupo_actual;
-	   		window.location = document.getElementById('abrirPopUp').href = "#abrirPopUp";
-	   	}
-
-	   	function crearGrupoTrabajo(){
+	    //Función para crear un grupo de trabajo
+	    function crearGrupoTrabajo(){
 	   		var nombre_grupo = document.getElementById('nombre_grupo').value;
 	   		mostrarSnackbar("Grupo " + nombre_grupo + " creado");
 	   		setTimeout(function() {
-			    window.location.href = "{% url 'crearGrupoTrabajo' %}?nombre_grupo=" + nombre_grupo;
+			    window.location.href = "{% url 'crearGrupoTrabajo' %}?nombre_grupo=" + nombre_grupo + "&directorio_actual=0";
 			}, 1800);
 	   	}
-
-	   	function comprobarParticipante(){
-	    	var participante = document.getElementById('participante').value;
-	    	var id_grupo = document.getElementById("id_grupo").value;
-	    	var nombre_grupo_actual = document.getElementById("nombre_grupo_actual").value;
-
-	    	$.ajax({
-	            url : "{% url 'comprobarParticipante' %}",
-	            data : {
-	            	id_grupo : id_grupo,
-	                participante: participante
-	            },
-	            type : 'GET',
-	            dataType: 'json',
-	            success : function(datos){
-					if(datos == 1){
-						mostrarSnackbar(participante + " ahora forma parte del grupo " + nombre_grupo_actual);
-						setTimeout(function() {
-						    window.location.href = "{% url 'addParticipante' %}?id_grupo=" + id_grupo + "&participante=" + participante;
-						}, 1800);
-					}
-					else if(datos == 0){ 
-						mostrarSnackbar("El usuario introducido no existe");
-					}
-					else if(datos == -1){ 
-						mostrarSnackbar("El usuario introducido ya forma parte del grupo");
-					}
-	            },
-	            failure : function(datos){
-	                alert("Error: no se pudo realizar la consulta");
-	            },
-	            complete : function(datos) {
-	                console.log('Petición realizada');
-	            }
-	     	});
-	    }
-
-	    //Llamar al popUp para compartir archivo incluyendo el ID de éste
-	    function comprobarEliminarArchivo(id_archivo) {
-	    	document.getElementById('id_archivo_eliminar').value = id_archivo;
-	    	window.location=document.getElementById('abrirPopUpEliminar').href = "#abrirPopUpEliminar";
-	    }
-
-	    //Preguntar al usuario si realmente quiere eliminar el archivo
-	   	function eliminarArchivo(){
-	   		var id_archivo_eliminar = document.getElementById('id_archivo_eliminar').value;
-	   		mostrarSnackbar("Archivo eliminado");
-	   		setTimeout(function() {
-			    window.location.href = "{% url 'borrarArchivo' %}?id_archivo=" + id_archivo_eliminar + "&pag_actual=grupoTrabajo.html" + 
-			    "&id_grupo=" + id_grupo_actual;
-			}, 1800);
-	   		
-	   	}
-
-	   	function getParticipantes(){
-	   		$.ajax({
-	            url : "{% url 'getParticipantes' %}",
-	            data : {
-	            	id_grupo : id_grupo_actual
-	            },
-	            type : 'GET',
-	            dataType: 'json',
-	            success : function(datos){
-	            	document.getElementById('participantes').innerHTML = "";
-	            	var participantes = 0;
- 					for(var i in datos){
-						document.getElementById('participantes').innerHTML += "<li><img class='img_perfil' src='" + datos[i][1] + "'>" + datos[i][0] + "</li>";
-						participantes++;
- 					}
- 					document.getElementById('num_participantes').innerHTML = "Participantes: " + participantes;
-	            },
-	            failure : function(datos){
-	                alert("Error: no se pudo realizar la consulta");
-	            },
-	            complete : function(datos) {
-	                console.log('Petición realizada');
-	            }
-	     	});
-	   	}
-
-	   	function salirGrupo(){
-	   		mostrarSnackbar("Abandonando el grupo...");
-	   		setTimeout(function() {
-			    window.location.href = "{% url 'salirGrupo' %}?id_grupo=" + id_grupo_actual;
-			}, 1800);
-	   	}
-
-	   	//Llamar al popUp para compartir archivo incluyendo el ID de éste
-        function abrirCambiarNombre(id_contenido_cambiar_nombre){
-            document.getElementById('id_contenido_cambiar_nombre').value = id_contenido_cambiar_nombre;
-            window.location = document.getElementById('abrirPopUpCambiarNombre').href = "#abrirPopUpCambiarNombre";
-        }
-
-        //Función para cambiar el nombre a un directorio/archivo
-        function cambiarNombre(id_contenido_cambiar_nombre){
-            var nuevo_nombre = document.getElementById("nuevo_nombre").value;
-            var id_contenido_cambiar_nombre = document.getElementById('id_contenido_cambiar_nombre').value;
-
-            $.ajax({
-                url : "{% url 'cambiarNombre' %}",
-                data : {
-                    nuevo_nombre: nuevo_nombre,
-                    id_contenido_cambiar_nombre: id_contenido_cambiar_nombre,
-                    directorio_actual: -1,
-                    tipo_contenido: ""
-                },
-                type : 'GET',
-                dataType: 'json',
-                success : function(datos){
-                    mostrarSnackbar("Nombre cambiado a \"" + nuevo_nombre + "\"");
-                    setTimeout(function() {
-                        window.location.href = "{% url 'grupoTrabajo' %}";
-                    }, 1800);
-                },
-                failure : function(datos){
-                    alert("Error: no se pudo realizar la consulta");
-                },
-                complete : function(datos) {
-                    console.log('Petición realizada');
-                }
-            });
-        }
-
-	   	/******************* PROGRESS BAR *******************/
-	   	$('#upload_form').on( "submit", function(event) { 
-			event.preventDefault();
-			var proceed = true; //set proceed flag
-			var error = [];	//errors
-			var total_files_size = 0;
-			var progress_bar_id = '#progress-wrp';
-			//reset progressbar
-			$(progress_bar_id +" .progress-bar").css("width", "0%");
-			$(progress_bar_id + " .status").text("0%");
-									
-			var form_data = new FormData(this); //Creates new FormData object
-			var post_url = $(this).attr("action"); //get action URL of form
-
-			document.getElementById("barra_progreso").innerHTML = "<div id='progress-wrp'><div class='progress-bar'></div><div class='status'>0%</div></div>";
-			$('#bt_close_popup').hide();
-
-			//jQuery Ajax to Post form data
-			$.ajax({
-				url : post_url,
-				type: "POST",
-				data : form_data,
-				contentType: false,
-				cache: false,
-				processData:false,
-				xhr: function(){
-					//upload Progress
-					var xhr = $.ajaxSettings.xhr();
-					if (xhr.upload) {
-						xhr.upload.addEventListener('progress', function(event) {
-							var percent = 0;
-							var position = event.loaded || event.position;
-							var total = event.total;
-							if (event.lengthComputable) {
-								percent = Math.ceil(position / total * 100);
-							}
-							//update progressbar
-							$(progress_bar_id +" .progress-bar").css("width", + percent +"%");
-							$(progress_bar_id + " .status").text(percent +"%");
-						}, true);
-					}
-					return xhr;
-				},
-				mimeType:"multipart/form-data",
-				complete: function (data) {
-			    	document.getElementById("fin_upload").innerHTML = "<a id='bt_fin_upload' class='btn btn-default' href='{% url 'grupoTrabajo' %}'>Continuar</a>";
-			    	document.getElementById("barra_progreso").innerHTML = "<div class='alert alert-success'>Archivo subido con éxito</div>";
-			    	$('#bt_close_popup').show();
-			    }
-			});
-		});
-
-
-	   	/******************* OPCIONES DE BOTÓN DERECHO *******************/
-		(function() {
-
-			"use strict";
-
-			function clickInsideElement( e, className ) {
-				var el = e.srcElement || e.target;
-
-				if(el.classList.contains(className))
-					return el;
-				else{
-					while(el = el.parentNode){
-						if(el.classList && el.classList.contains(className))
-							return el;
-					}
-				}
-
-				return false;
-			}
-
-			//Variables
-			var contextMenuClassName = "context-menu";
-			var contextMenuItemClassName = "context-menu__item";
-			var contextMenuLinkClassName = "context-menu__link";
-			var contextMenuActive = "context-menu--active";
-
-			var taskItemClassName = "task";
-			var taskItemInContext;
-
-			var clickCoords;
-			var clickCoordsX;
-			var clickCoordsY;
-
-			var menu = document.querySelector("#context-menu");
-			var menuItems = menu.querySelectorAll(".context-menu__item");
-			var menuState = 0;
-			var menuWidth;
-			var menuHeight;
-			var menuPosition;
-			var menuPositionX;
-			var menuPositionY;
-
-			var windowWidth;
-			var windowHeight;
-
-			var id_item_clicked;
-
-			function init(){
-				contextListener();
-				clickListener();
-				keyupListener();
-			}
-
-			//Identificar donde se produce el click
-			function contextListener(){
-				document.addEventListener("contextmenu", function(e){
-					taskItemInContext = clickInsideElement(e, taskItemClassName);
-
-					id_item_clicked = e.target.id; //Donde se ha hecho click derecho
-					
-					if(taskItemInContext){
-						e.preventDefault();
-						toggleMenuOn();
-						positionMenu(e);
-					}else{
-						taskItemInContext = null;
-						toggleMenuOff();
-					}
-				});
-			}
-
-			function clickListener(){
-				document.addEventListener("click", function(e){
-					var clickeElIsLink = clickInsideElement(e, contextMenuLinkClassName);
-
-					if(clickeElIsLink){
-						e.preventDefault();
-						menuItemListener(clickeElIsLink);
-					}
-					else{
-						var button = e.which || e.button;
-						if(button == 1)
-							toggleMenuOff();
-					}
-				});
-			}
-
-			//Cerrar menú al pulsar esc
-			function keyupListener(){
-				window.onkeyup = function(e) {
-					if(e.keyCode == 27)
-						toggleMenuOff();
-				}
-			}
-
-			//Abrir menú
-			function toggleMenuOn(){
-				if(menuState !== 1){
-					menuState = 1;
-					menu.classList.add(contextMenuActive);
-				}
-			}
-
-			//Cerrar menú
-			function toggleMenuOff(){
-				if(menuState !== 0){
-					menuState = 0;
-					menu.classList.remove(contextMenuActive);
-				}
-			}
-
-			//Obtener la posición del menú
-			function getPosition(e) {
-				var posx = 0;
-				var posy = 0;
-
-				if(!e)
-					var e = window.event;
-
-				if(e.pageX || e.pageY){
-					posx = e.pageX;
-					posy = e.pageY;
-				}
-				else if(e.clientX || e.clientY){
-					posx = e.clientX + document.body.scrollLeft + 
-					document.documentElement.scrollLeft;
-					posy = e.clientY + document.body.scrollTop + 
-					document.documentElement.scrollTop;
-				}
-
-				return {x: posx, y: posy}
-			}
-
-			function positionMenu(e){
-				clickCoords = getPosition(e);
-				clickCoordsX = clickCoords.x;
-				clickCoordsY = clickCoords.y;
-
-				menuWidth = menu.offsetWidth + 4;
-				menuHeight = menu.offsetHeight + 4;
-
-				windowWidth = window.innerWidth;
-				windowHeight = window.innerHeight;
-
-				if((windowWidth - clickCoordsX) < menuWidth)
-					menu.style.left = windowWidth - menuWidth + "px";
-				else
-					menu.style.left = clickCoordsX + "px";
-
-				if((windowHeight - clickCoordsY) < menuHeight)
-					menu.style.top = windowHeight - menuHeight + "px";
-				else
-					menu.style.top = clickCoordsY + "px";
-			}
-
-			function resizeListener(){
-				window.onresize = function(e){
-					toggleMenuOff();
-				};
-			}
-
-			//Acciones al pulsar sobre un elemento del menú
-			function menuItemListener(link){
-				//id_item_clicked contiene el id del archivo clickado
-
-				var accion = link.getAttribute("data-action"); //Contiene la acción seleccionada en el menú
-
-				if(accion == "descargar")
-					window.location=document.getElementById(id_item_clicked).href = "{% url 'descargarArchivo' %}?id_archivo=" + id_item_clicked;
-				else if(accion == "cambiar_nombre")
-                    abrirCambiarNombre(id_item_clicked);
-				else if(accion == "eliminar")
-					comprobarEliminarArchivo(id_item_clicked);
-				
-				toggleMenuOff();
-			}
-
-			//Iniciar el menú
-			init();
-
-		})();
 
 	</script>
 

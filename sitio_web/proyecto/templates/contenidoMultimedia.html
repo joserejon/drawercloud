@@ -401,9 +401,9 @@
 	                                        "<li><a href='#abrirPopUpCopiarEn' onclick='getDirectoriosCopiar(" + datos[1][i][0] + ", 1);'>Copiar en</a></li>" +
 	                                        "<li><a href='#abrirPopUpMoverA' onclick='getDirectoriosMoverArchivo(" + datos[1][i][0] + ");'>Mover a</a></li>";
 	                                        if(favorito == "")
-	                                        	html += "<li><a href='{% url 'addFavoritos' %}?id_archivo=" + datos[1][i][0] + "&pag_actual=index.html&directorio_actual={{directorio_actual}}'>Añadir a favoritos</a></li>";
+	                                        	html += "<li><a href='{% url 'addFavoritos' %}?id_archivo=" + datos[1][i][0] + "&pag_actual=contenidoMultimedia.html&tipo_contenido={{ tipo_contenido }}&directorio_actual={{ directorio_actual }}'>Añadir a favoritos</a></li>";
 	                                        else
-	                                        	html += "<li><a href='{% url 'delFavoritos' %}?id_archivo=" + datos[1][i][0] + "&pag_actual=index.html&directorio_actual={{directorio_actual}}'>Eliminar de favoritos</a></li>";
+	                                        	html += "<li><a href='{% url 'delFavoritos' %}?id_archivo=" + datos[1][i][0] + "&pag_actual=contenidoMultimedia.html&tipo_contenido={{ tipo_contenido }}&directorio_actual={{ directorio_actual }}'>Eliminar de favoritos</a></li>";
 	                                        html += "<li><a href='#abrirPopUpEliminar' onclick='comprobarEliminarArchivo(" + datos[1][i][0] + "); return false;'>Eliminar</a></li>" +
 	                                    "</ul>" +
 	                                "</div>" +
@@ -881,15 +881,15 @@
 					id_item_clicked = e.target.id; //Donde se ha hecho click derecho
 
 					if(id_item_clicked[0] == 'a'){
+						document.getElementById("descargar").innerText = "Descargar";
+						document.getElementById("compartir").innerText = "Compartir";
+						document.getElementById("favorito").innerText = "Añadir a favoritos";
+
 						//Si el documento está marcado como favorito
 						if(mis_archivos[1][Number(id_item_clicked.replace('a',''))][5])
 							document.getElementById("favorito").innerText = "Eliminar de favoritos";
 						else
 							document.getElementById("favorito").innerText = "Añadir a favoritos";
-
-						document.getElementById("descargar").innerText = "Descargar";
-						document.getElementById("compartir").innerText = "Compartir";
-						document.getElementById("favorito").innerText = "Añadir a favoritos";
 					}
 					else{
 						document.getElementById("descargar").innerText = "";
@@ -1026,9 +1026,9 @@
 				}
 				else if(accion == "favorito"){
 					if(document.getElementById("favorito").innerText == "Añadir a favoritos")
-						window.location = document.getElementById(id_item_clicked).href = "{% url 'addFavoritos' %}?id_archivo=" + Number(id_item_clicked.replace('a','')) + "&pag_actual=index.html&directorio_actual={{directorio_actual}}";
+						window.location = document.getElementById(id_item_clicked).href = "{% url 'addFavoritos' %}?id_archivo=" + Number(id_item_clicked.replace('a','')) + "&pag_actual=contenidoMultimedia.html&tipo_contenido={{ tipo_contenido }}&directorio_actual={{ directorio_actual }}";
 					else
-						window.location = document.getElementById(id_item_clicked).href = "{% url 'delFavoritos' %}?id_archivo=" + Number(id_item_clicked.replace('a','')) + "&pag_actual=index.html&directorio_actual={{directorio_actual}}";
+						window.location = document.getElementById(id_item_clicked).href = "{% url 'delFavoritos' %}?id_archivo=" + Number(id_item_clicked.replace('a','')) + "&pag_actual=contenidoMultimedia.html&tipo_contenido={{ tipo_contenido }}&directorio_actual={{ directorio_actual }}";
 				}
 				else if(accion == "eliminar")
 					if(id_item_clicked[0] == 'a')
