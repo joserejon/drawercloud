@@ -93,7 +93,7 @@ body {
 
 .context-menu{
     background-color: #FFFFFF;
-    border:1px solid black;
+    border:1px solid #EEEEEE;
     -moz-box-shadow: 0 0 5px #888;
     -webkit-box-shadow: 0 0 5px#888;
     box-shadow: 0 0 5px #888;
@@ -109,7 +109,7 @@ body {
 }
 
 .context-menu li{
-    margin-top: 10px;
+    margin-top: 5px;
     margin-left: -22px;
     padding-right: 13px;
     font-size: 16px;
@@ -248,9 +248,23 @@ body {
     background-color: #72A7FF;
 }
 
-.glyphicon-star{
+#fav{
     margin-left: 10px;
     color: #72A7CF;
+}
+
+.dropdown-menu .glyphicon{
+    color: #72A7CF;
+}
+
+.dropdown-menu > li > a{
+    color: #72A7CF;
+    font-weight: bold;
+}
+
+.dropdown-menu > li > a:hover{
+    color: #72A7CF;
+    font-weight: bold;
 }
 
 /* POP - UP */
@@ -569,4 +583,12 @@ body {
     background-color: #222222;
     border-radius: 30px;
     color: white;
+}
+
+.fa-rotate-180{
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    transform: rotate(180deg);
 }

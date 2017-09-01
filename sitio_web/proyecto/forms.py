@@ -72,17 +72,31 @@ class UsuarioForm():
 	def getEspacioOcupado(self, username):
 		mis_archivos = Archivo.objects(propietario=username)
 
+		#Cuento el espacio ocupado por los archivos de mi espacio personal
 		espacio_ocupado = 0
 		for archivo in mis_archivos:
 			espacio_ocupado += archivo.tam_archivo
 
+		#Cuento el espacio ocupado por los archivos de mis grupos de trabajo
+		#Obtengo todos los grupos a los que pertenezco
 		mis_grupos = GrupoTrabajo.objects(usuarios__contains=username)
 		for grupo in mis_grupos:
-			for id_archivo in grupo.archivos:
-				archivo = Archivo.objects(id_archivo=id_archivo)[0]
-				espacio_ocupado += archivo.tam_archivo
+			espacio_ocupado = self.obtenerEspacioOcupadoDir(grupo.id_grupo, 0, espacio_ocupado)
 
 		return float(espacio_ocupado)
+
+	def obtenerEspacioOcupadoDir(self, id_grupo, id_directorio, espacio_ocupado):
+		#Obtengo los directorios de un grupo
+		directorios = DirectorioGrupoTrabajo.objects(id_grupo=id_grupo, id_directorio=id_directorio)[0]
+		for contenido in directorios.contenido:
+			if contenido[1] == "archivo":
+				archivo = Archivo.objects(id_archivo=contenido[0])[0]
+				espacio_ocupado += archivo.tam_archivo
+			else:
+				self.obtenerEspacioOcupadoDir(id_grupo, contenido[0], espacio_ocupado)
+
+		return espacio_ocupado
+
 
 	#Eliminar la cuenta de usuario
 	def eliminarCuenta(self, username):
@@ -100,7 +114,7 @@ class UsuarioForm():
 		gt = GrupoTrabajoForm()
 		mis_grupos = GrupoTrabajo.objects(usuarios__contains=username)
 		for grupo in mis_grupos:
-			gt.salirGrupo(username, grupo.id_grupo)
+			gt.salirGrupo(username, grupo.id_grupo, grupo.nombre)
 
 		#Eliminar el usuario
 		Usuario.objects(username=username).delete()
@@ -270,8 +284,7 @@ class DirectorioForm():
 
 	#Copiar un archivo
 	def copiarArchivo(self, id_archivo_copiar, directorio_actual, id_directorio_dest, propietario):
-		archivo_original = Archivo.objects(id_archivo=id_archivo_copiar)
-		archivo_original = archivo_original[0]
+		archivo_original = Archivo.objects(id_archivo=id_archivo_copiar)[0]
 		a = ArchivoForm()
 
 		#Añadir "copia" al nombre si se copia en el mismo directorios
@@ -289,7 +302,7 @@ class DirectorioForm():
 		file = open('upload/' + propietario + '/' + str(int(archivo_original.id_archivo)) + archivo_original.nombre, 'rb+')
 		with open(path, 'wb+') as destination:
 			while True:
-			    piece = file.read(1024)  
+			    piece = file.read(1024)
 			    if not piece:
 			        break
 			    destination.write(piece)
@@ -301,7 +314,7 @@ class DirectorioForm():
 	#Copiar un directorio
 	def copiarDirectorio(self, id_directorio_copiar, id_directorio_destino, propietario, directorio_actual):
 		directorios = Directorio.objects(propietario=propietario).order_by('id_directorio')
-		directorio_original = Directorio.objects(id_directorio=id_directorio_copiar, propietario=propietario)
+		directorio_original = Directorio.objects(id_directorio=id_directorio_copiar, propietario=propietario)[0]
 		directorio_nuevo = Directorio()
 
 		directorio_nuevo.id_directorio = directorios[len(directorios) - 1].id_directorio + 1
@@ -309,19 +322,21 @@ class DirectorioForm():
 		directorio_nuevo.id_padre = id_directorio_destino
 		directorio_nuevo.propietario = propietario
 		if int(directorio_actual) == int(id_directorio_destino):
-			directorio_nuevo.nombre = "copia " + directorio_original[0].nombre
+			directorio_nuevo.nombre = "copia " + directorio_original.nombre
 		else:
-			directorio_nuevo.nombre = directorio_original[0].nombre
+			directorio_nuevo.nombre = directorio_original.nombre
 
-		directorio_nuevo.contenido = directorio_original[0].contenido
+		directorio_nuevo.save()
 
-		for contenido in directorio_original[0].contenido:
+		for contenido in directorio_original.contenido:
 			if contenido[1] == "archivo":
 				self.copiarArchivo(int(contenido[0]), directorio_actual, directorio_nuevo.id_directorio, propietario)
+			else:
+				self.copiarDirectorio(contenido[0], directorio_nuevo.id_directorio, propietario, directorio_actual)
+				
 
 		contenido = (int(directorio_nuevo.id_directorio), 'directorio')
-		self.actualizarContenidoDirectorio(id_directorio_destino, contenido, propietario)
-		directorio_nuevo.save()
+		self.actualizarContenidoDirectorio(id_directorio_destino, contenido, propietario)		
 
 	#Borrar un directorio
 	def borrarDirectorio(self, id_directorio_eliminar, propietario):
@@ -594,8 +609,7 @@ class DirectorioContenidoMultimediaForm():
 
 	#Copiar un archivo
 	def copiarArchivo(self, id_archivo_copiar, directorio_actual, id_directorio_dest, propietario):
-		archivo_original = Archivo.objects(id_archivo=id_archivo_copiar)
-		archivo_original = archivo_original[0]
+		archivo_original = Archivo.objects(id_archivo=id_archivo_copiar)[0]
 		a = ArchivoForm()
 
 		#Añadir "copia" al nombre si se copia en el mismo directorios
@@ -625,7 +639,7 @@ class DirectorioContenidoMultimediaForm():
 	#Copiar un directorio
 	def copiarDirectorio(self, id_directorio_copiar, id_directorio_destino, propietario, directorio_actual):
 		directorios = DirectorioContenidoMultimedia.objects(propietario=propietario).order_by('id_directorio')
-		directorio_original = DirectorioContenidoMultimedia.objects(id_directorio=id_directorio_copiar, propietario=propietario)
+		directorio_original = DirectorioContenidoMultimedia.objects(id_directorio=id_directorio_copiar, propietario=propietario)[0]
 		directorio_nuevo = DirectorioContenidoMultimedia()
 
 		directorio_nuevo.id_directorio = directorios[len(directorios) - 1].id_directorio + 1
@@ -633,19 +647,21 @@ class DirectorioContenidoMultimediaForm():
 		directorio_nuevo.id_padre = id_directorio_destino
 		directorio_nuevo.propietario = propietario
 		if int(directorio_actual) == int(id_directorio_destino):
-			directorio_nuevo.nombre = "copia " + directorio_original[0].nombre
+			directorio_nuevo.nombre = "copia " + directorio_original.nombre
 		else:
-			directorio_nuevo.nombre = directorio_original[0].nombre
+			directorio_nuevo.nombre = directorio_original.nombre
 
-		directorio_nuevo.contenido = directorio_original[0].contenido
+		directorio_nuevo.save()
 
-		for contenido in directorio_original[0].contenido:
+		for contenido in directorio_original.contenido:
 			if contenido[1] == "archivo":
 				self.copiarArchivo(int(contenido[0]), directorio_actual, directorio_nuevo.id_directorio, propietario)
+			else:
+				self.copiarDirectorio(contenido[0], directorio_nuevo.id_directorio, propietario, directorio_actual)
+				
 
 		contenido = (int(directorio_nuevo.id_directorio), 'directorio')
 		self.actualizarContenidoDirectorio(id_directorio_destino, contenido, propietario)
-		directorio_nuevo.save()
 
 	#Borrar un directorio
 	def borrarDirectorio(self, id_directorio_eliminar, propietario):
@@ -1055,7 +1071,7 @@ class GrupoTrabajoForm():
 	#Borrar un archivo
 	def borrarArchivo(self, id_archivo, id_grupo, nombre_grupo, id_directorio):
 		archivos = list(Archivo.objects.filter(id_archivo=id_archivo))
-		os.remove('upload/' + str(id_grupo) + nombre_grupo + '/' + str(int(id_archivo)) + archivos[0].nombre)
+		os.remove('upload/' + str(int(id_grupo)) + nombre_grupo + '/' + str(int(id_archivo)) + archivos[0].nombre)
 		archivos[0].archivo.delete()
 		Archivo.objects.filter(id_archivo=id_archivo).delete()
 
@@ -1294,7 +1310,7 @@ class DirectorioGrupoTrabajoForm():
 	#Copiar un directorio
 	def copiarDirectorio(self, id_directorio_copiar, id_directorio_destino, id_grupo, directorio_actual, nombre_grupo):
 		directorios = DirectorioGrupoTrabajo.objects(id_grupo=id_grupo).order_by('id_directorio')
-		directorio_original = DirectorioGrupoTrabajo.objects(id_directorio=id_directorio_copiar, id_grupo=id_grupo)
+		directorio_original = DirectorioGrupoTrabajo.objects(id_directorio=id_directorio_copiar, id_grupo=id_grupo)[0]
 		directorio_nuevo = DirectorioGrupoTrabajo()
 
 		directorio_nuevo.id_directorio = directorios[len(directorios) - 1].id_directorio + 1
@@ -1302,19 +1318,21 @@ class DirectorioGrupoTrabajoForm():
 		directorio_nuevo.id_padre = id_directorio_destino
 		directorio_nuevo.id_grupo = id_grupo
 		if int(directorio_actual) == int(id_directorio_destino):
-			directorio_nuevo.nombre = "copia " + directorio_original[0].nombre
+			directorio_nuevo.nombre = "copia " + directorio_original.nombre
 		else:
-			directorio_nuevo.nombre = directorio_original[0].nombre
+			directorio_nuevo.nombre = directorio_original.nombre
 
-		directorio_nuevo.contenido = directorio_original[0].contenido
+		directorio_nuevo.save()
 
-		for contenido in directorio_original[0].contenido:
+		for contenido in directorio_original.contenido:
 			if contenido[1] == "archivo":
 				self.copiarArchivo(int(contenido[0]), directorio_actual, directorio_nuevo.id_directorio, id_grupo, nombre_grupo)
+			else:
+				self.copiarDirectorio(contenido[0], directorio_nuevo.id_directorio, id_grupo, directorio_actual, nombre_grupo)
+				
 
 		contenido = (int(directorio_nuevo.id_directorio), 'directorio')
 		self.actualizarContenidoDirectorio(id_directorio_destino, contenido, id_grupo)
-		directorio_nuevo.save()
 
 	#Borrar un directorio
 	def borrarDirectorio(self, id_directorio_eliminar, id_grupo, nombre_grupo):

@@ -54,4 +54,3 @@ class GrupoTrabajo(Document):
 	id_grupo = DecimalField(required=True, unique=True)
 	nombre = StringField(required=True)
 	usuarios = ListField()
-	archivos = ListField()

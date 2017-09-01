@@ -12,19 +12,19 @@
     <nav id="context-menu" class="context-menu">
         <ul class="context-menu__items">
             <li class="context-menu__item">
-                <a href="#" class="context-menu__link" id="descargar" data-action="descargar">Descargar</a>
+                <a href="#" class="context-menu__link" id="descargar" data-action="descargar"><span class='glyphicon glyphicon-cloud-download'></span> Descargar</a>
             </li>
             <li class="context-menu__item">
-                <a href="#" class="context-menu__link" id="compartir" data-action="compartir">Dejar de compartir</a>
+                <a href="#" class="context-menu__link" id="compartir" data-action="compartir"><span class='fa-rotate-180 glyphicon glyphicon-share-alt'></span> Dejar de compartir</a>
             </li>
             <li class="context-menu__item">
-                <a href="#" class="context-menu__link" id="cambiar_nombre" data-action="cambiar_nombre">Cambiar nombre</a>
+                <a href="#" class="context-menu__link" id="cambiar_nombre" data-action="cambiar_nombre"><span class='glyphicon glyphicon-edit'></span> Cambiar nombre</a>
             </li>
             <li class="context-menu__item">
                 <a href="#" class="context-menu__link" id="favorito" data-action="favorito">Añadir a favoritos</a>
             </li>
             <li class="context-menu__item">
-                <a href="#" class="context-menu__link" id="add_nube" data-action="add_nube">Añadir a mi nube</a>
+                <a href="#" class="context-menu__link" id="add_nube" data-action="add_nube"><span class='glyphicon glyphicon-cloud-upload'></span> Añadir a mi nube</a>
             </li>
         </ul>
     </nav>
@@ -225,7 +225,7 @@
 	                    	var tipo_archivo = comprobarExtension(datos[i][4], "lista");
 	                    	var favorito = "";
 	                    	if((datos[i][7] == true) && (opcion == "compartido_por_mi"))
-	                    		favorito = "<span class='glyphicon glyphicon-star'></span>";
+	                    		favorito = "<span id='fav' class='glyphicon glyphicon-star'></span>";
 
 	                        html += "<tr id='" + datos[i][0] + "' class='task' >" +
 	                            "<td id='" + datos[i][0] + "'><img src='" + tipo_archivo + "' class='img-rounded img_lista'>" + datos[i][3] + "" + favorito + "</td>" +
@@ -241,17 +241,17 @@
 	                                    "Más <span class='caret'></span>" +
 	                                    "</button>" +
 	                                    "<ul class='dropdown-menu' role='menu'>" +
-	                                        "<li><a href='{% url 'descargarArchivo' %}?id_archivo=" + datos[i][0] + "'>Descargar</a></li>" +
-	                                        "<li><a href='#abrirPopUpDejarCompartir' onClick='comprobarDejarCompartirArchivo(" + datos[i][0] + "); return false;'>Dejar de Compartir</a></li>";
+	                                        "<li><a href='{% url 'descargarArchivo' %}?id_archivo=" + datos[i][0] + "'><span class='glyphicon glyphicon-cloud-download'></span> Descargar</a></li>" +
+	                                        "<li><a href='#abrirPopUpDejarCompartir' onClick='comprobarDejarCompartirArchivo(" + datos[i][0] + "); return false;'><span class='fa-rotate-180 glyphicon glyphicon-share-alt'></span> Dejar de Compartir</a></li>";
 	                                        if(opcion == "compartido_por_mi"){
-				                            	html += "<li><a href='#abrirPopUpCambiarNombre' onclick='abrirCambiarNombre(" + datos[i][0] + "); return false;'>Cambiar nombre</a></li>";
+				                            	html += "<li><a href='#abrirPopUpCambiarNombre' onclick='abrirCambiarNombre(" + datos[i][0] + "); return false;'><span class='glyphicon glyphicon-edit'></span> Cambiar nombre</a></li>";
 				                            	if(favorito == "")
-		                                        	html += "<li><a href='{% url 'addFavoritos' %}?id_archivo=" + datos[i][0] + "&pag_actual=compartido.html'>Añadir a favoritos</a></li>";
+		                                        	html += "<li><a href='{% url 'addFavoritos' %}?id_archivo=" + datos[i][0] + "&pag_actual=compartido.html'><span class='glyphicon glyphicon-star'></span> Añadir a favoritos</a></li>";
 		                                        else
-		                                        	html += "<li><a href='{% url 'delFavoritos' %}?id_archivo=" + datos[i][0] + "&pag_actual=compartido.html'>Eliminar de favoritos</a></li>";
+		                                        	html += "<li><a href='{% url 'delFavoritos' %}?id_archivo=" + datos[i][0] + "&pag_actual=compartido.html'><span class='glyphicon glyphicon-star-empty'></span> Eliminar de favoritos</a></li>";
 	                                        }
 	                                        else{
-	                                        	html += "<li><a href='{% url 'addArchivoMiNube' %}?id_archivo=" + datos[i][0] + "&propietario=" + datos[i][1] + "'>Añadir a mi nube</a></li>";
+	                                        	html += "<li><a href='{% url 'addArchivoMiNube' %}?id_archivo=" + datos[i][0] + "&propietario=" + datos[i][1] + "'><span class='glyphicon glyphicon-cloud-upload'></span> Añadir a mi nube</a></li>";
 	                                        }
 	                                    html += "</ul>" +
 	                                "</div>" +
@@ -465,9 +465,9 @@
 					else{
 						//Si el documento está marcado como favorito
 						if(mis_archivos[id_item_clicked][7])
-							document.getElementById("favorito").innerText = "Eliminar de favoritos";
+							document.getElementById("favorito").innerHTML = "<span class='glyphicon glyphicon-star-empty'></span> Eliminar de favoritos";
 						else
-							document.getElementById("favorito").innerText = "Añadir a favoritos";
+							document.getElementById("favorito").innerHTML = "<span class='glyphicon glyphicon-star'></span> Añadir a favoritos";
 					}
 					
 					if(taskItemInContext){
@@ -587,7 +587,7 @@
 				else if(accion == "cambiar_nombre")
 					abrirCambiarNombre(id_item_clicked);
 				else if(accion == "favorito"){
-					if(document.getElementById("favorito").innerText == "Añadir a favoritos")
+					if(document.getElementById("favorito").innerText == " Añadir a favoritos")
 						window.location=document.getElementById(id_item_clicked).href = "{% url 'addFavoritos' %}?id_archivo=" + id_item_clicked + "&pag_actual=compartido.html";
 					else
 						window.location=document.getElementById(id_item_clicked).href = "{% url 'delFavoritos' %}?id_archivo=" + id_item_clicked + "&pag_actual=compartido.html";

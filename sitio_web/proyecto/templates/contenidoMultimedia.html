@@ -18,19 +18,19 @@
                 <a href="#" class="context-menu__link" id="compartir" data-action="compartir">Compartir</a>
             </li>
             <li class="context-menu__item">
-                <a href="#" class="context-menu__link" id="cambiar_nombre" data-action="cambiar_nombre">Cambiar nombre</a>
+                <a href="#" class="context-menu__link" id="cambiar_nombre" data-action="cambiar_nombre"><span class='glyphicon glyphicon-edit'></span> Cambiar nombre</a>
             </li>
             <li class="context-menu__item">
-                <a href="#" class="context-menu__link" id="copiar" data-action="copiar">Copiar en</a>
+                <a href="#" class="context-menu__link" id="copiar" data-action="copiar"><span class='glyphicon glyphicon-copy'></span> Copiar en</a>
             </li>
             <li class="context-menu__item">
-                <a href="#" class="context-menu__link" id="mover" data-action="mover">Mover a</a>
+                <a href="#" class="context-menu__link" id="mover" data-action="mover"><span class='glyphicon glyphicon-copy'></span> Mover a</a>
             </li>
             <li class="context-menu__item">
                 <a href="#" class="context-menu__link" id="favorito" data-action="favorito">Añadir a favoritos</a>
             </li>
             <li class="context-menu__item">
-                <a href="#" class="context-menu__link" id="eliminar" data-action="eliminar">Eliminar</a>
+            	<a href="#" class="context-menu__link" id="eliminar" data-action="eliminar"><span class='glyphicon glyphicon-remove'></span> Eliminar</a>
             </li>
         </ul>
     </nav>
@@ -383,7 +383,7 @@
 	                    	var tipo_archivo = comprobarExtension(datos[1][i][2], "lista");
 	                    	var favorito = "";
 	                    	if(datos[1][i][5] == true)
-	                    		favorito = "<span class='glyphicon glyphicon-star'></span>";
+	                    		favorito = "<span id='fav' class='glyphicon glyphicon-star'></span>";
 
 	                        html += "<tr id='a" + datos[1][i][0] + "' class='task' >" +
 	                            "<td id='a" + datos[1][i][0] + "'><img src='" + tipo_archivo + "' class='img-rounded img_lista'>" + datos[1][i][1] + "" + favorito + "</td>" +
@@ -395,16 +395,16 @@
 	                                    "Más <span class='caret'></span>" +
 	                                    "</button>" +
 	                                    "<ul class='dropdown-menu' role='menu'>" +
-	                                        "<li><a href='{% url 'descargarArchivo' %}?id_archivo=" + datos[1][i][0] + "'>Descargar</a></li>" +
-	                                        "<li><a href='#abrirPopUpCompartir' onclick='compartirArchivo(" + datos[1][i][0] + "); return false;'>Compartir</a></li>" +
-	                                        "<li><a href='#abrirPopUpCambiarNombre' onclick='abrirCambiarNombre(" + datos[1][i][0] + ", 1); return false;'>Cambiar nombre</a></li>" +
-	                                        "<li><a href='#abrirPopUpCopiarEn' onclick='getDirectoriosCopiar(" + datos[1][i][0] + ", 1);'>Copiar en</a></li>" +
-	                                        "<li><a href='#abrirPopUpMoverA' onclick='getDirectoriosMoverArchivo(" + datos[1][i][0] + ");'>Mover a</a></li>";
+	                                        "<li><a href='{% url 'descargarArchivo' %}?id_archivo=" + datos[1][i][0] + "'><span class='glyphicon glyphicon-cloud-download'></span> Descargar</a></li>" +
+	                                        "<li><a href='#abrirPopUpCompartir' onclick='compartirArchivo(" + datos[1][i][0] + "); return false;'><span class='glyphicon glyphicon-share-alt'></span> Compartir</a></li>" +
+	                                        "<li><a href='#abrirPopUpCambiarNombre' onclick='abrirCambiarNombre(" + datos[1][i][0] + ", 1); return false;'><span class='glyphicon glyphicon-edit'></span> Cambiar nombre</a></li>" +
+	                                        "<li><a href='#abrirPopUpCopiarEn' onclick='getDirectoriosCopiar(" + datos[1][i][0] + ", 1);'><span class='glyphicon glyphicon-copy'></span> Copiar en</a></li>" +
+	                                        "<li><a href='#abrirPopUpMoverA' onclick='getDirectoriosMoverArchivo(" + datos[1][i][0] + ");'><span class='glyphicon glyphicon-copy'></span> Mover a</a></li>";
 	                                        if(favorito == "")
-	                                        	html += "<li><a href='{% url 'addFavoritos' %}?id_archivo=" + datos[1][i][0] + "&pag_actual=contenidoMultimedia.html&tipo_contenido={{ tipo_contenido }}&directorio_actual={{ directorio_actual }}'>Añadir a favoritos</a></li>";
+	                                        	html += "<li><a href='{% url 'addFavoritos' %}?id_archivo=" + datos[1][i][0] + "&pag_actual=contenidoMultimedia.html&tipo_contenido={{ tipo_contenido }}&directorio_actual={{ directorio_actual }}'><span class='glyphicon glyphicon-star'></span> Añadir a favoritos</a></li>";
 	                                        else
-	                                        	html += "<li><a href='{% url 'delFavoritos' %}?id_archivo=" + datos[1][i][0] + "&pag_actual=contenidoMultimedia.html&tipo_contenido={{ tipo_contenido }}&directorio_actual={{ directorio_actual }}'>Eliminar de favoritos</a></li>";
-	                                        html += "<li><a href='#abrirPopUpEliminar' onclick='comprobarEliminarArchivo(" + datos[1][i][0] + "); return false;'>Eliminar</a></li>" +
+	                                        	html += "<li><a href='{% url 'delFavoritos' %}?id_archivo=" + datos[1][i][0] + "&pag_actual=contenidoMultimedia.html&tipo_contenido={{ tipo_contenido }}&directorio_actual={{ directorio_actual }}'><span class='glyphicon glyphicon-star-empty'></span> Eliminar de favoritos</a></li>";
+	                                        html += "<li><a href='#abrirPopUpEliminar' onclick='comprobarEliminarArchivo(" + datos[1][i][0] + "); return false;'><span class='glyphicon glyphicon-remove'></span> Eliminar</a></li>" +
 	                                    "</ul>" +
 	                                "</div>" +
 	                            "</td>" +
@@ -551,7 +551,7 @@
 	            data : {
 	                nombre_directorio: nombre_directorio,
 	                directorio_actual: directorio_actual,
-	                pag_actual: "contenido_multimedia.html"
+	                pag_actual: "contenidoMultimedia.html"
 	            },
 	            type : 'GET',
 	            dataType: 'json',
@@ -560,7 +560,7 @@
 						mostrarSnackbar("Creada la carpeta \"" + nombre_directorio + "\"");
 						setTimeout(function() {
 						    window.location.href = "{% url 'crearDirectorio' %}?nombre_directorio=" + nombre_directorio + 
-							"&directorio_actual=" + directorio_actual + "&pag_actual=contenido_multimedia.html&tipo_contenido={{ tipo_contenido }}";
+							"&directorio_actual=" + directorio_actual + "&pag_actual=contenidoMultimedia.html&tipo_contenido={{ tipo_contenido }}";
 						}, 1800);
 					}
 					else{ 
@@ -598,7 +598,7 @@
 						id_directorio_dest = this.id;
 						mostrarSnackbar("Archivo movido a \"" + datos[id_directorio_dest][1] + "\"");
 						setTimeout(function() {
-					    	window.location.href = "{% url 'moverArchivo' %}?id_archivo=" + id_archivo_mover + "&id_directorio_dest=" + id_directorio_dest + "&pag_actual=contenido_multimedia.html&tipo_contenido={{ tipo_contenido }}&directorio_actual=" + directorio_actual;
+					    	window.location.href = "{% url 'moverArchivo' %}?id_archivo=" + id_archivo_mover + "&id_directorio_dest=" + id_directorio_dest + "&pag_actual=contenidoMultimedia.html&tipo_contenido={{ tipo_contenido }}&directorio_actual=" + directorio_actual;
 						}, 1800);
 					});
 	            },
@@ -881,15 +881,16 @@
 					id_item_clicked = e.target.id; //Donde se ha hecho click derecho
 
 					if(id_item_clicked[0] == 'a'){
-						document.getElementById("descargar").innerText = "Descargar";
-						document.getElementById("compartir").innerText = "Compartir";
-						document.getElementById("favorito").innerText = "Añadir a favoritos";
-
 						//Si el documento está marcado como favorito
+						document.getElementById("descargar").innerHTML = "<span class='glyphicon glyphicon-cloud-download'></span> Descargar";
+						//document.getElementById("descargar").innerText = "Descargar";
+						document.getElementById("compartir").innerHTML = "<span class='glyphicon glyphicon-share-alt'></span> Compartir";
+						document.getElementById("favorito").innerHTML = "<span class='glyphicon glyphicon-star'></span> Añadir a favoritos";
+						
 						if(mis_archivos[1][Number(id_item_clicked.replace('a',''))][5])
-							document.getElementById("favorito").innerText = "Eliminar de favoritos";
+							document.getElementById("favorito").innerHTML = "<span class='glyphicon glyphicon-star-empty'></span> Eliminar de favoritos";
 						else
-							document.getElementById("favorito").innerText = "Añadir a favoritos";
+							document.getElementById("favorito").innerHTML = "<span class='glyphicon glyphicon-star'></span> Añadir a favoritos";
 					}
 					else{
 						document.getElementById("descargar").innerText = "";
@@ -1025,7 +1026,7 @@
 						getDirectoriosMoverDirectorio(Number(id_item_clicked.replace('d','')));
 				}
 				else if(accion == "favorito"){
-					if(document.getElementById("favorito").innerText == "Añadir a favoritos")
+					if(document.getElementById("favorito").innerText == " Añadir a favoritos")
 						window.location = document.getElementById(id_item_clicked).href = "{% url 'addFavoritos' %}?id_archivo=" + Number(id_item_clicked.replace('a','')) + "&pag_actual=contenidoMultimedia.html&tipo_contenido={{ tipo_contenido }}&directorio_actual={{ directorio_actual }}";
 					else
 						window.location = document.getElementById(id_item_clicked).href = "{% url 'delFavoritos' %}?id_archivo=" + Number(id_item_clicked.replace('a','')) + "&pag_actual=contenidoMultimedia.html&tipo_contenido={{ tipo_contenido }}&directorio_actual={{ directorio_actual }}";
