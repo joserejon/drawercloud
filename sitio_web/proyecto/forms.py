@@ -6,6 +6,8 @@ import datetime
 from .models import *
 import os
 
+espacio_ocupado = 0
+
 #Form para la clase Usuario
 class UsuarioForm():
 
@@ -73,6 +75,7 @@ class UsuarioForm():
 		mis_archivos = Archivo.objects(propietario=username)
 
 		#Cuento el espacio ocupado por los archivos de mi espacio personal
+		global espacio_ocupado
 		espacio_ocupado = 0
 		for archivo in mis_archivos:
 			espacio_ocupado += archivo.tam_archivo
@@ -81,22 +84,21 @@ class UsuarioForm():
 		#Obtengo todos los grupos a los que pertenezco
 		mis_grupos = GrupoTrabajo.objects(usuarios__contains=username)
 		for grupo in mis_grupos:
-			espacio_ocupado = self.obtenerEspacioOcupadoDir(grupo.id_grupo, 0, espacio_ocupado)
+			self.obtenerEspacioOcupadoDir(grupo.id_grupo, 0)
 
 		return float(espacio_ocupado)
 
-	def obtenerEspacioOcupadoDir(self, id_grupo, id_directorio, espacio_ocupado):
+
+	def obtenerEspacioOcupadoDir(self, id_grupo, id_directorio):
 		#Obtengo los directorios de un grupo
 		directorios = DirectorioGrupoTrabajo.objects(id_grupo=id_grupo, id_directorio=id_directorio)[0]
+		global espacio_ocupado
 		for contenido in directorios.contenido:
 			if contenido[1] == "archivo":
 				archivo = Archivo.objects(id_archivo=contenido[0])[0]
 				espacio_ocupado += archivo.tam_archivo
 			else:
-				self.obtenerEspacioOcupadoDir(id_grupo, contenido[0], espacio_ocupado)
-
-		return espacio_ocupado
-
+				self.obtenerEspacioOcupadoDir(id_grupo, contenido[0])
 
 	#Eliminar la cuenta de usuario
 	def eliminarCuenta(self, username):
@@ -701,7 +703,12 @@ class DirectorioContenidoMultimediaForm():
 			for contenido in directorio.contenido:
 				if contenido[0] == int(id_contenido_cambiar_nombre) and contenido[1] == tipo_contenido:
 					if tipo_contenido == "archivo":
+						archivo_original = Archivo.objects(id_archivo=id_contenido_cambiar_nombre)[0]
 						Archivo.objects(id_archivo=id_contenido_cambiar_nombre).update_one(set__nombre=nuevo_nombre)
+
+						old_path = 'upload/' + propietario + '/' + str(int(id_contenido_cambiar_nombre)) + archivo_original.nombre
+						new_path = 'upload/' + propietario + '/' + str(int(id_contenido_cambiar_nombre)) + nuevo_nombre
+						os.rename(old_path, new_path)
 					else:
 						DirectorioContenidoMultimedia.objects(id_directorio=id_contenido_cambiar_nombre).update_one(set__nombre=nuevo_nombre)
 					break
