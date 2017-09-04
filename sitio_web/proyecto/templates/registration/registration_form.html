@@ -67,9 +67,6 @@
 		<form method="post" action="." class="uniForm">
 			{% csrf_token %}
 		    {{ form|crispy }}
-		    <div class="alert alert-info">
-		    <p>Tras el registro recibirá un correo electrónico para activar su cuenta. Controle su correo entrante.</p>
-		    </div>
 		    <input type="submit" value="{% trans 'Registrarme' %}" class="btn btn-primary"//>
 			<a href="/accounts/login/" class="btn btn-primary">Atrás</a>
 		</form>

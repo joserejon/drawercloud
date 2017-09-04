@@ -3,9 +3,22 @@
 
 {% block contenido %}
 
+	<div id="snackbar" ></div>
+
 	<script type="text/javascript" >
-		$(document).ready(function(){
-			alert("E-mail de activación enviado. Compruebe su correo entrante.")
-		});
+		
+
+		function mostrarSnackbar(texto) {
+			var x = document.getElementById("snackbar")
+			x.innerHTML = texto;
+			x.className = "show";
+			setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+		}
+
+		mostrarSnackbar("Has sido registrado en DrawerCloud");
+		setTimeout(function() {
+		    window.location.href = "/accounts/login/";
+		}, 2000);
+
 	</script>
 {% endblock %}
