@@ -276,6 +276,140 @@ Los diagramas de casos de uso representan como el usuario se relaciona con el si
 \end{figure}
 
 \subsubsection{Descripción de los casos de uso}
+A continuación se exponen los casos de uso principales del sistema, correspondientes a las acciones básicas del usuario con la plataforma, definiendo el comportamiento normal y alternativo de cada acción.
+
+\begin{itemize}
+	\item \textbf{CU-1: Alta de un usuario.}
+	\begin{itemize}
+		\item \textbf{Descripción:} el usuario se registra con sus datos en el sistema.
+		\item \textbf{Precondición:} el username no se encuentra registrado en el sistema.
+		\item \textbf{Postcondición:} el usuario queda registrado en el sistema con un identificador único.
+	\end{itemize}
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{|p{0.3cm}|p{5cm}|p{0.3cm}|p{5cm}|}
+			\hline
+			\multicolumn{4}{|c|}{Curso normal} \\ \hline
+			\multicolumn{2}{|c|}{Actor} & \multicolumn{2}{|c|}{Sistema} \\ \hline
+			1 & Usuario: inicia la acción de registro en el sistema. &  &  \\ \hline
+			  &  & 2a & Dar de alta al usuario en el sistema. \\ \hline
+			  &  & 3 & El usuario queda dado de alta en el sistema y puede empezar a usar la aplicación. \\ \hline
+		\end{tabular}
+		\caption{Curso normal de CU-1. Alta de usuarios.}
+		\label{tabla:cu1-normal}
+	\end{table}
+	
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{|p{0.3cm}|p{10cm}|}
+			\hline
+			\multicolumn{2}{|c|}{Curso alterno} \\ \hline
+			2b & Si ya existe el usuario o se da algún otro tipo de error, se notifica al usuario y no se produce el registro. \\ \hline
+		\end{tabular}
+		\caption{Curso alterno de CU-1. Alta de usuarios.}
+		\label{tabla:cu1-alterno}
+	\end{table}
+\end{itemize}
+
+\begin{itemize}
+	\item \textbf{CU-2: Identificación de usuarios.}
+	\begin{itemize}
+		\item \textbf{Descripción:} el usuario accede al sistema con su username y contraseña.
+		\item \textbf{Precondición:} el usuario debe estar registrado.
+		\item \textbf{Postcondición:} el usuario inicia sesión en el sistema.
+	\end{itemize}
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{|p{0.3cm}|p{5cm}|p{0.3cm}|p{5cm}|}
+			\hline
+			\multicolumn{4}{|c|}{Curso normal} \\ \hline
+			\multicolumn{2}{|c|}{Actor} & \multicolumn{2}{|c|}{Sistema} \\ \hline
+			1 & Usuario: inicia sesión. &  &  \\ \hline
+			&  & 2a & Comenzar la sesión para el usuario. \\ \hline
+			&  & 3 & El usuario puede empezar a usar la aplicación. \\ \hline
+		\end{tabular}
+		\caption{Curso normal de CU-2. Identificación de usuarios.}
+		\label{tabla:cu2-normal}
+	\end{table}
+	
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{|p{0.3cm}|p{10cm}|}
+			\hline
+			\multicolumn{2}{|c|}{Curso alterno} \\ \hline
+			2b & Si el usuario no coincide o la contraseña es incorrecta, se notifica al usuario y no se inicia sesión. \\ \hline
+		\end{tabular}
+		\caption{Curso alterno de CU-2. Identificación de usuarios.}
+		\label{tabla:cu2-alterno}
+	\end{table}
+\end{itemize}
+
+\begin{itemize}
+	\item \textbf{CU-3: Subir archivo.}
+	\begin{itemize}
+		\item \textbf{Descripción:} el usuario añade un archivo a su espacio.
+		\item \textbf{Precondición:} el usuario ha iniciado sesión en el sistema.
+		\item \textbf{Postcondición:} el archivo se añade a la cuenta del usuario.
+	\end{itemize}
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{|p{0.3cm}|p{5cm}|p{0.3cm}|p{5cm}|}
+			\hline
+			\multicolumn{4}{|c|}{Curso normal} \\ \hline
+			\multicolumn{2}{|c|}{Actor} & \multicolumn{2}{|c|}{Sistema} \\ \hline
+			1 & Usuario: selecciona un archivo para subir. &  &  \\ \hline
+			&  & 2a & El archivo se almacena en la cuenta del usario y en el directorio desde el que el usuario se encuentre. \\ \hline
+			&  & 3a & El archivo queda almacenado y vinculado a la cuenta del usuario. \\ \hline
+		\end{tabular}
+		\caption{Curso normal de CU-3. Subir archivo.}
+		\label{tabla:cu3-normal}
+	\end{table}
+	
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{|p{0.3cm}|p{10cm}|}
+			\hline
+			\multicolumn{2}{|c|}{Curso alterno} \\ \hline
+			2b & Si en la subida del archivo se produce un error, se notifica al usuario y no se continua. \\ \hline
+			3b & Si se trata de un archivo multimedia (música, imagen, vídeo) se añadirá a uno de los apartados disponibles en la sección Multimedia (Música, Imágenes, Vídeo). \\ \hline
+		\end{tabular}
+		\caption{Curso alterno de CU-3. Subir archivo.}
+		\label{tabla:cu3-alterno}
+	\end{table}
+\end{itemize}
+
+\begin{itemize}
+	\item \textbf{CU-4: Visualizar archivo.}
+	\begin{itemize}
+		\item \textbf{Descripción:} el usuario selecciona un archivo para mostrar.
+		\item \textbf{Precondición:} el usuario ha iniciado sesión en el sistema.
+		\item \textbf{Postcondición:} se muestra el archivo según el formato.
+	\end{itemize}
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{|p{0.3cm}|p{5cm}|p{0.3cm}|p{5cm}|}
+			\hline
+			\multicolumn{4}{|c|}{Curso normal} \\ \hline
+			\multicolumn{2}{|c|}{Actor} & \multicolumn{2}{|c|}{Sistema} \\ \hline
+			1 & Usuario: selecciona un archivo para mostrar. &  &  \\ \hline
+			&  & 2a & El archivo seleccionado se muestra según el tipo de contenido del archivo (reproducir si es canción, mostrar si es imagen, ...). \\ \hline
+			&  & 3 & El archivo queda visualizado. \\ \hline
+		\end{tabular}
+		\caption{Curso normal de CU-4. Visualizar archivo.}
+		\label{tabla:cu4-normal}
+	\end{table}
+	
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{|p{0.3cm}|p{10cm}|}
+			\hline
+			\multicolumn{2}{|c|}{Curso alterno} \\ \hline
+			2b & Si el archivo no se puede mostrar o reproducir, automáticamente dará la opción de Descargar. \\ \hline
+		\end{tabular}
+		\caption{Curso alterno de CU-4. Visualizar archivo.}
+		\label{tabla:cu4-alterno}
+	\end{table}
+\end{itemize}
 
 
 \newpage

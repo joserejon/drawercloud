@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.3.20)  5 SEP 2017 13:58
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.3.20)  5 SEP 2017 16:49
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -958,14 +958,14 @@ File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 154.
  [8] [9] [10]
-<imagenes/casouso_usuario.png, id=202, 434.62375pt x 277.035pt>
+<imagenes/casouso_usuario.png, id=218, 434.62375pt x 277.035pt>
 File: imagenes/casouso_usuario.png Graphic file (type png)
 
 <use imagenes/casouso_usuario.png>
 Package pdftex.def Info: imagenes/casouso_usuario.png used on input line 252.
 (pdftex.def)             Requested size: 292.7776pt x 186.63124pt.
 
-<imagenes/casouso_archivo.png, id=203, 546.04pt x 614.295pt>
+<imagenes/casouso_archivo.png, id=219, 546.04pt x 614.295pt>
 File: imagenes/casouso_archivo.png Graphic file (type png)
 
 <use imagenes/casouso_archivo.png>
@@ -978,7 +978,7 @@ Package pdftex.def Info: imagenes/casouso_archivo.png used on input line 259.
                                                   \fi \fi 
 l.263 
        <./imagenes/casouso_usuario.png>]
-<imagenes/casouso_directorio.png, id=209, 491.8375pt x 405.515pt>
+<imagenes/casouso_directorio.png, id=225, 491.8375pt x 405.515pt>
 File: imagenes/casouso_directorio.png Graphic file (type png)
 
 <use imagenes/casouso_directorio.png>
@@ -992,7 +992,7 @@ Package pdftex.def Info: imagenes/casouso_directorio.png used on input line 266
                                                   \fi \fi 
 l.270 
        <./imagenes/casouso_archivo.png>]
-<imagenes/casouso_grupo_trabajo.png, id=215, 599.23875pt x 341.275pt>
+<imagenes/casouso_grupo_trabajo.png, id=231, 599.23875pt x 341.275pt>
 File: imagenes/casouso_grupo_trabajo.png Graphic file (type png)
 
 <use imagenes/casouso_grupo_trabajo.png>
@@ -1004,15 +1004,119 @@ Package pdftex.def Info: imagenes/casouso_grupo_trabajo.png used on input line
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.281 \newpage
-              pdfTeX warning (ext4): destination with the same identifier (name
-{figure.2.4}) has been already used, duplicate ignored
+l.285 		\item \textbf
+                     {Precondición:} el username no se encuentra registrado...
+pdfTeX warning (ext4): destination with the same identifier (name{figure.2.4}) 
+has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.281 \newpage
-               <./imagenes/casouso_directorio.png> <./imagenes/casouso_grupo_tr
-abajo.png>] (./TFG-JosManRejSan.bbl
+l.285 		\item \textbf
+                     {Precondición:} el username no se encuentra registrado...
+ <./imagenes/casouso_directorio.png> <./imagenes/casouso_grupo_trabajo.png>]
+Overfull \hbox (2.35197pt too wide) in paragraph at lines 295--295
+[]\T1/cmr/m/n/10.95 2a| 
+ []
+
+
+Overfull \hbox (2.95642pt too wide) in paragraph at lines 307--307
+[]\T1/cmr/m/n/10.95 2b| 
+ []
+
+
+Overfull \hbox (2.35197pt too wide) in paragraph at lines 328--328
+[]\T1/cmr/m/n/10.95 2a| 
+ []
+
+
+Overfull \hbox (2.95642pt too wide) in paragraph at lines 340--340
+[]\T1/cmr/m/n/10.95 2b| 
+ []
+
+[14pdfTeX warning (ext4): destination with the same identifier (name{table.2.1}
+) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.345 \end{itemize}
+                   pdfTeX warning (ext4): destination with the same identifier 
+(name{table.2.2}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.345 \end{itemize}
+                   pdfTeX warning (ext4): destination with the same identifier 
+(name{table.2.3}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.345 \end{itemize}
+                   ]
+Overfull \hbox (2.35197pt too wide) in paragraph at lines 361--361
+[]\T1/cmr/m/n/10.95 2a| 
+ []
+
+
+Overfull \hbox (2.35197pt too wide) in paragraph at lines 362--362
+[]\T1/cmr/m/n/10.95 3a| 
+ []
+
+
+Overfull \hbox (2.95642pt too wide) in paragraph at lines 373--373
+[]\T1/cmr/m/n/10.95 2b| 
+ []
+
+
+Overfull \hbox (2.95642pt too wide) in paragraph at lines 374--374
+[]\T1/cmr/m/n/10.95 3b| 
+ []
+
+
+Overfull \hbox (2.35197pt too wide) in paragraph at lines 395--395
+[]\T1/cmr/m/n/10.95 2a| 
+ []
+
+
+Underfull \hbox (badness 4595) in paragraph at lines 395--395
+[]\T1/cmr/m/n/10.95 El ar-chi-vo se-lec-cio-na-do se
+ []
+
+[15pdfTeX warning (ext4): destination with the same identifier (name{table.2.4}
+) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.401 
+      pdfTeX warning (ext4): destination with the same identifier (name{table.2
+.5}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.401 
+      pdfTeX warning (ext4): destination with the same identifier (name{table.2
+.6}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.401 
+      ]
+Overfull \hbox (2.95642pt too wide) in paragraph at lines 407--407
+[]\T1/cmr/m/n/10.95 2b| 
+ []
+
+[16pdfTeX warning (ext4): destination with the same identifier (name{table.2.7}
+) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.415 \newpage
+              pdfTeX warning (ext4): destination with the same identifier (name
+{table.2.8}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.415 \newpage
+              ] (./TFG-JosManRejSan.bbl
 LaTeX Font Info:    Try loading font information for T1+cmtt on input line 4.
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd
@@ -1042,31 +1146,24 @@ Underfull \hbox (badness 10000) in paragraph at lines 55--58
  []
 
 )
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 285.
- [14]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 285.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 419.
+ [17]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 419.
  (./TFG-JosManRejSan.aux
 LaTeX Info: Redefining \. on input line 23.
 LaTeX Info: Redefining \% on input line 23.
 )
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 285.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 285.
-
-
-Package rerunfilecheck Warning: File `TFG-JosManRejSan.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `TFG-JosManRejSan.out':
-(rerunfilecheck)             Before: 58A56FF1D345A201A97BC23E941BAAB4;1263
-(rerunfilecheck)             After:  443BE84E31F6DFFEACDACFA9ABDB84CF;1261.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 285.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 419.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 419.
+Package rerunfilecheck Info: File `TFG-JosManRejSan.out' has not changed.
+(rerunfilecheck)             Checksum: 443BE84E31F6DFFEACDACFA9ABDB84CF;1261.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 419.
  ) 
 Here is how much of TeX's memory you used:
- 10869 strings out of 494891
- 160657 string characters out of 6179039
- 313745 words of memory out of 5000000
- 13928 multiletter control sequences out of 15000+600000
+ 10891 strings out of 494891
+ 160944 string characters out of 6179039
+ 316281 words of memory out of 5000000
+ 13939 multiletter control sequences out of 15000+600000
  20504 words of font info for 57 fonts, out of 8000000 for 9000
  40 hyphenation exceptions out of 8191
  43i,12n,47p,1029b,535s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1082,10 +1179,10 @@ ts/pk/ljfour/jknappen/ec/eccc1095.600pk> </home/jose/.texmf-var/fonts/pk/ljfour
 /jknappen/ec/ecbx1095.600pk></usr/share/texlive/texmf-dist/fonts/type1/public/a
 msfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/eurosym
 /feymr10.pfb>
-Output written on TFG-JosManRejSan.pdf (14 pages, 477673 bytes).
+Output written on TFG-JosManRejSan.pdf (17 pages, 483179 bytes).
 PDF statistics:
- 677 PDF objects out of 1000 (max. 8388607)
- 278 compressed objects within 3 object streams
- 64 named destinations out of 1000 (max. 500000)
+ 709 PDF objects out of 1000 (max. 8388607)
+ 306 compressed objects within 4 object streams
+ 75 named destinations out of 1000 (max. 500000)
  162 words of extra memory for PDF output out of 10000 (max. 10000000)
 
