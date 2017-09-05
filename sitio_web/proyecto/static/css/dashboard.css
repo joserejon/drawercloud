@@ -592,3 +592,42 @@ body {
     -o-transform: rotate(180deg);
     transform: rotate(180deg);
 }
+
+/* AYUDA */
+#ayuda > .btn-group > ul > li{
+    margin-left: 10px;
+    margin-bottom: 3px;
+}
+
+#ayuda > .btn-group > ul{
+    min-width: 200px;
+}
+
+.titulos_ayuda{
+    color: #72A7CF;
+    font-size: 17px;
+}
+
+.cont_ayuda{
+    margin-bottom: 40px;
+}
+
+.cont_ayuda p{
+    margin-left: 10px;
+    font-size: 17px;
+}
+
+.sub_cont_ayuda p{
+    margin-left: 30px;
+    font-size: 17px;
+}
+
+.sub_sub_cont_ayuda p{
+    margin-left: 50px;
+    font-size: 17px;
+}
+
+.sub_sub_sub_cont_ayuda p{
+    margin-left: 70px;
+    font-size: 17px;
+}

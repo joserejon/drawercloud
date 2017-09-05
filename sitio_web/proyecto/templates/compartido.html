@@ -24,7 +24,7 @@
                 <a href="#" class="context-menu__link" id="favorito" data-action="favorito">Añadir a favoritos</a>
             </li>
             <li class="context-menu__item">
-                <a href="#" class="context-menu__link" id="add_nube" data-action="add_nube"><span class='glyphicon glyphicon-cloud-upload'></span> Añadir a mi nube</a>
+                <a href="#" class="context-menu__link" id="add_nube" data-action="add_nube">Añadir a mi nube</a>
             </li>
         </ul>
     </nav>
@@ -461,6 +461,7 @@
 					if(g_opcion == "compartido_conmigo"){
 						document.getElementById("favorito").innerText = "";
 						document.getElementById("cambiar_nombre").innerText = "";
+						document.getElementById("add_nube").innerHTML = "<span class='glyphicon glyphicon-cloud-upload'></span> Añadir a mi nube";
 					}
 					else{
 						//Si el documento está marcado como favorito
@@ -468,6 +469,7 @@
 							document.getElementById("favorito").innerHTML = "<span class='glyphicon glyphicon-star-empty'></span> Eliminar de favoritos";
 						else
 							document.getElementById("favorito").innerHTML = "<span class='glyphicon glyphicon-star'></span> Añadir a favoritos";
+						document.getElementById("add_nube").innerText = "";
 					}
 					
 					if(taskItemInContext){

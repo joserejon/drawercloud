@@ -7,3 +7,176 @@
     <li><a href="{% url 'grupoTrabajo' %}">Grupo de trabajo</a></li>
     <li class="active"><a href="">Ayuda</a></li>
 {% endblock %}
+{% block contenido_body %}
+	<div id="ayuda" class="col-xs-12 col-md-12 col-lg-12">
+
+		<h2>Seleccione un tema de ayuda</h2>
+		<br>
+		<div class="btn-group">
+			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+			Ayuda <span class="caret"></span>
+			</button>
+
+			<ul class="dropdown-menu" role="menu">
+				<li data-toggle="tab" data-target="#documentos"><span class="titulos_ayuda">1. Documentos</span></li>
+				<li data-toggle="tab" data-target="#multimedia"><span class="titulos_ayuda">2. Multimedia</span></li>
+				<li data-toggle="tab" data-target="#compartido"><span class="titulos_ayuda">3. Compartido</span></li>
+				<li data-toggle="tab" data-target="#favoritos"><span class="titulos_ayuda">4. Favoritos</span></li>
+				<li data-toggle="tab" data-target="#grupoTrabajo"><span class="titulos_ayuda">5. Grupo de trabajo</span></li>
+				<li data-toggle="tab" data-target="#usuario"><span class="titulos_ayuda">6. Usuario</span></li>
+			</ul>
+		</div>
+
+		<br>
+		<div class="tab-content">
+			<div id="documentos" class="tab-pane fade cont_ayuda">
+				<h3><span class="letra_azul"><b>1. Documentos</b></span></h3>
+				<p>La sección de <span class="letra_azul"><b>Documentos</b></span> es la sección principal. En ella podremos ver una distribución de archivos y directorios generados por cada usuario.</p>
+				<p>La página <span class="letra_azul"><b>Documentos</b></span> nos ofrece las siguientes posibilidades: </p>
+				<div class="sub_cont_ayuda">
+					<p>· <b>Crear carpetas</b></p>
+					<p>· <b>Acceder</b> al contenido de cada carpeta.</p>
+					<p>· <b>Subir un archivo</b></p>
+					<p>· <b>Reproducir</b> el contenido de distintos archivos (como audio o imágenes).</p>
+					<p>· Para cada <b>archivo</b> tenemos unas opciones que se mostrarán haciendo click derecho o pulsando sobre el botón "Más" en el modo lista: </p>
+					<div class="sub_sub_cont_ayuda">
+						<p>- <b>Descargar</b> el archivo en el equipo/dispositivo.</p>
+						<p>- <b>Compartir</b> el archivo con otros usuarios.</p>
+						<p>- <b>Cambiar nombre</b> del archivo.</p>
+						<p>- <b>Copiar</b> el archivo.</p>
+						<p>- <b>Mover</b> el archivo a otro directorio.</p>
+						<p>- Añadir a <b>favoritos</b>.</p>
+						<p>- <b>Eliminar</b> el archivo.</p>
+					</div>
+					<p>· Para cada <b>directorio</b> tenemos unas opciones que se mostrarán haciendo click derecho o pulsando sobre el botón "Más" en el modo lista: </p>
+					<div class="sub_sub_cont_ayuda">
+						<p>- <b>Cambiar nombre</b> del directorio.</p>
+						<p>- <b>Copiar</b> el directorio y su contenido.</p>
+						<p>- <b>Mover</b> el directorio y su contenido a otro directorio.</p>
+						<p>- <b>Eliminar</b> el directorio y su contenido.</p>
+					</div>
+				</div>
+			</div>
+
+			<div id="multimedia" class="tab-pane fade cont_ayuda">
+				<h3><span class="letra_azul"><b>2. Multimedia</b></span></h3>
+				<p><span class="letra_azul"><b>Multimedia</b></span> es una sección creada para mostrar de forma automática los archivos según su extensión. En este caso se divide en 3 grupos: <span class="letra_azul"><b>Música, Imágenes y Vídeo</b></span>. Haciendo click sobre el icono referente a cada categoría podremos visualizar el contenido del tipo seleccionado.</p>
+				<p>Dentro de cada sección dispondremos de un sistema de archivos y carpetas.</p>
+				<p>La página <span class="letra_azul"><b>Multimedia</b></span> nos ofrece las siguientes posibilidades: </p>
+				<p>Para cada <b>archivo</b> tenemos unas opciones que se mostrarán haciendo click derecho o pulsando sobre el botón "Más" en el modo lista: </p>
+				<div class="sub_cont_ayuda">
+					<p>· <b>Crear carpetas</b></p>
+					<p>· <b>Acceder</b> al contenido de cada carpeta.</p>
+					<p>· <b>Subir un archivo</b></p>
+					<p>· <b>Reproducir</b> el contenido de los archivos de cada sección.</p>
+					<p>· Para cada <b>archivo</b> tenemos unas opciones que se mostrarán haciendo click derecho o pulsando sobre el botón "Más" en el modo lista: </p>
+					<div class="sub_sub_cont_ayuda">
+						<p>- <b>Descargar</b> el archivo en el equipo/dispositivo.</p>
+						<p>- <b>Compartir</b> el archivo con otros usuarios.</p>
+						<p>- <b>Cambiar nombre</b> del archivo.</p>
+						<p>- <b>Copiar</b> el archivo.</p>
+						<p>- <b>Mover</b> el archivo a otro directorio.</p>
+						<p>- Añadir a <b>favoritos</b>.</p>
+						<p>- <b>Eliminar</b> el archivo.</p>
+					</div>
+					<p>Para cada <b>directorio</b> tenemos unas opciones que se mostrarán haciendo click derecho o pulsando sobre el botón "Más" en el modo lista: </p>
+					<div class="sub_sub_cont_ayuda">
+						<p>- <b>Cambiar nombre</b> del directorio.</p>
+						<p>- <b>Copiar</b> el directorio y su contenido.</p>
+						<p>- <b>Mover</b> el directorio y su contenido a otro directorio.</p>
+						<p>- <b>Eliminar</b> el directorio y su contenido.</p>
+					</div>
+				</div>
+			</div>
+
+			<div id="compartido" class="tab-pane fade cont_ayuda">
+				<h3><span class="letra_azul"><b>3. Compartido</b></span></h3>
+				<p>En la página <span class="letra_azul"><b>Compartido</b></span>, como su propio nombre indica, aparecen los archivos compartidos con otros usuarios. Esta página se divide en 2 bloques: <span class="letra_azul"><b>Compartido por mi y Compartido conmigo</b></span>. Los archivos que están siendo compartidos solo restarán espacio al propietario de ellos, es decir, todo lo que aparezca en mi sección de <span class="letra_azul"><b>Compartido conmigo</b></span> no me ocupará espacio. Para añadir ese archivo a mi espacio personal encontraremos una opción destinada a ello.</p>
+				<br>
+				<p><span class="letra_azul"><b>Compartido por mi</b></span></p>
+				<div class="sub_cont_ayuda">
+					<p>Mostrará los archivos que estoy compartiendo con otros usuarios (de los cuales yo soy el propietario).</p>
+					<p>Para cada <b>archivo</b> tenemos unas opciones que se mostrarán haciendo click derecho o pulsando sobre el botón "Más" en el modo lista: </p>
+					<div class="sub_sub_cont_ayuda">
+						<p>- <b>Descargar</b> el archivo en el equipo/dispositivo.</p>
+						<p>- <b>Dejar de compartir</b> el archivo con el usuario.</p>
+						<p>- <b>Cambiar nombre</b> del archivo.</p>
+						<p>- Añadir a <b>favoritos</b>.</p>
+					</div>
+				</div>
+				<br>
+				<p><span class="letra_azul"><b>Compartido conmigo</b></span></p>
+				<div class="sub_cont_ayuda">
+					<p>Mostrará los archivos que están compartiendo otros usuarios conmigos (no ocupan espacio en mi cuenta).</p>
+					<p>Para cada <b>archivo</b> tenemos unas opciones que se mostrarán haciendo click derecho o pulsando sobre el botón "Más" en el modo lista: </p>
+					<div class="sub_sub_cont_ayuda">
+						<p>- <b>Descargar</b> el archivo en el equipo/dispositivo.</p>
+						<p>- <b>Dejar de compartir</b> el archivo.</p>
+						<p>- <b>Añadir a mi nube</b>. Esto provocará que se cree una copia del archivo en mi cuenta, haciéndome propietario de élla y esta vez sí ocupando espacio.</p>
+					</div>
+				</div>
+			</div>
+
+			<div id="favoritos" class="tab-pane fade cont_ayuda">
+				<h3><span class="letra_azul"><b>4. Favoritos</b></span></h3>
+				<p>Cuando entremos en <span class="letra_azul"><b>Favoritos</b></span> podremos acceder a los archivos que se han marcado como tal.</p>
+				<p>Para cada <b>archivo</b> tenemos unas opciones que se mostrarán haciendo click derecho o pulsando sobre el botón "Más" en el modo lista: </p>
+				<div class="sub_cont_ayuda">
+					<p>- <b>Descargar</b> el archivo en el equipo/dispositivo.</p>
+					<p>- <b>Compartir</b> el archivo con otros usuarios.</p>
+					<p>- <b>Cambiar nombre</b> del archivo.</p>
+					<p>- Eliminar de <b>favoritos</b>.</p>
+				</div>
+			</div>
+
+			<div id="grupoTrabajo" class="tab-pane fade cont_ayuda">
+				<h3><span class="letra_azul"><b>5. Grupo de trabajo</b></span></h3>
+				<p>Cuando accedamos al <span class="letra_azul"><b>Grupo de trabajo</b></span> tendremos que elegir entre 2 opciones principales: <span class="letra_azul"><b>Ver mis grupos o Crear un grupo</b></span>.</p>
+				<br>
+				<p><span class="letra_azul"><b>Ver mis grupos</b></span></p>
+				<div class="sub_cont_ayuda">
+					<p>Pulsando sobre esta opción nos aparece una ventana emergente con la <b>lista de los grupos a los que pertenecemos</b>. Hacemos click para acceder al grupo de trabajo deseado.</p>
+					<p>Una vez dentro del grupo seleccionado nos encontramos una distribución de archivos y directorios generados por cualquiera de los miembros pertenecientes al grupo. La página <span class="letra_azul"><b>Grupo de trabajo</b></span> nos ofrece las siguientes posibilidades: </p>
+					<div class="sub_sub_cont_ayuda">
+						<p>· <b>Crear carpetas</b></p>
+						<p>· <b>Acceder</b> al contenido de cada carpeta.</p>
+						<p>· <b>Subir un archivo</b></p>
+						<p>· <b>Reproducir</b> el contenido de distintos archivos (como audio o imágenes).</p>
+						<p>· <b>Añadir un participante al grupo</b>.</p>
+						<p>· <b>Ver los participantes del grupo</b>.</p>
+						<p>· <b>Salir del grupo de trabajo</b>. Ningún usuario tiene el poder de eliminar un grupo, solo puede abandonarlo. Una vez el grupo queda sin participantes entonces se elimina automáticamente (junto con todo su contenido).</p>
+						<p>· Para cada <b>archivo</b> tenemos unas opciones que se mostrarán haciendo click derecho o pulsando sobre el botón "Más" en el modo lista: </p>
+						<div class="sub_sub_sub_cont_ayuda">
+							<p>- <b>Descargar</b> el archivo en el equipo/dispositivo.</p>
+							<p>- <b>Cambiar nombre</b> del archivo.</p>
+							<p>- <b>Copiar</b> el archivo.</p>
+							<p>- <b>Mover</b> el archivo a otro directorio.</p>
+							<p>- <b>Eliminar</b> el archivo.</p>
+						</div>
+						<p>· Para cada <b>directorio</b> tenemos unas opciones que se mostrarán haciendo click derecho o pulsando sobre el botón "Más" en el modo lista: </p>
+						<div class="sub_sub_sub_cont_ayuda">
+							<p>- <b>Cambiar nombre</b> del directorio.</p>
+							<p>- <b>Copiar</b> el directorio y su contenido.</p>
+							<p>- <b>Mover</b> el directorio y su contenido a otro directorio.</p>
+							<p>- <b>Eliminar</b> el directorio y su contenido.</p>
+						</div>
+					</div>
+					<br>
+					<p><b>IMPORTANTE:</b> el grupo de trabajo se desarrolla de forma aislada al resto de la aplicación. Esto quiere decir que los archivos aquí presentes <b>no</b> podrán ser añadidos a favoritos, incluidos en el directorio multimedia o compartidos con otros usuarios que no formen parte del grupo de trabajo.</p>
+				</div>
+				<br>
+				<p><span class="letra_azul"><b>Crear un grupo</b></span></p>
+				<div class="sub_cont_ayuda">
+					<p>En la ventana emergente deberemos <b>añadir el nombre del grupo</b> que queremos crear y el grupo estará listo para empezar a usarse.</p>
+				</div>
+			</div>
+
+			<div id="usuario" class="tab-pane fade cont_ayuda">
+				<h3><span class="letra_azul"><b>6. Usuario</b></span></h3>
+				<p>En <span class="letra_azul"><b>Usuario</b></span> encontraremos las opciones para <span class="letra_azul"><b>Editar y Eliminar la cuenta</b></span>. Si eliminamos la cuenta, se eliminará también todo el contenido.</p>
+				<p>Además muestra información relativa al usario y el espacio ocupado.</p>
+			</div>
+		</div>
+
+	</div>
+{% endblock %}
