@@ -1,5 +1,5 @@
 \select@language {spanish}
-\contentsline {section}{\numberline {1}Sobre DrawerCloud}{3}{section.1}
+\contentsline {section}{\numberline {1}Sobre drawercloud}{3}{section.1}
 \contentsline {subsection}{\numberline {1.1}Resumen}{3}{subsection.1.1}
 \contentsline {subsection}{\numberline {1.2}Motivaci\IeC {\'o}n}{4}{subsection.1.2}
 \contentsline {section}{\numberline {2}An\IeC {\'a}lisis}{6}{section.2}
@@ -10,3 +10,9 @@
 \contentsline {subsubsection}{\numberline {2.1.4}OneDrive \cite {cita_onedrive}}{7}{subsubsection.2.1.4}
 \contentsline {subsection}{\numberline {2.2}Objetivos del sistema}{7}{subsection.2.2}
 \contentsline {subsection}{\numberline {2.3}Requisitos funcionales del sistema}{8}{subsection.2.3}
+\contentsline {subsection}{\numberline {2.4}Requisitos no funcionales del sistema}{9}{subsection.2.4}
+\contentsline {subsection}{\numberline {2.5}Requisitos de informaci\IeC {\'o}n}{10}{subsection.2.5}
+\contentsline {subsection}{\numberline {2.6}Casos de uso}{10}{subsection.2.6}
+\contentsline {subsubsection}{\numberline {2.6.1}Descripci\IeC {\'o}n de los actores}{10}{subsubsection.2.6.1}
+\contentsline {subsubsection}{\numberline {2.6.2}Diagramas del modelo de casos de uso}{11}{subsubsection.2.6.2}
+\contentsline {subsubsection}{\numberline {2.6.3}Descripci\IeC {\'o}n de los casos de uso}{13}{subsubsection.2.6.3}

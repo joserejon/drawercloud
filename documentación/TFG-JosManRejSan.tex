@@ -13,7 +13,7 @@
 \normalfont \normalsize
 \textsc{{ \\ \bf Trabajo Fin de Grado (2016-2017)} \\ Grado en Ingeniería Informática \\ Universidad de Granada} \\ [25pt] % Your university, school and/or department name(s)
 \horrule{0.5pt} \\[0.4cm] % Thin top horizontal rule
-\huge DrawerCloud \\ % The assignment title
+\huge drawercloud \\ % The assignment title
 \horrule{2pt} \\[0.5cm] % Thick bottom horizontal rule
 }
 
@@ -40,7 +40,7 @@
 
 \newpage
 
-\section{Sobre DrawerCloud}
+\section{Sobre drawercloud}
 \subsection{Resumen}
 \hfill
 \begin{figure}[h]
@@ -50,24 +50,23 @@
 \hfill
 \begin{center}
 	\horrule{0.5pt} \\[0.4cm] % Thin top horizontal rule
-	\huge \textbf{DrawerCloud} \\ % The assignment title
+	\huge \textbf{drawercloud} \\ % The assignment title
 	\Large Almacenamiento de archivos en la nube \\ % The assignment title
 	\horrule{2pt} \\[0.5cm] % Thick bottom horizontal rule
 \end{center}
 
 \hfill
 
-\textbf{DrawerCloud} es una aplicación web para el alojamiento de archivos en la nube. Los usuarios podrán realizar diversas tareas sobre sus archivos, como por ejemplo: 
+\textbf{drawercloud} es una aplicación web para el alojamiento de archivos en la nube. Los usuarios podrán realizar diversas tareas sobre sus archivos, como por ejemplo: 
 \begin{itemize}
 	\item Añadir/Eliminar archivos en la nube.
-	\item Modificar archivos (en algunos casos, como por ejemplo archivos .txt).
 	\item Reproducir archivos multimedia.
 	\item Organizar archivos en directorios.
 	\item Compartir archivos.
 	\item Descargar en un dispositivo (pc, tablet, smartphone).
 	\item ...
 \end{itemize}
-De este modo, conseguiremos tener nuestros archivos almacenados en un servidor web, ahorrando espacio en nuestros dispositivos y con la seguridad de tener nuestro material a salvo en otro lugar. Además de estas opciones, contaremos con un reproductor multimedia, la opción de crear un grupo de trabajo o la posibilidad de generar un link para compartir públicamente con cualquier usuario, entre otras opciones. \\
+De este modo, conseguiremos tener nuestros archivos almacenados en un servidor web, ahorrando espacio en nuestros dispositivos y con la seguridad de tener nuestro material a salvo en otro lugar. Además de estas \\
 
 Para el desarrollo de la web usaremos \textbf{Django} \cite{cita1}, que es un framework para aplicaciones web gratuito y open source, escrito en \textbf{Python} \cite{cita2}. La aplicación web contará con un \textbf{responsive design} para ser adaptada a otros dispositivos (como smartphones o tablets). En el lado del servidor, se usará la tecnología proporcionada por Amazon Web Services o Google.\\
 
@@ -81,11 +80,11 @@ Este proyecto está bajo la licencia de software libre, lo que significa que los
 
 \subsection{Motivación}
 
-Unos de los problemas que surgen en el uso de nuestros dispositivos es el almacenamiento. Es cierto que el precio del \textbf{gigabyte} es cada vez más barato e incluso más rápido (como por ejemplo en los discos duros SSD, que están dotados de un gran incremento de velocidad, además de consumir menos energía) pero, aunque en un ordenador el almacenamiento puede no ser un problema, si que lo es si hablamos de dispositivos móviles como smartphones o tablets. A día de hoy, encontramos dispositivos que no permiten la insercción de tarjetas de almacenamiento flash, lo cual nos obliga a conformarnos con el espacio que el fabricante pone a nuestra disposición (o a comprar el modelo con más capacidad, pero obviamente más caro). \textbf{DrawerCloud} viene a poner solución a este problema, ofreciendo un espacio personal en un servidor web dedicado para dicha aplicación, de modo que nuestros datos permanecen en tal servidor sin ocupar memoria en nuestros dispositivos. \\
+Unos de los problemas que surgen en el uso de nuestros dispositivos es el almacenamiento. Es cierto que el precio del \textbf{gigabyte} es cada vez más barato e incluso más rápido (como por ejemplo en los discos duros SSD, que están dotados de un gran incremento de velocidad, además de consumir menos energía) pero, aunque en un ordenador el almacenamiento puede no ser un problema, si que lo es si hablamos de dispositivos móviles como smartphones o tablets. A día de hoy, encontramos dispositivos que no permiten la insercción de tarjetas de almacenamiento flash, lo cual nos obliga a conformarnos con el espacio que el fabricante pone a nuestra disposición (o a comprar el modelo con más capacidad, pero obviamente más caro). \textbf{drawercloud} viene a poner solución a este problema, ofreciendo un espacio personal en un servidor web dedicado para dicha aplicación, de modo que nuestros datos permanecen en tal servidor sin ocupar memoria en nuestros dispositivos. \\
 
 ¿Significa esto que solo es una solución para dispositivos que cuentan con un espacio muy limitado? No, ya que otro problema que puede surgirnos con mucha facilidad es la pérdida de información por diversas causas (disco duro roto, pérdida del dispositivo, virus, etc) y para ello este proyecto también ofrece una solución a dicho problema. Podemos almacenar nuestros archivos tanto en el disco duro propio del dispositivo en cuestión, como en el espacio ofrecido en el servidor web, de modo que si nos vemos afectados por alguno de los motivos mencionados, o bien por otros que afectan a la desaparición de nuestra información, tengamos una copia en otro lugar y no perdamos nuestros archivos. \\
 
-Otro caso en el que esta aplicación resulta interesante es que podemos disponer de nuestros datos en cualquier parte. A modo de ejemplo, podemos pensar en un archivo que estamos modificando en casa y en nuestro puesto de trabajo. Almacenando dicho archivo en la nube nos tenemos que olvidar de mover la información a través de, por ejemplo, un pen drive o de tener una copia en casa y otra en la oficina y andar actualizando ambas cada vez que queramos trabajar. Simplemente entraremos con nuestra cuenta a \textbf{DrawerCloud} desde cualquier dispositivo y tendremos acceso al archivo en cuestión. Además, proporciona un método para compartir archivos y crear grupos de trabajo, de modo que si sobre ese archivo están trabajando, por ejemplo, 3 personas más, podrán ver las modificaciones que hemos realizado directamente sobre el archivo alojado en el servidor web.
+Otro caso en el que esta aplicación resulta interesante es que podemos disponer de nuestros datos en cualquier parte. A modo de ejemplo, podemos pensar en un archivo que estamos modificando en casa y en nuestro puesto de trabajo. Almacenando dicho archivo en la nube nos tenemos que olvidar de mover la información a través de, por ejemplo, un pen drive o de tener una copia en casa y otra en la oficina y andar actualizando ambas cada vez que queramos trabajar. Simplemente entraremos con nuestra cuenta a \textbf{drawercloud} desde cualquier dispositivo y tendremos acceso al archivo en cuestión. Además, proporciona un método para compartir archivos y crear grupos de trabajo, de modo que si sobre ese archivo están trabajando, por ejemplo, 3 personas más, podrán ver las modificaciones que hemos realizado directamente sobre el archivo alojado en el servidor web.
 
 \newpage
 \section{Análisis}
@@ -130,7 +129,7 @@ La versión gratuita de este servicio se ha reducido a 5GB (siendo antes 15GB). 
 \end{minipage}
 
 \subsection{Objetivos del sistema}
-El objetivo principal del sistema es poner a disposición del usuario un espacio de almacenamiento en la nube. En dicho espacio, el usuario tendrá la posibilidad de almacenar información de forma organizada, compartir los archivos deseados ()con sus amigos o públicamente) y tener accesibilidad a éstos desde cualquier plataforma con un navegador web. \\
+El objetivo principal del sistema es poner a disposición del usuario un espacio de almacenamiento en la nube. En dicho espacio, el usuario tendrá la posibilidad de almacenar información de forma organizada, compartir los archivos deseados y tener accesibilidad a éstos desde cualquier plataforma con un navegador web. \\
 
 Con el fin de ofrecer un sistema fiable a los clientes, este programa deberá cumplir algunas características:
 \begin{itemize}
@@ -152,18 +151,131 @@ En esta sección indicamos qué debe hacer el sistema:
 \begin{itemize}
 	\item \textbf{RF-1: Gestión de usuarios.} En el sistema realizaremos altas, bajas y modificaciones de los usuarios.
 	\begin{itemize}
-		\item \textbf{RF-1.1: Alta de usuario.} El sistema permite realizar el alta de un usuario.
-		\item \textbf{RF-1.2: Baja de usuario.} El sistema permite realizar la baja de un usuario.
-		\item \textbf{RF-1.3: Modificación.} El sistema permite realizar una modificación de un usuario.
-		\item \textbf{RF-1.4: Consulta.} El sistema permite realizar una consulta de un usuario en concreto.
-		\item \textbf{RF-1.5: Gestión del espacio.}	El usuario registrado podrá gestionar su espacio disponible almacenando y organizando sus archivos.
+		\item \textbf{RF-1.1: Alta usuario.} El sistema permite realizar el alta de un usuario.
+		\item \textbf{RF-1.2: Baja usuario.} El sistema permite realizar la baja de un usuario.
+		\item \textbf{RF-1.3: Modificación usuario.} El sistema permite realizar una modificación de un usuario.
+		\item \textbf{RF-1.4: Consulta usuario.} El sistema permite realizar una consulta de un usuario en concreto.
 	\end{itemize}
 	
 	\item \textbf{RF-2: Gestión de archivos.}
 	\begin{itemize}
-		\item \textbf{RF-2.1: .}
+		\item \textbf{RF-2.1: Añadir archivo.} Junto al archivo se añadirá una serie de datos como nombre, fecha de subida, propietario, etc.
+		\item \textbf{RF-2.2: Eliminar archivo.} Se eliminará el archivo y toda la información relativa a él.
+		\item \textbf{RF-2.3: Visualizar archivo.} Se podrá ver el contenido del archivo que sea posible (como reproducir canciones o ver una imagen).
+		\item \textbf{RF-2.4: Descargar archivo.} Descarga el archivo en el dispositivo usado.
+		\item \textbf{RF-2.5: Compartir archivo.} Da acceso al archivo (en modo lectura) a otro usuario.
+		\item \textbf{RF-2.6: Dejar de compartir archivo.} Retira el acceso al archivo a otro usuario.
+		\item \textbf{RF-2.7: Cambiar nombre del archivo.} Permite cambiar el nombre del archivo.
+		\item \textbf{RF-2.8: Copiar archivo.} Se creará una copia del archivo.
+		\item \textbf{RF-2.9: Mover archivo.} Se moverá el archivo al directorio de destino seleccionado.
+		\item \textbf{RF-2.10: Añadir archivo a favoritos.} El archivo pasará a la lista de favoritos.
+		\item \textbf{RF-2.10: Eliminar archivo de favoritos.} El archivo dejará la lista de favoritos.
+		\item \textbf{RF-2.11: Añadir archivo a mi nube.} El archivo compartido (en modo lectura) pasará a ser un archivo propiedad del usuario.
+	\end{itemize}
+	
+	\item \textbf{RF-3: Gestión de directorios.}
+	\begin{itemize}
+		\item \textbf{RF-3.1: Añadir directorio.} Junto al directorio se añadirá una serie de datos como nombre, contenido, propietario y directorio padre.
+		\item \textbf{RF-3.2: Eliminar directorio.} Se eliminará el directorio y todos los directorios y archivos que contenga.
+		\item \textbf{RF-3.3: Visualizar directorio.} Acceder al contenido del directorio.
+		\item \textbf{RF-3.4: Cambiar nombre directorio.} Permite cambiar el nombre del directorio.
+		\item \textbf{RF-3.5: Copiar directorio.} Se creará una copia del directorio y todo su contenido.
+		\item \textbf{RF-3.6: Mover directorio.} Se moverá el directorio y todo su contenido al directorio de destino seleccionado.
+	\end{itemize}
+	
+	\item \textbf{RF-4: Gestión de grupos de trabajo.}
+	\begin{itemize}
+		\item \textbf{RF-4.1: Añadir grupo de trabajo.} Se añade un grupo con un nombre.
+		\item \textbf{RF-4.2: Ver grupo de trabajo.} Visualiza el contenido del grupo de trabajo.
+		\item \textbf{RF-4.3: Salir del grupo de trabajo.} Un usuario sale del grupo de trabajo. Cuando el grupo de trabajo queda sin usuarios, se elimina toda la información relativa a él.
+		\item \textbf{RF-4.4: Añadir participante al grupo de trabajo.} Se añade un participante al grupo con todos los permisos (subir archivo, eliminar archivo, crear carpeta, añadir participante, etc).
+		\item \textbf{RF-4.5: Ver participantes del grupo de trabajo.} Se muestran todos los participantes del grupo.
 	\end{itemize}
 \end{itemize}
+
+\subsection{Requisitos no funcionales del sistema}
+En esta sección se incluyen restricciones que afectarán a los requisitos funcionales:
+
+\begin{itemize}
+	\item \textbf{RNF-1: Seguridad de la información.} Ante un posible fallo del sistema, la información previamente almacenada no debería perderse. En principio esto se garantiza, ya que el sistema y la base de datos son entidades relacionadas pero separadas. Sería buena práctica tener en cuenta la posibilidad de realizar copias de seguridad periódicamente o alguna otra alternativa que permita replicar los datos.
+	\item \textbf{RNF-2: Concurrencia.} Tanto administradores como usuarios podrán acceder simultáneamente al sistema, introducciendo información, consultándola o eliminándola.
+	\item \textbf{RNF-3: Autenticación.} Es necesario controlar el acceso de los usuarios, de manera que cada uno pueda realizar sólo las tareas sobre su espacio.
+	\item \textbf{RNF-4: Legales.} Se deben tener en cuenta ciertos criterios de responsabilidad sobre los datos publicados, como que los datos de un usuario no sean accesibles por otro.
+	\item \textbf{RNF-5: Rendimiento.} El sistema debe tener un tiempo de respuesta	y aprovechamiento de los recursos óptimo.
+\end{itemize}
+
+\subsection{Requisitos de información}
+En esta sección se indica la información que es necesaria almacenar en el sistema:
+
+\begin{itemize}
+	\item \textbf{RI-1: Usuarios.} Datos sobre las personas que usarán la aplicación.
+	\begin{itemize}
+			\item \textbf{Contenido:} nombre de usuario, contraseña, dirección de correo electrónico.
+			\item \textbf{Requisitos asociados:} RF-1, RNF-1, RNF-3.
+	\end{itemize}
+	
+	\item \textbf{RI-2: Archivos.} Datos sobre los archivos que se alojarán en la aplicación.
+	\begin{itemize}
+		\item \textbf{Contenido:} archivo, nombre del archivo, tipo del archivo, fecha de subida, propietario, tamaño del archivo, booleano para indicar si es favorito.
+		\item \textbf{Requisitos asociados:} RF-2, RNF-1, RNF-3, RNF-4, RNF-5.
+	\end{itemize}
+	
+	\item \textbf{RI-3: Directorios.} Datos sobre los directorios que se alojarán en la aplicación.
+	\begin{itemize}
+		\item \textbf{Contenido:} nombre del directorio, cotenido del directorio, propietario.
+		\item \textbf{Requisitos asociados:} RF-3, RNF-1, RNF-3, RNF-4, RNF-5.
+	\end{itemize}
+	
+	\item \textbf{RI-4: Grupos de trabajo.} Datos sobre los grupos de trabajo de la aplicación.
+	\begin{itemize}
+		\item \textbf{Contenido:} nombre del grupo de trabajo, usuarios que pertenecen al grupo de trabajo, directorios que pertenecen al grupo de trabajo, archivos que pertenecen al grupo de trabajo.
+		\item \textbf{Requisitos asociados:} RF-4, RNF-1, RNF-4, RNF-5.
+	\end{itemize}
+\end{itemize}
+
+\subsection{Casos de uso}
+\subsubsection{Descripción de los actores}
+\begin{itemize}
+	\item \textbf{DA-1: Usuario.}
+	\begin{itemize}
+		\item \textbf{Descripción:} Usuario que accede al sistema para gestionar su espacio personal o sus grupos de trabajo.
+		\item \textbf{Características:} Conocimientos básicos sobre el manejo de algún dispositivo con navegador web.
+		\item \textbf{Relaciones:} La relación con otros usuarios del sistema se da, o bien compartiendo un archivo directamente con el usuario, o bien perteneciendo al mismo grupo de trabajo.
+		\item \textbf{Referencias:} Puede consultar la base de datos de sus archivos, directorios, grupos de trabajo, información asociada a su perfil y la ayuda.
+	\end{itemize}
+\end{itemize}
+\subsubsection{Diagramas del modelo de casos de uso}
+Los diagramas de casos de uso representan como el usuario se relaciona con el sistema para usar sus funciones. A continuación vemos dichos diagramas:
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{imagenes/casouso_usuario}
+	\caption{Diagrama de casos de uso. Gestión de usuarios.}
+	\label{fig:casouso_usuario}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{imagenes/casouso_archivo}
+	\caption{Diagrama de casos de uso. Gestión de archivos.}
+	\label{fig:casouso_archivo}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{imagenes/casouso_directorio}
+	\caption{Diagrama de casos de uso. Gestión de archivos.}
+	\label{fig:casouso_directorio}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{imagenes/casouso_grupo_trabajo}
+	\caption{Diagrama de casos de uso. Gestión de archivos.}
+	\label{fig:casouso_grupo_trabajo}
+\end{figure}
+
+\subsubsection{Descripción de los casos de uso}
 
 
 \newpage
