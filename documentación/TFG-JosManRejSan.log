@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.3.20)  6 SEP 2017 13:46
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.3.20)  6 SEP 2017 16:34
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -792,7 +792,7 @@ LaTeX Font Info:    Try loading font information for T1+cmss on input line 32.
 (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmss.fd
 File: t1cmss.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
-<imagenes/logo_ugr.png, id=96, 777.90625pt x 231.86626pt>
+<imagenes/logo_ugr.png, id=116, 777.90625pt x 231.86626pt>
 File: imagenes/logo_ugr.png Graphic file (type png)
 
 <use imagenes/logo_ugr.png>
@@ -839,15 +839,15 @@ LaTeX Info: Redefining \% on input line 1.
 \tf@lof=\write5
 \openout5 = `TFG-JosManRejSan.lof'.
 
- (./TFG-JosManRejSan.lot
+ [2] (./TFG-JosManRejSan.lot
 LaTeX Info: Redefining \. on input line 1.
 LaTeX Info: Redefining \% on input line 1.
-
-[2])
+)
 \tf@lot=\write6
 \openout6 = `TFG-JosManRejSan.lot'.
 
- [3]
+
+[3]
 File: imagenes/logo_ugr.png Graphic file (type png)
  <use imagenes/logo_ugr.png>
 Package pdftex.def Info: imagenes/logo_ugr.png used on input line 48.
@@ -958,14 +958,14 @@ File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 154.
  [9] [10] [11]
-<imagenes/casouso_usuario.png, id=322, 434.62375pt x 277.035pt>
+<imagenes/casouso_usuario.png, id=348, 434.62375pt x 277.035pt>
 File: imagenes/casouso_usuario.png Graphic file (type png)
 
 <use imagenes/casouso_usuario.png>
 Package pdftex.def Info: imagenes/casouso_usuario.png used on input line 252.
 (pdftex.def)             Requested size: 292.7776pt x 186.63124pt.
 
-<imagenes/casouso_archivo.png, id=323, 546.04pt x 614.295pt>
+<imagenes/casouso_archivo.png, id=349, 546.04pt x 614.295pt>
 File: imagenes/casouso_archivo.png Graphic file (type png)
 
 <use imagenes/casouso_archivo.png>
@@ -978,7 +978,7 @@ Package pdftex.def Info: imagenes/casouso_archivo.png used on input line 259.
                                                   \fi \fi 
 l.263 
        <./imagenes/casouso_usuario.png>]
-<imagenes/casouso_directorio.png, id=330, 491.8375pt x 405.515pt>
+<imagenes/casouso_directorio.png, id=355, 491.8375pt x 405.515pt>
 File: imagenes/casouso_directorio.png Graphic file (type png)
 
 <use imagenes/casouso_directorio.png>
@@ -992,7 +992,7 @@ Package pdftex.def Info: imagenes/casouso_directorio.png used on input line 266
                                                   \fi \fi 
 l.270 
        <./imagenes/casouso_archivo.png>]
-<imagenes/casouso_grupo_trabajo.png, id=337, 599.23875pt x 341.275pt>
+<imagenes/casouso_grupo_trabajo.png, id=362, 599.23875pt x 341.275pt>
 File: imagenes/casouso_grupo_trabajo.png Graphic file (type png)
 
 <use imagenes/casouso_grupo_trabajo.png>
@@ -1440,7 +1440,7 @@ l.974 \end{itemize}
                                                   \fi \fi 
 l.974 \end{itemize}
                    ]
-<imagenes/diagramasDeClases.png, id=398, 1183.42125pt x 691.58376pt>
+<imagenes/diagramasDeClases.png, id=424, 1183.42125pt x 691.58376pt>
 File: imagenes/diagramasDeClases.png Graphic file (type png)
 
 <use imagenes/diagramasDeClases.png>
@@ -1466,34 +1466,39 @@ igure.2.5}) has been already used, duplicate ignored
                                                   \fi \fi 
 l.1015 \newpage
                 <./imagenes/diagramasDeClases.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 1026--1027
+Underfull \hbox (badness 10000) in paragraph at lines 1019--1020
 
  []
 
-<imagenes/img_mvc.png, id=408, 362.35374pt x 201.75375pt>
+
+Underfull \hbox (badness 10000) in paragraph at lines 1027--1028
+
+ []
+
+<imagenes/img_mvc.png, id=434, 362.35374pt x 201.75375pt>
 File: imagenes/img_mvc.png Graphic file (type png)
 
 <use imagenes/img_mvc.png>
-Package pdftex.def Info: imagenes/img_mvc.png used on input line 1031.
+Package pdftex.def Info: imagenes/img_mvc.png used on input line 1032.
 (pdftex.def)             Requested size: 272.86076pt x 151.92755pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 1043--1044
+Underfull \hbox (badness 10000) in paragraph at lines 1044--1045
 
  []
 
-<imagenes/img_mvt.png, id=410, 362.35374pt x 280.04625pt>
+<imagenes/img_mvt.png, id=436, 362.35374pt x 280.04625pt>
 File: imagenes/img_mvt.png Graphic file (type png)
 
 <use imagenes/img_mvt.png>
-Package pdftex.def Info: imagenes/img_mvt.png used on input line 1048.
+Package pdftex.def Info: imagenes/img_mvt.png used on input line 1049.
 (pdftex.def)             Requested size: 272.86076pt x 210.8845pt.
  [30pdfTeX warning (ext4): destination with the same identifier (name{figure.3.
 1}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1059 \subsection
-                  {Cliente (Frontend)} <./imagenes/img_mvc.png>]
+l.1060 \subsection
+                  {Frontend} <./imagenes/img_mvc.png>]
 Overfull \vbox (9.68561pt too high) has occurred while \output is active []
 
 
@@ -1502,11 +1507,31 @@ Overfull \vbox (9.68561pt too high) has occurred while \output is active []
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1059 \subsection
-                  {Cliente (Frontend)} <./imagenes/img_mvt.png>] [32]
-(./TFG-JosManRejSan.bbl
+l.1060 \subsection
+                  {Frontend} <./imagenes/img_mvt.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 1061--1062
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1065--1066
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1070--1071
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1075--1076
+
+ []
+
+[32] [33] (./TFG-JosManRejSan.bbl
 LaTeX Font Info:    Try loading font information for T1+cmtt on input line 4.
- (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd
+
+(/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd
 File: t1cmtt.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 Underfull \hbox (badness 10000) in paragraph at lines 55--58
@@ -1539,35 +1564,28 @@ b . es / libro / django _ 1 _ 0 / capitulo _ 5 / el _
  []
 
 )
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1065.
- [33]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1065.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1085.
+ [34]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1085.
  (./TFG-JosManRejSan.aux
 LaTeX Info: Redefining \. on input line 23.
 LaTeX Info: Redefining \% on input line 23.
 )
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1065.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1065.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1085.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1085.
 
-
-
-Package rerunfilecheck Warning: File `TFG-JosManRejSan.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `TFG-JosManRejSan.out':
-(rerunfilecheck)             Before: 6649D092BCA309A57A771F011BFB8E3E;1727
-(rerunfilecheck)             After:  4EDD48749D2AAFCEFDA1783346C9B15F;1797.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1065.
+Package rerunfilecheck Info: File `TFG-JosManRejSan.out' has not changed.
+(rerunfilecheck)             Checksum: 8636A1403D75A9B29E652415788F326B;2032.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1085.
  ) 
 Here is how much of TeX's memory you used:
- 11013 strings out of 494891
- 162765 string characters out of 6179039
- 319840 words of memory out of 5000000
- 13999 multiletter control sequences out of 15000+600000
+ 11023 strings out of 494891
+ 162928 string characters out of 6179039
+ 318843 words of memory out of 5000000
+ 14004 multiletter control sequences out of 15000+600000
  20504 words of font info for 57 fonts, out of 8000000 for 9000
  40 hyphenation exceptions out of 8191
- 43i,12n,47p,1029b,661s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 43i,12n,47p,1029b,535s stack positions out of 5000i,500n,10000p,200000b,80000s
  </home/jose/.texmf-var/fonts/pk/ljfour/jknappen/ec/ectt1095.600pk> </home/jo
 se/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx2074.600pk> </home/jose/.texmf-va
 r/fonts/pk/ljfour/jknappen/ec/ecsx1200.600pk> </home/jose/.texmf-var/fonts/pk/l
@@ -1580,10 +1598,10 @@ ts/pk/ljfour/jknappen/ec/eccc1095.600pk> </home/jose/.texmf-var/fonts/pk/ljfour
 /jknappen/ec/ecbx1095.600pk></usr/share/texlive/texmf-dist/fonts/type1/public/a
 msfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/eurosym
 /feymr10.pfb>
-Output written on TFG-JosManRejSan.pdf (33 pages, 605837 bytes).
+Output written on TFG-JosManRejSan.pdf (34 pages, 612345 bytes).
 PDF statistics:
- 921 PDF objects out of 1000 (max. 8388607)
- 473 compressed objects within 5 object streams
- 134 named destinations out of 1000 (max. 500000)
- 225 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 963 PDF objects out of 1000 (max. 8388607)
+ 501 compressed objects within 6 object streams
+ 139 named destinations out of 1000 (max. 500000)
+ 265 words of extra memory for PDF output out of 10000 (max. 10000000)
 

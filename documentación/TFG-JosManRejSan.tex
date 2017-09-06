@@ -1015,7 +1015,8 @@ A continuación podemos ver el diagrama de clases del diseño propuesto:
 \newpage
 \section{Diseño}
 En este apartado se comentarán los aspectos más importantes para el desarrollo de la aplicación. Para estudiar este apartado vamos a dividir el contenido en dos grupos: servidor (backend) y cliente (frontend).
-\subsection{Servidor (Backend)}
+\subsection{Backend}
+El \textbf{backend} se encarga de recibir los datos desde el frontend y procesar dichos datos. \\
 
 \hfill\begin{minipage}{\dimexpr\textwidth-1cm}
 	\subsubsection{Patrón Modelo-Vista-Controlador (MVC)}
@@ -1056,7 +1057,26 @@ En este apartado se comentarán los aspectos más importantes para el desarrollo
 	El sistema gestor de base de datos es el encargado de proporcionar la capa de acceso a la información de la base de datos. Haciendo uso del ORM de Django, utilizaremos un conector para la base de datos \textbf{MongoDB}.
 \end{minipage}
 
-\subsection{Cliente (Frontend)}
+\subsection{Frontend}
+El \textbf{frontend} se refiere a la parte del sistema que se encarga de interactuar con los usuarios y mandar las peticiones al backend. Para interactuar con los usuarios hacemos uso de tecnologías web como \textbf{HTML}, \textbf{CSS} y \textbf{Javascript}. Este sistema trabaja todo el tiempo recibiendo peticiones de usuarios, por lo tanto usando las tecnologías mencionadas y añadiendo otras, como \textbf{jQuery}, haremos de nuestra interfaz un entorno intuitivo para los usuarios. \\
+
+\hfill\begin{minipage}{\dimexpr\textwidth-1cm}
+	\subsubsection{jQuery}
+	\textbf{jQuery} es una librería de Javascript la cual ofrece la posibilidad de manipular los documentos HTML y manejar eventos, dotando a la web de una mayor dinamicidad. Es compatible con la mayoría de los navegadores actuales, tanto en pc como en dispositivos móviles. \\
+\end{minipage}
+
+\hfill\begin{minipage}{\dimexpr\textwidth-1cm}
+	\subsubsection{AJAX}
+	Por otro lado \textbf{AJAX} nos brinda la oportunidad de cargar datos desde el backend sin la necesidad de recargar toda la página del navegador. \\
+\end{minipage}
+
+\hfill\begin{minipage}{\dimexpr\textwidth-1cm}
+	\subsubsection{Twitter Bootstrap}
+	Otra tecnología usada de cara a la interacción con los usuarios de nuestra aplicación es la que nos aporta \textbf{Twitter Bootstrap}. Twitter Bootstrap es un framework CSS que nos facilita la tarea del diseño de la aplicación. Con esta tecnología podremos crear diseños muy elegantes y limpios, además de dotar a la aplicación web de un diseño adaptativo (responsive design) y así poder disfrutar de nuestra aplicación sin problemas en cualquier dispositivo y tamaño de pantalla. \\
+\end{minipage}
+
+\newpage
+\section{Implementación}
 
 \newpage
 \bibliography{citas} %archivo citas.bib que contiene las entradas 
