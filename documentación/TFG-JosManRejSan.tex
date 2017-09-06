@@ -1013,6 +1013,52 @@ A continuación podemos ver el diagrama de clases del diseño propuesto:
 \end{figure}
 
 \newpage
+\section{Diseño}
+En este apartado se comentarán los aspectos más importantes para el desarrollo de la aplicación. Para estudiar este apartado vamos a dividir el contenido en dos grupos: servidor (backend) y cliente (frontend).
+\subsection{Servidor (Backend)}
+
+\hfill\begin{minipage}{\dimexpr\textwidth-1cm}
+	\subsubsection{Patrón Modelo-Vista-Controlador (MVC)}
+	Para el desarrollo de la aplicación se plantea el uso del patrón de arquitectura de software MVC, el cual se basa en separar los datos de la lógica de la aplicación y su interfaz. Ésto facilita el desarrollo y el posterior mantenimiento de la aplicación.
+	\begin{itemize}
+		\item \textbf{Modelo} (Model): \textbf{información} con la que trabaja el sistema. Se encarga de gestionar los accesos a dicha información, tanto consultas como actualizaciones. Se corresponde con la base de datos.
+		\item \textbf{Vista} (View): se refiere a los datos que se van a mostrar y como mostrarlos. La vista será el \textbf{frontend} de nuestra aplicación.
+		\item \textbf{Controlador} (Controller): responde a \textbf{eventos} (generalmente los proporcionará el usuario) y llama al modelo cuando se realiza alguna solicitud sobre la información. También podrá enviar solicitudes a la vista si se solicita un cambio en la forma que mostrar la información. \\
+	\end{itemize}
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.7\textwidth]{imagenes/img_mvc}
+		\caption{Diagrama Model-View-Controller.}
+		\label{fig:img_mvc}
+	\end{figure}
+\end{minipage}
+
+\hfill\begin{minipage}{\dimexpr\textwidth-1cm}
+	\subsubsection{Django}
+	La decisión de usar el framework \textbf{Django} viene dada por su uso de la arquitectura MVC y su disponibilidad para trabajar con Python. Debido a que el controlador es manejado por el mismo framework y la parte más importante se produce en los modelos, las plantillas y las vistas, Django es conocido como un Framework MTV (Model- View - Template) \cite{cita_mvt}.
+	\begin{itemize}
+		\item \textbf{Modelo} (Model): \textbf{información} con la que trabaja el sistema. Se encarga de gestionar los accesos a dicha información, tanto consultas como actualizaciones. Se corresponde con la base de datos.
+		\item \textbf{Vista} (View): esta capa contiene la \textbf{lógica} que accede al modelo y la delega a la plantilla apropiada: actúa como puente entre el modelos y las plantillas.
+		\item \textbf{Plantilla} (Template): se relaciona con la \textbf{presentación} de la información: como algunas cosas son mostradas sobre una página web u otro tipo de documento. \\
+	\end{itemize}
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.7\textwidth]{imagenes/img_mvt}
+		\caption{Diagrama Model-View-Template.}
+		\label{fig:img_mvt}
+	\end{figure}
+	
+	Django nos permite crear sitios web complejos ofreciendo diversos componentes que podemos usar para el desarrollo de nuestra aplicación.
+	
+	\subsubsection{Sistema gestor de base de datos}
+	El sistema gestor de base de datos es el encargado de proporcionar la capa de acceso a la información de la base de datos. Haciendo uso del ORM de Django, utilizaremos un conector para la base de datos \textbf{MongoDB}.
+\end{minipage}
+
+\subsection{Cliente (Frontend)}
+
+\newpage
 \bibliography{citas} %archivo citas.bib que contiene las entradas 
 \bibliographystyle{ieeetr} % hay varias formas de citar
 
