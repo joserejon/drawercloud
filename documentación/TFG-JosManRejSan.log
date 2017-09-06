@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.3.20)  5 SEP 2017 16:49
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.3.20)  6 SEP 2017 12:07
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -792,7 +792,7 @@ LaTeX Font Info:    Try loading font information for T1+cmss on input line 32.
 (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmss.fd
 File: t1cmss.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
-<imagenes/logo_ugr.png, id=72, 777.90625pt x 231.86626pt>
+<imagenes/logo_ugr.png, id=76, 777.90625pt x 231.86626pt>
 File: imagenes/logo_ugr.png Graphic file (type png)
 
 <use imagenes/logo_ugr.png>
@@ -842,12 +842,12 @@ LaTeX Info: Redefining \% on input line 1.
  (./TFG-JosManRejSan.lot
 LaTeX Info: Redefining \. on input line 1.
 LaTeX Info: Redefining \% on input line 1.
-)
+
+[2])
 \tf@lot=\write6
 \openout6 = `TFG-JosManRejSan.lot'.
 
-
-[2]
+ [3]
 File: imagenes/logo_ugr.png Graphic file (type png)
  <use imagenes/logo_ugr.png>
 Package pdftex.def Info: imagenes/logo_ugr.png used on input line 48.
@@ -867,7 +867,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 73--74
 
  []
 
-[3]
+[4]
 Underfull \hbox (badness 10000) in paragraph at lines 75--76
 
  []
@@ -887,7 +887,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 85--86
 
  []
 
-[4] [5]
+[5] [6]
 Underfull \hbox (badness 10000) in paragraph at lines 92--93
 
  []
@@ -935,7 +935,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 117--118
 
  []
 
-[6]
+[7]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `\@ifnextchar' on input line 121.
@@ -949,7 +949,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 132--133
 
  []
 
-[7]
+[8]
 LaTeX Font Info:    Try loading font information for OMS+cmr on input line 154.
 
  (/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
@@ -957,49 +957,49 @@ File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 154.
- [8] [9] [10]
-<imagenes/casouso_usuario.png, id=218, 434.62375pt x 277.035pt>
+ [9] [10] [11]
+<imagenes/casouso_usuario.png, id=293, 434.62375pt x 277.035pt>
 File: imagenes/casouso_usuario.png Graphic file (type png)
 
 <use imagenes/casouso_usuario.png>
 Package pdftex.def Info: imagenes/casouso_usuario.png used on input line 252.
 (pdftex.def)             Requested size: 292.7776pt x 186.63124pt.
 
-<imagenes/casouso_archivo.png, id=219, 546.04pt x 614.295pt>
+<imagenes/casouso_archivo.png, id=294, 546.04pt x 614.295pt>
 File: imagenes/casouso_archivo.png Graphic file (type png)
 
 <use imagenes/casouso_archivo.png>
 Package pdftex.def Info: imagenes/casouso_archivo.png used on input line 259.
 (pdftex.def)             Requested size: 292.7776pt x 329.371pt.
- [11pdfTeX warning (ext4): destination with the same identifier (name{figure.2.
+ [12pdfTeX warning (ext4): destination with the same identifier (name{figure.2.
 1}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
 l.263 
        <./imagenes/casouso_usuario.png>]
-<imagenes/casouso_directorio.png, id=225, 491.8375pt x 405.515pt>
+<imagenes/casouso_directorio.png, id=300, 491.8375pt x 405.515pt>
 File: imagenes/casouso_directorio.png Graphic file (type png)
 
 <use imagenes/casouso_directorio.png>
 Package pdftex.def Info: imagenes/casouso_directorio.png used on input line 266
 .
 (pdftex.def)             Requested size: 292.7776pt x 241.39888pt.
- [12pdfTeX warning (ext4): destination with the same identifier (name{figure.2.
+ [13pdfTeX warning (ext4): destination with the same identifier (name{figure.2.
 2}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
 l.270 
        <./imagenes/casouso_archivo.png>]
-<imagenes/casouso_grupo_trabajo.png, id=231, 599.23875pt x 341.275pt>
+<imagenes/casouso_grupo_trabajo.png, id=307, 599.23875pt x 341.275pt>
 File: imagenes/casouso_grupo_trabajo.png Graphic file (type png)
 
 <use imagenes/casouso_grupo_trabajo.png>
 Package pdftex.def Info: imagenes/casouso_grupo_trabajo.png used on input line 
 273.
 (pdftex.def)             Requested size: 292.7776pt x 166.74191pt.
- [13pdfTeX warning (ext4): destination with the same identifier (name{figure.2.
+ [14pdfTeX warning (ext4): destination with the same identifier (name{figure.2.
 3}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
@@ -1023,100 +1023,449 @@ Overfull \hbox (2.95642pt too wide) in paragraph at lines 307--307
 []\T1/cmr/m/n/10.95 2b| 
  []
 
-
-Overfull \hbox (2.35197pt too wide) in paragraph at lines 328--328
-[]\T1/cmr/m/n/10.95 2a| 
- []
-
-
-Overfull \hbox (2.95642pt too wide) in paragraph at lines 340--340
-[]\T1/cmr/m/n/10.95 2b| 
- []
-
-[14pdfTeX warning (ext4): destination with the same identifier (name{table.2.1}
+[15pdfTeX warning (ext4): destination with the same identifier (name{table.2.1}
 ) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.345 \end{itemize}
-                   pdfTeX warning (ext4): destination with the same identifier 
-(name{table.2.2}) has been already used, duplicate ignored
+l.339 		\item \textbf
+                     {Descripción:} el usuario accede al sistema con su use...
+pdfTeX warning (ext4): destination with the same identifier (name{table.2.2}) h
+as been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.345 \end{itemize}
-                   pdfTeX warning (ext4): destination with the same identifier 
-(name{table.2.3}) has been already used, duplicate ignored
+l.339 		\item \textbf
+                     {Descripción:} el usuario accede al sistema con su use...
+pdfTeX warning (ext4): destination with the same identifier (name{table.2.3}) h
+as been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.345 \end{itemize}
-                   ]
-Overfull \hbox (2.35197pt too wide) in paragraph at lines 361--361
+l.339 		\item \textbf
+                     {Descripción:} el usuario accede al sistema con su use...
+]
+Overfull \hbox (2.35197pt too wide) in paragraph at lines 350--350
 []\T1/cmr/m/n/10.95 2a| 
  []
 
 
-Overfull \hbox (2.35197pt too wide) in paragraph at lines 362--362
+Overfull \hbox (2.95642pt too wide) in paragraph at lines 362--362
+[]\T1/cmr/m/n/10.95 2b| 
+ []
+
+
+Overfull \hbox (2.35197pt too wide) in paragraph at lines 383--383
+[]\T1/cmr/m/n/10.95 2a| 
+ []
+
+
+Overfull \hbox (2.35197pt too wide) in paragraph at lines 384--384
 []\T1/cmr/m/n/10.95 3a| 
  []
 
 
-Overfull \hbox (2.95642pt too wide) in paragraph at lines 373--373
+Overfull \hbox (2.95642pt too wide) in paragraph at lines 395--395
 []\T1/cmr/m/n/10.95 2b| 
  []
 
 
-Overfull \hbox (2.95642pt too wide) in paragraph at lines 374--374
+Overfull \hbox (2.95642pt too wide) in paragraph at lines 396--396
 []\T1/cmr/m/n/10.95 3b| 
  []
 
+[16pdfTeX warning (ext4): destination with the same identifier (name{table.2.4}
+) has been already used, duplicate ignored
 
-Overfull \hbox (2.35197pt too wide) in paragraph at lines 395--395
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.401 \end{itemize}
+                   pdfTeX warning (ext4): destination with the same identifier 
+(name{table.2.5}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.401 \end{itemize}
+                   pdfTeX warning (ext4): destination with the same identifier 
+(name{table.2.6}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.401 \end{itemize}
+                   ]
+Overfull \hbox (2.35197pt too wide) in paragraph at lines 417--417
 []\T1/cmr/m/n/10.95 2a| 
  []
 
 
-Underfull \hbox (badness 4595) in paragraph at lines 395--395
+Underfull \hbox (badness 4595) in paragraph at lines 417--417
 []\T1/cmr/m/n/10.95 El ar-chi-vo se-lec-cio-na-do se
  []
 
-[15pdfTeX warning (ext4): destination with the same identifier (name{table.2.4}
-) has been already used, duplicate ignored
 
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.401 
-      pdfTeX warning (ext4): destination with the same identifier (name{table.2
-.5}) has been already used, duplicate ignored
-
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.401 
-      pdfTeX warning (ext4): destination with the same identifier (name{table.2
-.6}) has been already used, duplicate ignored
-
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.401 
-      ]
-Overfull \hbox (2.95642pt too wide) in paragraph at lines 407--407
+Overfull \hbox (2.95642pt too wide) in paragraph at lines 428--428
 []\T1/cmr/m/n/10.95 2b| 
  []
 
-[16pdfTeX warning (ext4): destination with the same identifier (name{table.2.7}
+[17pdfTeX warning (ext4): destination with the same identifier (name{table.2.7}
 ) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.415 \newpage
-              pdfTeX warning (ext4): destination with the same identifier (name
-{table.2.8}) has been already used, duplicate ignored
+l.454 \end{itemize}
+                   pdfTeX warning (ext4): destination with the same identifier 
+(name{table.2.8}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.415 \newpage
-              ] (./TFG-JosManRejSan.bbl
+l.454 \end{itemize}
+                   pdfTeX warning (ext4): destination with the same identifier 
+(name{table.2.9}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.454 \end{itemize}
+                   ]
+Overfull \hbox (2.35197pt too wide) in paragraph at lines 491--491
+[]\T1/cmr/m/n/10.95 2a| 
+ []
+
+
+Underfull \hbox (badness 4595) in paragraph at lines 492--492
+[]\T1/cmr/m/n/10.95 El ar-chi-vo se-lec-cio-na-do se
+ []
+
+[18pdfTeX warning (ext4): destination with the same identifier (name{table.2.10
+}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.497 
+      pdfTeX warning (ext4): destination with the same identifier (name{table.2
+.11}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.497 
+      ]
+Overfull \hbox (2.95642pt too wide) in paragraph at lines 503--503
+[]\T1/cmr/m/n/10.95 2b| 
+ []
+
+
+Overfull \hbox (1.7475pt too wide) in paragraph at lines 504--504
+[]\T1/cmr/m/n/10.95 2c| 
+ []
+
+[19pdfTeX warning (ext4): destination with the same identifier (name{table.2.12
+}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.537 		\item \textbf
+                     {Postcondición:} el nombre del archivo queda cambiado.pdf
+TeX warning (ext4): destination with the same identifier (name{table.2.13}) has
+ been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.537 		\item \textbf
+                     {Postcondición:} el nombre del archivo queda cambiado.pdf
+TeX warning (ext4): destination with the same identifier (name{table.2.14}) has
+ been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.537 		\item \textbf
+                     {Postcondición:} el nombre del archivo queda cambiado.]
+Underfull \hbox (badness 4913) in paragraph at lines 546--546
+[]\T1/cmr/m/n/10.95 Usuario: in-ser-ta un nue-vo
+ []
+
+
+Overfull \hbox (2.35197pt too wide) in paragraph at lines 547--547
+[]\T1/cmr/m/n/10.95 3a| 
+ []
+
+
+Overfull \hbox (2.95642pt too wide) in paragraph at lines 558--558
+[]\T1/cmr/m/n/10.95 3b| 
+ []
+
+
+Overfull \hbox (2.35197pt too wide) in paragraph at lines 580--580
+[]\T1/cmr/m/n/10.95 3a| 
+ []
+
+
+Overfull \hbox (2.95642pt too wide) in paragraph at lines 591--591
+[]\T1/cmr/m/n/10.95 3b| 
+ []
+
+[20pdfTeX warning (ext4): destination with the same identifier (name{table.2.15
+}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.596 \end{itemize}
+                   pdfTeX warning (ext4): destination with the same identifier 
+(name{table.2.16}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.596 \end{itemize}
+                   pdfTeX warning (ext4): destination with the same identifier 
+(name{table.2.17}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.596 \end{itemize}
+                   ]
+Overfull \hbox (2.35197pt too wide) in paragraph at lines 613--613
+[]\T1/cmr/m/n/10.95 3a| 
+ []
+
+
+Overfull \hbox (2.95642pt too wide) in paragraph at lines 624--624
+[]\T1/cmr/m/n/10.95 3b| 
+ []
+
+[21pdfTeX warning (ext4): destination with the same identifier (name{table.2.18
+}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.650 \end{itemize}
+                   pdfTeX warning (ext4): destination with the same identifier 
+(name{table.2.19}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.650 \end{itemize}
+                   pdfTeX warning (ext4): destination with the same identifier 
+(name{table.2.20}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.650 \end{itemize}
+                   ] [22pdfTeX warning (ext4): destination with the same identi
+fier (name{table.2.21}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.699 		\item \textbf
+                     {Postcondición:} el directorio se añade a la cuenta d...
+pdfTeX warning (ext4): destination with the same identifier (name{table.2.22}) 
+has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.699 		\item \textbf
+                     {Postcondición:} el directorio se añade a la cuenta d...
+pdfTeX warning (ext4): destination with the same identifier (name{table.2.23}) 
+has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.699 		\item \textbf
+                     {Postcondición:} el directorio se añade a la cuenta d...
+]
+Overfull \hbox (2.35197pt too wide) in paragraph at lines 708--708
+[]\T1/cmr/m/n/10.95 2a| 
+ []
+
+
+Overfull \hbox (2.95642pt too wide) in paragraph at lines 719--719
+[]\T1/cmr/m/n/10.95 2b| 
+ []
+
+[23pdfTeX warning (ext4): destination with the same identifier (name{table.2.24
+}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.766 \end{itemize}
+                   pdfTeX warning (ext4): destination with the same identifier 
+(name{table.2.25}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.766 \end{itemize}
+                   pdfTeX warning (ext4): destination with the same identifier 
+(name{table.2.26}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.766 \end{itemize}
+                   ]
+Underfull \hbox (badness 4913) in paragraph at lines 782--782
+[]\T1/cmr/m/n/10.95 Usuario: in-ser-ta un nue-vo
+ []
+
+
+Overfull \hbox (2.35197pt too wide) in paragraph at lines 783--783
+[]\T1/cmr/m/n/10.95 3a| 
+ []
+
+
+Overfull \hbox (2.95642pt too wide) in paragraph at lines 794--794
+[]\T1/cmr/m/n/10.95 3b| 
+ []
+
+
+Overfull \hbox (2.35197pt too wide) in paragraph at lines 816--816
+[]\T1/cmr/m/n/10.95 3a| 
+ []
+
+[24pdfTeX warning (ext4): destination with the same identifier (name{table.2.27
+}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.821 
+      pdfTeX warning (ext4): destination with the same identifier (name{table.2
+.28}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.821 
+      pdfTeX warning (ext4): destination with the same identifier (name{table.2
+.29}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.821 
+      ]
+Overfull \hbox (2.95642pt too wide) in paragraph at lines 827--827
+[]\T1/cmr/m/n/10.95 3b| 
+ []
+
+
+Overfull \hbox (2.35197pt too wide) in paragraph at lines 849--849
+[]\T1/cmr/m/n/10.95 3a| 
+ []
+
+
+Overfull \hbox (2.95642pt too wide) in paragraph at lines 860--860
+[]\T1/cmr/m/n/10.95 3b| 
+ []
+
+[25pdfTeX warning (ext4): destination with the same identifier (name{table.2.30
+}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.865 \end{itemize}
+                   pdfTeX warning (ext4): destination with the same identifier 
+(name{table.2.31}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.865 \end{itemize}
+                   pdfTeX warning (ext4): destination with the same identifier 
+(name{table.2.32}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.865 \end{itemize}
+                   ]
+Underfull \hbox (badness 1152) in paragraph at lines 903--903
+[]\T1/cmr/m/n/10.95 El usua-rio que-da eli-mi-na-do
+ []
+
+
+Overfull \hbox (2.35197pt too wide) in paragraph at lines 904--904
+[]\T1/cmr/m/n/10.95 3a| 
+ []
+
+
+Overfull \hbox (2.95642pt too wide) in paragraph at lines 915--915
+[]\T1/cmr/m/n/10.95 3b| 
+ []
+
+[26pdfTeX warning (ext4): destination with the same identifier (name{table.2.33
+}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.920 \end{itemize}
+                   pdfTeX warning (ext4): destination with the same identifier 
+(name{table.2.34}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.920 \end{itemize}
+                   pdfTeX warning (ext4): destination with the same identifier 
+(name{table.2.35}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.920 \end{itemize}
+                   ]
+Underfull \hbox (badness 1354) in paragraph at lines 936--936
+\T1/cmr/m/n/10.95 di-rec-to-rios con-te-ni-dos en el
+ []
+
+
+Overfull \hbox (2.35197pt too wide) in paragraph at lines 956--956
+[]\T1/cmr/m/n/10.95 1a| 
+ []
+
+
+Overfull \hbox (2.95642pt too wide) in paragraph at lines 968--968
+[]\T1/cmr/m/n/10.95 1b| 
+ []
+
+
+Overfull \hbox (1.7475pt too wide) in paragraph at lines 969--969
+[]\T1/cmr/m/n/10.95 1c| 
+ []
+
+[27pdfTeX warning (ext4): destination with the same identifier (name{table.2.36
+}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.974 \end{itemize}
+                   pdfTeX warning (ext4): destination with the same identifier 
+(name{table.2.37}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.974 \end{itemize}
+                   pdfTeX warning (ext4): destination with the same identifier 
+(name{table.2.38}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.974 \end{itemize}
+                   ]
+<imagenes/diagramasDeClases.png, id=369, 1183.42125pt x 691.58376pt>
+File: imagenes/diagramasDeClases.png Graphic file (type png)
+
+<use imagenes/diagramasDeClases.png>
+Package pdftex.def Info: imagenes/diagramasDeClases.png used on input line 1010
+.
+(pdftex.def)             Requested size: 418.25555pt x 244.42174pt.
+ [28pdfTeX warning (ext4): destination with the same identifier (name{table.2.3
+9}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.1014 
+       pdfTeX warning (ext4): destination with the same identifier (name{table.
+2.40}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.1014 
+       ] [29pdfTeX warning (ext4): destination with the same identifier (name{f
+igure.2.5}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.1015 \newpage
+                <./imagenes/diagramasDeClases.png>] (./TFG-JosManRejSan.bbl
 LaTeX Font Info:    Try loading font information for T1+cmtt on input line 4.
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd
@@ -1146,27 +1495,28 @@ Underfull \hbox (badness 10000) in paragraph at lines 55--58
  []
 
 )
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 419.
- [17]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 419.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1019.
+ [30]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1019.
  (./TFG-JosManRejSan.aux
 LaTeX Info: Redefining \. on input line 23.
 LaTeX Info: Redefining \% on input line 23.
 )
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 419.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 419.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1019.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1019.
+
 Package rerunfilecheck Info: File `TFG-JosManRejSan.out' has not changed.
-(rerunfilecheck)             Checksum: 443BE84E31F6DFFEACDACFA9ABDB84CF;1261.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 419.
+(rerunfilecheck)             Checksum: 13080C4E0134D41C97CF50BCC794AE56;1353.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1019.
  ) 
 Here is how much of TeX's memory you used:
- 10891 strings out of 494891
- 160944 string characters out of 6179039
- 316281 words of memory out of 5000000
- 13939 multiletter control sequences out of 15000+600000
+ 10983 strings out of 494891
+ 162271 string characters out of 6179039
+ 319690 words of memory out of 5000000
+ 13983 multiletter control sequences out of 15000+600000
  20504 words of font info for 57 fonts, out of 8000000 for 9000
  40 hyphenation exceptions out of 8191
- 43i,12n,47p,1029b,535s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 43i,12n,47p,1029b,661s stack positions out of 5000i,500n,10000p,200000b,80000s
  </home/jose/.texmf-var/fonts/pk/ljfour/jknappen/ec/ectt1095.600pk> </home/jo
 se/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx2074.600pk> </home/jose/.texmf-va
 r/fonts/pk/ljfour/jknappen/ec/ecsx1200.600pk> </home/jose/.texmf-var/fonts/pk/l
@@ -1179,10 +1529,10 @@ ts/pk/ljfour/jknappen/ec/eccc1095.600pk> </home/jose/.texmf-var/fonts/pk/ljfour
 /jknappen/ec/ecbx1095.600pk></usr/share/texlive/texmf-dist/fonts/type1/public/a
 msfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/eurosym
 /feymr10.pfb>
-Output written on TFG-JosManRejSan.pdf (17 pages, 483179 bytes).
+Output written on TFG-JosManRejSan.pdf (30 pages, 569268 bytes).
 PDF statistics:
- 709 PDF objects out of 1000 (max. 8388607)
- 306 compressed objects within 4 object streams
- 75 named destinations out of 1000 (max. 500000)
- 162 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 850 PDF objects out of 1000 (max. 8388607)
+ 427 compressed objects within 5 object streams
+ 122 named destinations out of 1000 (max. 500000)
+ 175 words of extra memory for PDF output out of 10000 (max. 10000000)
 
