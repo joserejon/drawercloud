@@ -1,0 +1,125 @@
+\chapter{Implementación}
+
+Tras haber visto la parte del diseño toca trabajar la implementación. En este apartado profundizaremos sobre el entorno de trabajo usado y la estructura de la aplicación.
+
+\section{Entorno de trabajo}
+Django nos da la posibilidad de trabajar con un "entorno virtual". Estos entornos son creados con el objetivo de aislar recursos, como son las librerías y el entorno de ejecución, del sistema principal o de otros entornos virtuales. Esto quiere decir que podemos tinstalar distintas versiones de una librería sin que se provoquen conflictos. \\
+Para usar el entorno de trabajo hacemos uso de la herramienta \textbf{virtualenv}. Los comandos para crear un entorno y activarlo son los siguientes:
+
+\begin{itemize}
+	\item \textbf{Instalar virtualenv:} sudo pip install virtualenv
+	\item \textbf{Crear entorno de trabajo:} virtualenv drawercloud\_env
+	\item \textbf{Activar el entorno de trabajo:} source drawercloud\_env/bin/activate
+\end{itemize}
+
+Como podemos ver, para la instalación de virtualenv se ha usado \textbf{pip}. pip es la herramienta recomendada para instalar y administrar los paquetes de python. Los comandos que se usarán con más frecuencia son los que proceden:
+
+\begin{itemize}
+	\item \textbf{Instalar un paquete:} pip install <nombre\_paquete>
+	\item \textbf{Desinstalar un paquete:} pip uninstall <nombre\_paquete>
+	\item \textbf{Actualizar un paquete:} pip install <nombre\_paquete> --upgrade
+	\item \textbf{Listar los paquetes instalados:} pip freeze
+\end{itemize}
+
+\textbf{Importante:} Todos los comandos se deberán usar con el entorno de trabajo activado.
+
+\section{Estructura del proyecto}
+A continuación se mostrarán las partes en las que se compone la estructura del proyecto. \\
+
+\subsection{Fichero de configuración settings.py}
+El fichero \textbf{settings.py} es el encargado de controlar la configuración del proyecto en Django. A continuación mencionaremos las opciones más destacables de este fichero según este proyecto:
+
+\begin{itemize}
+	\item \textbf{DEBUG:} cuando la variable DEBUG se encuentre igualada a \textbf{True} querrá decir que el sistema se ejecuta en modo "depuración", el cual nos proporcia los detalles de un error cuando éste se produzca. Cuando la aplicación se ejecute en "producción", a la variable le asignaremos el valor \textbf{False} por motivos de seguridad.
+	
+	\item \textbf{SECRET\_KEY:} es la llave secreta de nuestro proyecto y sirve para encriptar la información dentro de la base de datos.
+	
+	\item \textbf{INSTALLED\_APPS:} es una lista en la que se indica las aplicaciones habilitadas para este proyecto. Por ejemplo, para usar el administrador de Django añadimos la sentencia \textbf{'django.contrib.admin'}.
+	
+	\item \textbf{MIDDLEWARE:} es un framework que se usa como enlace en el proceso de solicitud/respuesta.
+	
+	\item \textbf{STATICFILES\_DIRS}: se indica la ruta a la carpeta \textbf{static} de nuestro proyecto. Dicha carpeta es la que contiene archivos relacionados con el frontend, como pueden ser los archivos CSS o los archivos Javascript.
+	
+	\item \textbf{connect(database\_name)}: esta función se ocupa de conectar con la base de datos indicada en el parámetro database\_name. \textbf{connect} es una función de MongoDB, para usarla haremos las siguientes importaciones:
+	\begin{itemize}
+		\item from pymongo import MongoClient
+		\item from mongoengine import connect				
+	\end{itemize}
+	
+	\item \textbf{REGISTRATION\_OPEN}: esta variable se igualará a \textbf{True} para permitir el registro de usuarios.
+	
+	\item \textbf{LOGIN\_REDIRECT\_URL}: indicamos la ruta a la que debe redirigirnos la aplicación una vez se ha realizado el log in con éxito.
+	
+	\item \textbf{LOGIN\_URL}: con esta variable decimos al sistema donde debemos aparecer en caso de no haber realizado el log in, o bien si se intenta acceder a páginas que requieren haberse logueado previamente.
+\end{itemize}
+
+Para obtener más información acerca del fichero de configuración settings.py de Django podemos visitar el enlace de la cita \cite{cita_django_settings}.
+
+\subsection{Fichero de configuración urls.py}
+En este fichero se indican las \textbf{URLs} que se van a usar en la aplicación. Tendremos dos ficheros urls.py. El que ahora comentamos se encontrará en la misma carpeta que el fichero settings.py mientras que el otro se encontrará en la carpeta del proyecto, la cual contiene los archivos como views.py, la carpeta static o la carpeta templates. En este apartado nos referimos al archivo urls.py almacenado junto a settings.py. En éste indicaremos las rutas a la página de administración, la ruta al resto de urls del proyecto y la ruta necesaria para el registro de usarios mediante django-registration-redux: \\
+
+\begin{lstlisting}[language=python]
+	urlpatterns = [
+		url(r'^admin/', admin.site.urls),
+		url(r'^proyecto/', include('proyecto.urls')),
+		url(r'^accounts/', include('registration.backends.simple.urls')),
+	]
+\end{lstlisting}
+
+\subsection{Fichero views.py}
+El archivo \textbf{views.py} contiene las funciones que recibirán peticiones web y responderán a dichas peticiones también con un resultado web. Las respuestas prodrán ser un código HTML, una imagen, reproducir una canción, etc. El propio archivo contiene cualquier lógica que sea necesaria para poder devolver una respuesta. A modo de ejemplo vemos una vista simple como es la página principal de la sección "Multimedia" de nuestra aplicación. \\
+
+\begin{lstlisting}[language=python]
+	@login_required(login_url='/accounts/login/') #Requiere estar logueado para usar la funcion
+	def multimedia(request):
+		return render(request, 'multimedia.html', {'pagina_actual':'Multimedia'}) #Renderiza el fichero HTML multimedia.html
+\end{lstlisting}
+
+\subsection{Fichero models.py}
+Recordamos que estamos usando una base de datos MongoDB. MongoDB es una base de datos orientada a documentos. Esto quiere decir que los datos no se guardan en registros, sino que se guardan en los denominados documentos. Éstos se almacenan en BSON, que nos es más que una representación binaria de JSON. \\
+
+El fichero encargado para la gestión de documentos es el fichero \textbf{models.py}. En dicho fichero detallamos la estructura de los documentos que vayamos a crear. Por ejemplo, para el documento \textbf{Archivo} (usado para almacenar los archivos que se suban a drawercloud) tenemos la siguiente disposición: \\
+
+\begin{lstlisting}[language=python]
+	class Archivo(Document):
+		id_archivo = DecimalField()
+		nombre = StringField()
+		tipo_archivo = StringField()
+		archivo = FileField()
+		fecha_subida = StringField()
+		propietario = StringField()
+		tam_archivo = DecimalField()
+		favorito = BooleanField()
+\end{lstlisting}
+
+
+\subsection{Fichero forms.py}
+En el archivo \textbf{forms.py} escribiremos toda la funcionalidad necesaria para gestionar los documentos de la base de datos. Las acciones tales como crear un usuario, almacenar un archivo, añadir un usuario a un grupo de trabajo... vendrán descritas en este fichero. Por ejemplo, la función para guardar un nuevo usuario quedaría de la siguiente manera: \\
+
+\begin{lstlisting}[language=python]
+	def save(self, _username):
+		u = Usuario()
+		
+		u.username = _username
+		u.id_username = Usuario.objects.count() + 1
+		u.img_perfil = -1
+		
+		u.save()
+		
+		return u
+\end{lstlisting}
+
+\subsection{Fichero urls.py}
+Nos encontramos aquí con el otro fichero \textbf{urls.py}. Dicho fichero contiene todas las urls de todas las funciones que se encuentran en el fichero views.py. Por ejemplo, para la función que se ocupa de descargar un archivo tendremos algo tal que así: \\
+
+\begin{lstlisting}[language=python]
+	url(r'^descargarArchivo/$', views.descargarArchivo, name='descargarArchivo'),
+\end{lstlisting}
+
+Analizando la sentencia, tenemos que el primer argumento es la url que tendrá en la web. El segundo argumento indica el nombre de la función en el fichero views.py. Por último, el tercer argumento indica el nombre con el cual nos podremos referir a la función cuando queramos invocarla, por ejemplo, desde un fichero HTML o Javascript. \\
+
+\subsection{Directorio templates}
+Este directorio contiene todos los archivos \textbf{HTML} que forman la vista de la aplicación. \\ 
+
+\subsection{Directorio static}
+Este directorio contiene todos los archivos \textbf{CSS, Javascript, imágenes, ...} que complementan a los archivos HTML almacenados en el directorio templates y que juntos forman el frontend. \\ 

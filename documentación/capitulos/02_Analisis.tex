@@ -1,134 +1,39 @@
-\input{preambuloSimple.tex}
+\chapter{Análisis}
 
-
-%----------------------------------------------------------------------------------------
-%	TÍTULO Y DATOS DEL ALUMNO
-%----------------------------------------------------------------------------------------
-
-\title{	
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.7\textwidth]{imagenes/logo_ugr}
-\end{figure}
-\normalfont \normalsize
-\textsc{{ \\ \bf Trabajo Fin de Grado (2016-2017)} \\ Grado en Ingeniería Informática \\ Universidad de Granada} \\ [25pt] % Your university, school and/or department name(s)
-\horrule{0.5pt} \\[0.4cm] % Thin top horizontal rule
-\huge drawercloud \\ % The assignment title
-\horrule{2pt} \\[0.5cm] % Thick bottom horizontal rule
-}
-
-\author{\textbf{Autor}: José Manuel Rejón Santiago \\ \textbf{Tutor}: Prof. Dr. Jose María Guirao Miras} % Nombre y apellidos
-
-\date{\normalsize\today} % Incluye la fecha actual
-
-
-%----------------------------------------------------------------------------------------
-% DOCUMENTO
-%----------------------------------------------------------------------------------------
-
-\begin{document}
-
-\maketitle % Muestra el Título
-
-\newpage %inserta un salto de página
-
-\tableofcontents % para generar el índice de contenidos
-
-\listoffigures
-
-\listoftables
-
-\newpage
-
-\section{Sobre drawercloud}
-\subsection{Resumen}
-\hfill
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.7\textwidth]{imagenes/logo_ugr}
-\end{figure}
-\hfill
-\begin{center}
-	\horrule{0.5pt} \\[0.4cm] % Thin top horizontal rule
-	\huge \textbf{drawercloud} \\ % The assignment title
-	\Large Almacenamiento de archivos en la nube \\ % The assignment title
-	\horrule{2pt} \\[0.5cm] % Thick bottom horizontal rule
-\end{center}
-
-\hfill
-
-\textbf{drawercloud} es una aplicación web para el alojamiento de archivos en la nube. Los usuarios podrán realizar diversas tareas sobre sus archivos, como por ejemplo: 
-\begin{itemize}
-	\item Añadir/Eliminar archivos en la nube.
-	\item Reproducir archivos multimedia.
-	\item Organizar archivos en directorios.
-	\item Compartir archivos.
-	\item Descargar en un dispositivo (pc, tablet, smartphone).
-	\item ...
-\end{itemize}
-De este modo, conseguiremos tener nuestros archivos almacenados en un servidor web, ahorrando espacio en nuestros dispositivos y con la seguridad de tener nuestro material a salvo en otro lugar. Además de estas \\
-
-Para el desarrollo de la web usaremos \textbf{Django} \cite{cita1}, que es un framework para aplicaciones web gratuito y open source, escrito en \textbf{Python} \cite{cita2}. La aplicación web contará con un \textbf{responsive design} para ser adaptada a otros dispositivos (como smartphones o tablets). En el lado del servidor, se usará la tecnología proporcionada por Amazon Web Services o Google.\\
-
-Para el aspecto gráfico usamos la tecnología que nos ofrece \textbf{Twitter Bootstrap} \cite{cita3}, un framework \textbf{HTML} \cite{cita4}, \textbf{CSS} \cite{cita5} y \textbf{JavaScript} \cite{cita6} para lograr un diseño web adaptable (responsive design) entre los distintos dispositivos que puedan hacer uso de la aplicación web. \textbf{Ajax} \cite{cita7} y \textbf{jQuery} \cite{cita8} serán las herramientas elegidas para ofrecer una mejor interacción entre el usuario y la aplicación web. \\
-
-La base de datos será gestionada con \textbf{MongoDB} \cite{cita9}, que es una base de datos orientada a documentos estilo JSON (incluye información del tipo de dato). \\
-
-Drawercloud hace uso de \textbf{EC2} \cite{cita_ec2} (Amazon Virtual Servers), que nos permite alojar la web gratuitamente durante un año y poder acceder a ella desde cualquier dispositivo que se conecte a la red. Como servidor web usamos \textbf{NGINX} \cite{cita_nginx} y \textbf{Gunicorn} \cite{cita_gunicorn} que es un WSGI de Python.\\
-
-Este proyecto está bajo la licencia de software libre, lo que significa que los usuarios tienen la libertad de ejecutar, copiar, distribuir, estudiar, modificar y mejorar el software.
-
-\subsection{Motivación}
-
-Unos de los problemas que surgen en el uso de nuestros dispositivos es el almacenamiento. Es cierto que el precio del \textbf{gigabyte} es cada vez más barato e incluso más rápido (como por ejemplo en los discos duros SSD, que están dotados de un gran incremento de velocidad, además de consumir menos energía) pero, aunque en un ordenador el almacenamiento puede no ser un problema, si que lo es si hablamos de dispositivos móviles como smartphones o tablets. A día de hoy, encontramos dispositivos que no permiten la insercción de tarjetas de almacenamiento flash, lo cual nos obliga a conformarnos con el espacio que el fabricante pone a nuestra disposición (o a comprar el modelo con más capacidad, pero obviamente más caro). \textbf{drawercloud} viene a poner solución a este problema, ofreciendo un espacio personal en un servidor web dedicado para dicha aplicación, de modo que nuestros datos permanecen en tal servidor sin ocupar memoria en nuestros dispositivos. \\
-
-¿Significa esto que solo es una solución para dispositivos que cuentan con un espacio muy limitado? No, ya que otro problema que puede surgirnos con mucha facilidad es la pérdida de información por diversas causas (disco duro roto, pérdida del dispositivo, virus, etc) y para ello este proyecto también ofrece una solución a dicho problema. Podemos almacenar nuestros archivos tanto en el disco duro propio del dispositivo en cuestión, como en el espacio ofrecido en el servidor web, de modo que si nos vemos afectados por alguno de los motivos mencionados, o bien por otros que afectan a la desaparición de nuestra información, tengamos una copia en otro lugar y no perdamos nuestros archivos. \\
-
-Otro caso en el que esta aplicación resulta interesante es que podemos disponer de nuestros datos en cualquier parte. A modo de ejemplo, podemos pensar en un archivo que estamos modificando en casa y en nuestro puesto de trabajo. Almacenando dicho archivo en la nube nos tenemos que olvidar de mover la información a través de, por ejemplo, un pen drive o de tener una copia en casa y otra en la oficina y andar actualizando ambas cada vez que queramos trabajar. Simplemente entraremos con nuestra cuenta a \textbf{drawercloud} desde cualquier dispositivo y tendremos acceso al archivo en cuestión. Además, proporciona un método para compartir archivos y crear grupos de trabajo, de modo que si sobre ese archivo están trabajando, por ejemplo, 3 personas más, podrán ver las modificaciones que hemos realizado directamente sobre el archivo alojado en el servidor web.
-
-\newpage
-\section{Análisis}
-\subsection{Estudio de mercado}
+\section{Estudio de mercado}
 Antes de comenzar el desarrollo del proyecto es recomendable realizar un estudio de mercado. Dicho estudio nos ofrecerá una visión de las virtudes y carencias de los productos que actualmente ofrecen un servicio similar y así, saber en que punto nos encontraremos respecto a ellos. Ésto nos dará la ventaja de poder realzar los puntos fuertes de nuestro proyecto frente a la competencia. Veamos algunos ejemplos de aplicaciones que ofrecen el mismo servicio: \\
 
-\hfill\begin{minipage}{\dimexpr\textwidth-1cm}
-\subsubsection{Dropbox \cite{cita_dropbox}}
+\subsection{Dropbox \cite{cita_dropbox}}
 Dropbox es la aplicación para almacenar archivos en la nube posiblemente más conocida y usada, siendo ésta una de las primeras en ofrecernos este tipo de servicios. En su versión gratuita, los usuarios de esta aplicación disponen de 2GB, pero se puede ampliar hasta 16GB realizando algunas sencillas tareas (como subir fotos desde el móvil o recomendar a amigos). Por 9,99 \euro/mes se dispondrá de 1TB de espacio disponible. \textbf{Equipo} y \textbf{Paper} son dos opciones que ofrece Dropbox para trabajar en equipo, siendo éstas dos puntos fuertes de este servicio. También su aplicación de escritorio es un punto muy a favor, dando la posibilidad al usuario de sincronizar sus datos más rápidamente (aunque puede ralentizar el arranque del pc mientras sincroniza). \\
-\end{minipage}
 
-\hfill\begin{minipage}{\dimexpr\textwidth-1cm}
-\subsubsection{Google Drive \cite{cita_google_drive}}
+\subsection{Google Drive \cite{cita_google_drive}}
 Como era de esperar, no podía faltar Google en esta lista. En su versión gratuita ofrece 15GB de almacenamiento (sin necesidad de realizar tareas para ampliar como hace dropbox). Para ampliar el espacio, Google Drive ofrece dos posibilidades:
-\begin{enumerate}[label=(\alph*)]
+\begin{enumerate}
 	\item 100GB por 1,99 \euro/mes
 	\item 1TB por 9,99 \euro/mes
 \end{enumerate}
 Sin duda, el punto fuerte de Google Drive es la posibilidad de crear archivos (como hojas de texto, hojas de cálculo, formularios, ...) que pueden ser editados por otras personas (si le damos el permiso de compartir) y así trabajar en grupo sobre el mismo documento en la nube, almacenando los cambios automáticamente. \\
-\end{minipage}
 
-\hfill\begin{minipage}{\dimexpr\textwidth-1cm}
-\subsubsection{Mega \cite{cita_mega}}
+
+\subsection{Mega \cite{cita_mega}}
 Aunque es más conocido por la piratería, Mega es otra de las solucines para alojar archivos en la nube. Ofrece hasta 50GB de forma de gratuita y en caso de querer más espacio, se pueden usar estas alternativas:
-\begin{enumerate}[label=(\alph*)]
+\begin{enumerate}
 	\item 500GB por 9,99 \euro/mes
 	\item 2TB por 19,99 \euro/mes
 	\item 4TB por 29,99 \euro/mes
 \end{enumerate}
 Además de la enorme cantidad de espacio, el alto ancho de banda que ofrece sería un punto a favor de Mega. \\
-\end{minipage}
 
-\hfill\begin{minipage}{\dimexpr\textwidth-1cm}
-\subsubsection{OneDrive \cite{cita_onedrive}}
+\subsection{OneDrive \cite{cita_onedrive}}
 OneDrive es la solución para almacenamiento en la nube propuesta por Microsoft. Viene preinstalado en Windows 10 y eso permite que los documentos y las fotografías se guarden automáticamente en OneDrive. Ofrece también un apartado de empresas para que un grupo de trabajo pueda colaborar sobre los mismos archivos en tiempo real (permite colaborar con Word, Excel, PowerPoint, OneNote).
 La versión gratuita de este servicio se ha reducido a 5GB (siendo antes 15GB). Las soluciones de pago son las siguientes:
-\begin{enumerate}[label=(\alph*)]
+\begin{enumerate}
 	\item 50GB por 2,00 \euro/mes
 	\item 1TB por 7,00 \euro/mes (incluye Office 365 y la opción de instalar en un PC o Mac y en una tablet y un smartphone)
 	\item 5TB (1000 GB por usuario) por 10,00 \euro/mes (incluye Office 365 y la opción de instalar en 5 PC o Mac y en 5 tablets y 5 smartphones)
 \end{enumerate}
-\end{minipage}
 
-\subsection{Objetivos del sistema}
+\section{Objetivos del sistema}
 El objetivo principal del sistema es poner a disposición del usuario un espacio de almacenamiento en la nube. En dicho espacio, el usuario tendrá la posibilidad de almacenar información de forma organizada, compartir los archivos deseados y tener accesibilidad a éstos desde cualquier plataforma con un navegador web. \\
 
 Con el fin de ofrecer un sistema fiable a los clientes, este programa deberá cumplir algunas características:
@@ -145,7 +50,7 @@ Visto el objetivo principal, se listan los objetivos específicos a realizar par
 	\item \textbf{OBJ-3:} El sistema deberá ser accesible desde todos los dispositivos dotados de navegador web (ordenador, smartphone, tablet, etc).
 \end{itemize}
 
-\subsection{Requisitos funcionales del sistema}
+\section{Requisitos funcionales del sistema}
 En esta sección indicamos qué debe hacer el sistema:
 
 \begin{itemize}
@@ -193,7 +98,7 @@ En esta sección indicamos qué debe hacer el sistema:
 	\end{itemize}
 \end{itemize}
 
-\subsection{Requisitos no funcionales del sistema}
+\section{Requisitos no funcionales del sistema}
 En esta sección se incluyen restricciones que afectarán a los requisitos funcionales:
 
 \begin{itemize}
@@ -204,14 +109,14 @@ En esta sección se incluyen restricciones que afectarán a los requisitos funci
 	\item \textbf{RNF-5: Rendimiento.} El sistema debe tener un tiempo de respuesta	y aprovechamiento de los recursos óptimo.
 \end{itemize}
 
-\subsection{Requisitos de información}
+\section{Requisitos de información}
 En esta sección se indica la información que es necesaria almacenar en el sistema:
 
 \begin{itemize}
 	\item \textbf{RI-1: Usuarios.} Datos sobre las personas que usarán la aplicación.
 	\begin{itemize}
-			\item \textbf{Contenido:} nombre de usuario, contraseña, dirección de correo electrónico.
-			\item \textbf{Requisitos asociados:} RF-1, RNF-1, RNF-3.
+		\item \textbf{Contenido:} nombre de usuario, contraseña, dirección de correo electrónico.
+		\item \textbf{Requisitos asociados:} RF-1, RNF-1, RNF-3.
 	\end{itemize}
 	
 	\item \textbf{RI-2: Archivos.} Datos sobre los archivos que se alojarán en la aplicación.
@@ -233,8 +138,8 @@ En esta sección se indica la información que es necesaria almacenar en el sist
 	\end{itemize}
 \end{itemize}
 
-\subsection{Casos de uso}
-\subsubsection{Descripción de los actores}
+\section{Casos de uso}
+\subsection{Descripción de los actores}
 \begin{itemize}
 	\item \textbf{DA-1: Usuario.}
 	\begin{itemize}
@@ -244,7 +149,7 @@ En esta sección se indica la información que es necesaria almacenar en el sist
 		\item \textbf{Referencias:} Puede consultar la base de datos de sus archivos, directorios, grupos de trabajo, información asociada a su perfil y la ayuda.
 	\end{itemize}
 \end{itemize}
-\subsubsection{Diagramas del modelo de casos de uso}
+\subsection{Diagramas del modelo de casos de uso}
 Los diagramas de casos de uso representan como el usuario se relaciona con el sistema para usar sus funciones. A continuación vemos dichos diagramas:
 
 \begin{figure}[H]
@@ -275,7 +180,7 @@ Los diagramas de casos de uso representan como el usuario se relaciona con el si
 	\label{fig:casouso_grupo_trabajo}
 \end{figure}
 
-\subsubsection{Descripción de los casos de uso}
+\subsection{Descripción de los casos de uso}
 A continuación se exponen los casos de uso principales del sistema, correspondientes a las acciones básicas del usuario con la plataforma, definiendo el comportamiento normal y alternativo de cada acción.
 
 \begin{itemize}
@@ -292,8 +197,8 @@ A continuación se exponen los casos de uso principales del sistema, correspondi
 			\multicolumn{4}{|c|}{Curso normal} \\ \hline
 			\multicolumn{2}{|c|}{Actor} & \multicolumn{2}{|c|}{Sistema} \\ \hline
 			1 & Usuario: inicia la acción de registro en el sistema. &  &  \\ \hline
-			  &  & 2a & Dar de alta al usuario en el sistema. \\ \hline
-			  &  & 3 & El usuario queda dado de alta en el sistema y puede empezar a usar la aplicación. \\ \hline
+			&  & 2a & Dar de alta al usuario en el sistema. \\ \hline
+			&  & 3 & El usuario queda dado de alta en el sistema y puede empezar a usar la aplicación. \\ \hline
 		\end{tabular}
 		\caption{Curso normal de CU-1. Alta de usuarios.}
 		\label{tabla:cu1-normal}
@@ -993,7 +898,7 @@ A continuación se exponen los casos de uso principales del sistema, correspondi
 	\end{table}
 \end{itemize}
 
-\subsubsection{Diagrama de clases del diseño}
+\subsection{Diagrama de clases del diseño}
 El diagrama de clases del diseño describe gráficamente las especificaciones de las clases e interfaces software y las relaciones entre éstas en una aplicación. Puede contener los siguiente elementos:
 \begin{itemize}
 	\item Clases con sus atributos y sus operaciones.
@@ -1012,74 +917,3 @@ A continuación podemos ver el diagrama de clases del diseño propuesto:
 	\label{fig:diagramasDeClases}
 \end{figure}
 
-\newpage
-\section{Diseño}
-En este apartado se comentarán los aspectos más importantes para el desarrollo de la aplicación. Para estudiar este apartado vamos a dividir el contenido en dos grupos: servidor (backend) y cliente (frontend).
-\subsection{Backend}
-El \textbf{backend} se encarga de recibir los datos desde el frontend y procesar dichos datos. \\
-
-\hfill\begin{minipage}{\dimexpr\textwidth-1cm}
-	\subsubsection{Patrón Modelo-Vista-Controlador (MVC)}
-	Para el desarrollo de la aplicación se plantea el uso del patrón de arquitectura de software MVC, el cual se basa en separar los datos de la lógica de la aplicación y su interfaz. Ésto facilita el desarrollo y el posterior mantenimiento de la aplicación.
-	\begin{itemize}
-		\item \textbf{Modelo} (Model): \textbf{información} con la que trabaja el sistema. Se encarga de gestionar los accesos a dicha información, tanto consultas como actualizaciones. Se corresponde con la base de datos.
-		\item \textbf{Vista} (View): se refiere a los datos que se van a mostrar y como mostrarlos. La vista será el \textbf{frontend} de nuestra aplicación.
-		\item \textbf{Controlador} (Controller): responde a \textbf{eventos} (generalmente los proporcionará el usuario) y llama al modelo cuando se realiza alguna solicitud sobre la información. También podrá enviar solicitudes a la vista si se solicita un cambio en la forma que mostrar la información. \\
-	\end{itemize}
-	
-	\begin{figure}[H]
-		\centering
-		\includegraphics[width=0.7\textwidth]{imagenes/img_mvc}
-		\caption{Diagrama Model-View-Controller.}
-		\label{fig:img_mvc}
-	\end{figure}
-\end{minipage}
-
-\hfill\begin{minipage}{\dimexpr\textwidth-1cm}
-	\subsubsection{Django}
-	La decisión de usar el framework \textbf{Django} viene dada por su uso de la arquitectura MVC y su disponibilidad para trabajar con Python. Debido a que el controlador es manejado por el mismo framework y la parte más importante se produce en los modelos, las plantillas y las vistas, Django es conocido como un Framework MTV (Model- View - Template) \cite{cita_mvt}.
-	\begin{itemize}
-		\item \textbf{Modelo} (Model): \textbf{información} con la que trabaja el sistema. Se encarga de gestionar los accesos a dicha información, tanto consultas como actualizaciones. Se corresponde con la base de datos.
-		\item \textbf{Vista} (View): esta capa contiene la \textbf{lógica} que accede al modelo y la delega a la plantilla apropiada: actúa como puente entre el modelos y las plantillas.
-		\item \textbf{Plantilla} (Template): se relaciona con la \textbf{presentación} de la información: como algunas cosas son mostradas sobre una página web u otro tipo de documento. \\
-	\end{itemize}
-	
-	\begin{figure}[H]
-		\centering
-		\includegraphics[width=0.7\textwidth]{imagenes/img_mvt}
-		\caption{Diagrama Model-View-Template.}
-		\label{fig:img_mvt}
-	\end{figure}
-	
-	Django nos permite crear sitios web complejos ofreciendo diversos componentes que podemos usar para el desarrollo de nuestra aplicación.
-	
-	\subsubsection{Sistema gestor de base de datos}
-	El sistema gestor de base de datos es el encargado de proporcionar la capa de acceso a la información de la base de datos. Haciendo uso del ORM de Django, utilizaremos un conector para la base de datos \textbf{MongoDB}.
-\end{minipage}
-
-\subsection{Frontend}
-El \textbf{frontend} se refiere a la parte del sistema que se encarga de interactuar con los usuarios y mandar las peticiones al backend. Para interactuar con los usuarios hacemos uso de tecnologías web como \textbf{HTML}, \textbf{CSS} y \textbf{Javascript}. Este sistema trabaja todo el tiempo recibiendo peticiones de usuarios, por lo tanto usando las tecnologías mencionadas y añadiendo otras, como \textbf{jQuery}, haremos de nuestra interfaz un entorno intuitivo para los usuarios. \\
-
-\hfill\begin{minipage}{\dimexpr\textwidth-1cm}
-	\subsubsection{jQuery}
-	\textbf{jQuery} es una librería de Javascript la cual ofrece la posibilidad de manipular los documentos HTML y manejar eventos, dotando a la web de una mayor dinamicidad. Es compatible con la mayoría de los navegadores actuales, tanto en pc como en dispositivos móviles. \\
-\end{minipage}
-
-\hfill\begin{minipage}{\dimexpr\textwidth-1cm}
-	\subsubsection{AJAX}
-	Por otro lado \textbf{AJAX} nos brinda la oportunidad de cargar datos desde el backend sin la necesidad de recargar toda la página del navegador. \\
-\end{minipage}
-
-\hfill\begin{minipage}{\dimexpr\textwidth-1cm}
-	\subsubsection{Twitter Bootstrap}
-	Otra tecnología usada de cara a la interacción con los usuarios de nuestra aplicación es la que nos aporta \textbf{Twitter Bootstrap}. Twitter Bootstrap es un framework CSS que nos facilita la tarea del diseño de la aplicación. Con esta tecnología podremos crear diseños muy elegantes y limpios, además de dotar a la aplicación web de un diseño adaptativo (responsive design) y así poder disfrutar de nuestra aplicación sin problemas en cualquier dispositivo y tamaño de pantalla. \\
-\end{minipage}
-
-\newpage
-\section{Implementación}
-
-\newpage
-\bibliography{citas} %archivo citas.bib que contiene las entradas 
-\bibliographystyle{ieeetr} % hay varias formas de citar
-
-\end{document}
