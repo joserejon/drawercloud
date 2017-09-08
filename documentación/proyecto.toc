@@ -1,6 +1,6 @@
 \select@language {spanish}
 \contentsline {chapter}{\numberline {1}Introducci\IeC {\'o}n}{17}{chapter.1}
-\contentsline {section}{\numberline {1.1}Motivaci\IeC {\'o}n}{17}{section.1.1}
+\contentsline {section}{\numberline {1.1}Motivaci\IeC {\'o}n}{18}{section.1.1}
 \contentsline {chapter}{\numberline {2}An\IeC {\'a}lisis}{19}{chapter.2}
 \contentsline {section}{\numberline {2.1}Estudio de mercado}{19}{section.2.1}
 \contentsline {subsection}{\numberline {2.1.1}Dropbox \cite {cita_dropbox}}{19}{subsection.2.1.1}
@@ -37,10 +37,13 @@
 \contentsline {subsection}{\numberline {4.2.7}Directorio templates}{51}{subsection.4.2.7}
 \contentsline {subsection}{\numberline {4.2.8}Directorio static}{51}{subsection.4.2.8}
 \contentsline {chapter}{\numberline {5}Pruebas}{53}{chapter.5}
-\contentsline {section}{\numberline {5.1}Pruebas en PC}{53}{section.5.1}
-\contentsline {section}{\numberline {5.2}Pruebas en Smartphone/Tablet}{53}{section.5.2}
+\contentsline {section}{\numberline {5.1}Resultados de las pruebas con usuarios}{53}{section.5.1}
 \contentsline {chapter}{\numberline {6}Conclusiones y trabajos futuros}{55}{chapter.6}
 \contentsline {section}{\numberline {6.1}Conclusiones}{55}{section.6.1}
 \contentsline {subsection}{\numberline {6.1.1}Conocimientos adquiridos}{55}{subsection.6.1.1}
 \contentsline {section}{\numberline {6.2}Trabajos futuros}{56}{section.6.2}
 \contentsline {chapter}{\numberline {7}Manual de usuario}{57}{chapter.7}
+\contentsline {section}{\numberline {7.1}Acceso a la aplicaci\IeC {\'o}n}{57}{section.7.1}
+\contentsline {section}{\numberline {7.2}P\IeC {\'a}gina principal - Documentos}{58}{section.7.2}
+\contentsline {subsection}{\numberline {7.2.1}Opciones para archivos}{60}{subsection.7.2.1}
+\contentsline {subsection}{\numberline {7.2.2}Opciones para directorios}{60}{subsection.7.2.2}
