@@ -47,3 +47,19 @@
 \contentsline {section}{\numberline {7.2}P\IeC {\'a}gina principal - Documentos}{58}{section.7.2}
 \contentsline {subsection}{\numberline {7.2.1}Opciones para archivos}{60}{subsection.7.2.1}
 \contentsline {subsection}{\numberline {7.2.2}Opciones para directorios}{60}{subsection.7.2.2}
+\contentsline {section}{\numberline {7.3}Multimedia}{60}{section.7.3}
+\contentsline {section}{\numberline {7.4}Compartir}{61}{section.7.4}
+\contentsline {subsection}{\numberline {7.4.1}Opciones para archivos compartidos por mi}{62}{subsection.7.4.1}
+\contentsline {subsection}{\numberline {7.4.2}Opciones para archivos compartidos conmigo}{62}{subsection.7.4.2}
+\contentsline {section}{\numberline {7.5}Favoritos}{62}{section.7.5}
+\contentsline {subsection}{\numberline {7.5.1}Opciones para archivos favoritos}{63}{subsection.7.5.1}
+\contentsline {section}{\numberline {7.6}Grupo de trabajo}{63}{section.7.6}
+\contentsline {subsection}{\numberline {7.6.1}Crear un grupo}{64}{subsection.7.6.1}
+\contentsline {subsection}{\numberline {7.6.2}Ver mis grupos}{64}{subsection.7.6.2}
+\contentsline {subsection}{\numberline {7.6.3}Contenido de un grupo de trabajo}{65}{subsection.7.6.3}
+\contentsline {subsubsection}{Opciones para los archivos dentro de un grupo de trabajo:}{66}{section*.70}
+\contentsline {subsubsection}{Opciones para los directorios dentro de un grupo de trabajo:}{66}{section*.71}
+\contentsline {section}{\numberline {7.7}Opciones de usuario}{67}{section.7.7}
+\contentsline {subsection}{\numberline {7.7.1}Usuario}{67}{subsection.7.7.1}
+\contentsline {subsection}{\numberline {7.7.2}Ayuda}{68}{subsection.7.7.2}
+\contentsline {subsection}{\numberline {7.7.3}Salir}{69}{subsection.7.7.3}
