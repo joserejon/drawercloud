@@ -801,7 +801,7 @@ class ArchivoForm():
 				archivos_dic[int(archivo.id_archivo)] = [int(archivo.id_archivo), archivo.nombre, archivo.tipo_archivo, 
 				str(archivo.fecha_subida), str(archivo.tam_archivo), archivo.favorito]
 			else:
-				subdirectorio = Directorio.objects(id_directorio=contenido[0])[0]
+				subdirectorio = Directorio.objects(id_directorio=contenido[0], propietario=username)[0]
 
 				subdirectorios_dic[int(subdirectorio.id_directorio)] = [int(subdirectorio.id_directorio), subdirectorio.nombre]
 

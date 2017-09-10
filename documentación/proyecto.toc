@@ -38,6 +38,7 @@
 \contentsline {subsection}{\numberline {4.2.8}Directorio static}{51}{subsection.4.2.8}
 \contentsline {chapter}{\numberline {5}Pruebas}{53}{chapter.5}
 \contentsline {section}{\numberline {5.1}Resultados de las pruebas con usuarios}{53}{section.5.1}
+\contentsline {subsubsection}{\IeC {\textquestiondown }Qu\IeC {\'e} podemos destacar de las pruebas?}{53}{section*.55}
 \contentsline {chapter}{\numberline {6}Conclusiones y trabajos futuros}{55}{chapter.6}
 \contentsline {section}{\numberline {6.1}Conclusiones}{55}{section.6.1}
 \contentsline {subsection}{\numberline {6.1.1}Conocimientos adquiridos}{55}{subsection.6.1.1}
@@ -57,8 +58,8 @@
 \contentsline {subsection}{\numberline {7.6.1}Crear un grupo}{64}{subsection.7.6.1}
 \contentsline {subsection}{\numberline {7.6.2}Ver mis grupos}{64}{subsection.7.6.2}
 \contentsline {subsection}{\numberline {7.6.3}Contenido de un grupo de trabajo}{65}{subsection.7.6.3}
-\contentsline {subsubsection}{Opciones para los archivos dentro de un grupo de trabajo:}{66}{section*.70}
-\contentsline {subsubsection}{Opciones para los directorios dentro de un grupo de trabajo:}{66}{section*.71}
+\contentsline {subsubsection}{Opciones para los archivos dentro de un grupo de trabajo:}{66}{section*.71}
+\contentsline {subsubsection}{Opciones para los directorios dentro de un grupo de trabajo:}{66}{section*.72}
 \contentsline {section}{\numberline {7.7}Opciones de usuario}{67}{section.7.7}
 \contentsline {subsection}{\numberline {7.7.1}Usuario}{67}{subsection.7.7.1}
 \contentsline {subsection}{\numberline {7.7.2}Ayuda}{68}{subsection.7.7.2}
