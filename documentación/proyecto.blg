@@ -3,36 +3,36 @@ Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: proyecto.aux
 The style file: ieeetr.bst
 Database file #1: citas.bib
-You've used 18 entries,
+You've used 19 entries,
             1876 wiz_defined-function locations,
-            516 strings with 5071 characters,
-and the built_in function-call counts, 1842 in all, are:
-= -- 162
-> -- 18
+            518 strings with 5140 characters,
+and the built_in function-call counts, 1943 in all, are:
+= -- 171
+> -- 19
 < -- 0
-+ -- 18
++ -- 19
 - -- 0
-* -- 56
-:= -- 175
-add.period$ -- 18
-call.type$ -- 18
-change.case$ -- 18
+* -- 59
+:= -- 184
+add.period$ -- 19
+call.type$ -- 19
+change.case$ -- 19
 chr.to.int$ -- 0
-cite$ -- 18
-duplicate$ -- 72
-empty$ -- 325
+cite$ -- 19
+duplicate$ -- 76
+empty$ -- 343
 format.name$ -- 0
-if$ -- 523
+if$ -- 552
 int.to.chr$ -- 0
-int.to.str$ -- 18
+int.to.str$ -- 19
 missing$ -- 0
-newline$ -- 57
+newline$ -- 60
 num.names$ -- 0
-pop$ -- 144
+pop$ -- 152
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 71
+skip$ -- 75
 stack$ -- 0
 substring$ -- 0
 swap$ -- 0
@@ -42,5 +42,5 @@ top$ -- 0
 type$ -- 0
 warning$ -- 0
 while$ -- 0
-width$ -- 20
-write$ -- 110
+width$ -- 21
+write$ -- 116

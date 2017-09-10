@@ -1,5 +1,20 @@
 \begin{thebibliography}{10}
 
+\bibitem{cita_dropbox}
+``Web oficial de dropbox \url{https://www.dropbox.com/},'' consultado en Marzo
+  de 2017.
+
+\bibitem{cita_google_drive}
+``Web oficial de google \url{https://www.google.com/intl/es_ALL/drive/},''
+  consultado en Marzo de 2017.
+
+\bibitem{cita_mega}
+``Web oficial de mega \url{https://mega.nz/},'' consultado en Marzo de 2017.
+
+\bibitem{cita_onedrive}
+``Web oficial de onedrive \url{https://onedrive.live.com/about/es-419/},''
+  consultado en Marzo de 2017.
+
 \bibitem{cita1}
 ``Web oficial de django \url{https://www.djangoproject.com/},'' consultado en
   Marzo de 2017.
@@ -7,6 +22,10 @@
 \bibitem{cita2}
 ``Web oficial de python \url{https://www.python.org/},'' consultado en Marzo de
   2017.
+
+\bibitem{cita_amazon}
+``Web oficial de amazon aws \url{https://aws.amazon.com/es/},'' consultado en
+  Septiembre de 2017.
 
 \bibitem{cita3}
 ``Web oficial de bootstrap \url{http://getbootstrap.com/},'' consultado en
@@ -48,21 +67,6 @@
 \bibitem{cita_gunicorn}
 ``Web oficial de gunicorn \url{http://gunicorn.org/},'' consultado en Julio de
   2017.
-
-\bibitem{cita_dropbox}
-``Web oficial de dropbox \url{https://www.dropbox.com/},'' consultado en Marzo
-  de 2017.
-
-\bibitem{cita_google_drive}
-``Web oficial de google \url{https://www.google.com/intl/es_ALL/drive/},''
-  consultado en Marzo de 2017.
-
-\bibitem{cita_mega}
-``Web oficial de mega \url{https://mega.nz/},'' consultado en Marzo de 2017.
-
-\bibitem{cita_onedrive}
-``Web oficial de onedrive \url{https://onedrive.live.com/about/es-419/},''
-  consultado en Marzo de 2017.
 
 \bibitem{cita_mvt}
 ``Web librosweb
