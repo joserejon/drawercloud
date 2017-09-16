@@ -37,7 +37,7 @@ def index(request):
 			directorio_actual = 0
 
 
-	return render(request, 'index.html', {'pagina_actual':'Documentos', 'usuario':usuario, 'directorio_actual':directorio_actual})
+	return render(request, 'index.html', {'pagina_actual':'Mis archivos', 'usuario':usuario, 'directorio_actual':directorio_actual})
 
 #Mostrar multimedia
 @login_required(login_url='/accounts/login/')
@@ -130,9 +130,9 @@ def upload(request):
 		pag_actual = request.POST.get('pag_actual', '')
 		id_directorio = request.POST.get('id_directorio', '')
 		handle_uploaded_file(request.FILES['file'], request, id_directorio, pag_actual)
-		return render(request, 'index.html', {'pagina_actual':'Documentos', 'usuario':usuario})
+		return render(request, 'index.html', {'pagina_actual':'Mis archivos', 'usuario':usuario})
 
-	return render(request, 'index.html', {'pagina_actual':'Documentos', 'usuario':usuario, 'directorio_actual':id_directorio})
+	return render(request, 'index.html', {'pagina_actual':'Mis archivos', 'usuario':usuario, 'directorio_actual':id_directorio})
 
 def handle_uploaded_file(file, request, id_directorio, pag_actual):
 	if not os.path.exists('upload/' + usuario.username + '/'):
@@ -203,7 +203,7 @@ def addFavoritos(request):
 		'tipo_contenido':tipo_contenido, 'directorio_actual':directorio_actual})
 	#Si es llamado desde la página index.html
 	elif pag_actual == "index.html":
-		return render(request, "index.html", {'pagina_actual':'Documentos', 'usuario':usuario, 'directorio_actual':directorio_actual})
+		return render(request, "index.html", {'pagina_actual':'Mis archivos', 'usuario':usuario, 'directorio_actual':directorio_actual})
 	#Si es llamado desde la página favoritos.html
 	elif pag_actual == "favoritos.html":
 		return render(request, "favoritos.html", {'pagina_actual':'Favoritos', 'usuario':usuario})
@@ -228,7 +228,7 @@ def delFavoritos(request):
 		'tipo_contenido':tipo_contenido, 'directorio_actual':directorio_actual})
 	#Si es llamado desde la página index.html
 	elif pag_actual == "index.html":
-		return render(request, "index.html", {'pagina_actual':'Documentos', 'usuario':usuario, 'directorio_actual':directorio_actual})
+		return render(request, "index.html", {'pagina_actual':'Mis archivos', 'usuario':usuario, 'directorio_actual':directorio_actual})
 	#Si es llamado desde la página favoritos.html
 	elif pag_actual == "favoritos.html":
 		return render(request, "favoritos.html", {'pagina_actual':'Favoritos', 'usuario':usuario})
@@ -263,7 +263,7 @@ def compartirArchivo(request):
 		'tipo_contenido':tipo_contenido, 'directorio_actual':directorio_actual})
 	#Si es llamado desde la página index.html
 	elif pag_actual == "index.html":
-		return render(request, "index.html", {'pagina_actual':'Documentos', 'usuario':usuario, 'directorio_actual':directorio_actual})
+		return render(request, "index.html", {'pagina_actual':'Mis archivos', 'usuario':usuario, 'directorio_actual':directorio_actual})
 	#Si es llamado desde la página favoritos.html
 	else:
 		return render(request, "favoritos.html", {'pagina_actual':'Favoritos', 'usuario':usuario})
@@ -286,7 +286,7 @@ def borrarArchivo(request):
 
 	if pag_actual == "index.html":
 		g_archivo.borrarArchivo(id_archivo, directorio_actual, usuario.username, "DirectorioForm")
-		return render(request, "index.html", {'pagina_actual':'Documentos', 'usuario':usuario, 'directorio_actual':directorio_actual})
+		return render(request, "index.html", {'pagina_actual':'Mis archivos', 'usuario':usuario, 'directorio_actual':directorio_actual})
 	elif pag_actual == "contenidoMultimedia.html":
 		g_archivo.borrarArchivo(id_archivo, directorio_actual, usuario.username, "DirectorioContenidoMultimediaForm")
 		tipo_contenido = request.GET.get('tipo_contenido','')
@@ -451,7 +451,7 @@ def crearDirectorio(request):
 		d = DirectorioForm()
 		d.crearDirectorio(nombre_directorio, directorio_actual, usuario.username)
 
-		return render(request, 'index.html', {'pagina_actual':'Documentos', 'usuario':usuario.username, 'directorio_actual':directorio_actual})
+		return render(request, 'index.html', {'pagina_actual':'Mis archivos', 'usuario':usuario.username, 'directorio_actual':directorio_actual})
 	elif pag_actual == "contenidoMultimedia.html":
 		d = DirectorioContenidoMultimediaForm()
 		d.crearDirectorio(nombre_directorio, directorio_actual, usuario.username)
@@ -526,7 +526,7 @@ def moverArchivo(request):
 		d = DirectorioForm()
 		d.moverArchivo(id_archivo_mover, directorio_actual, id_directorio_dest, usuario.username)
 
-		return render(request, 'index.html', {'pagina_actual':'Documentos', 'usuario':usuario.username, 'directorio_actual':directorio_actual})
+		return render(request, 'index.html', {'pagina_actual':'Mis archivos', 'usuario':usuario.username, 'directorio_actual':directorio_actual})
 	elif pag_actual == "contenidoMultimedia.html":
 		d = DirectorioContenidoMultimediaForm()
 		d.moverArchivo(id_archivo_mover, directorio_actual, id_directorio_dest, usuario.username)
@@ -577,7 +577,7 @@ def copiarArchivo(request):
 		d = DirectorioForm()
 		d.copiarArchivo(id_archivo_copiar, directorio_actual, id_directorio_dest, usuario.username)
 
-		return render(request, 'index.html', {'pagina_actual':'Documentos', 'usuario':usuario.username, 'directorio_actual':directorio_actual})
+		return render(request, 'index.html', {'pagina_actual':'Mis archivos', 'usuario':usuario.username, 'directorio_actual':directorio_actual})
 	elif pag_actual == "contenidoMultimedia.html":
 		d = DirectorioContenidoMultimediaForm()
 		d.copiarArchivo(id_archivo_copiar, directorio_actual, id_directorio_dest, usuario.username)
@@ -630,7 +630,7 @@ def moverDirectorio(request):
 		d = DirectorioForm()
 		d.moverDirectorio(id_directorio_mover, id_directorio_destino, usuario.username, directorio_actual)
 
-		return render(request, 'index.html', {'pagina_actual':'Documentos', 'usuario':usuario.username, 'directorio_actual':directorio_actual})
+		return render(request, 'index.html', {'pagina_actual':'Mis archivos', 'usuario':usuario.username, 'directorio_actual':directorio_actual})
 	elif pag_actual == "contenidoMultimedia.html":
 		d = DirectorioContenidoMultimediaForm()
 		d.moverDirectorio(id_directorio_mover, id_directorio_destino, usuario.username, directorio_actual)
@@ -662,7 +662,7 @@ def copiarDirectorio(request):
 		d = DirectorioForm()
 		d.copiarDirectorio(id_directorio_copiar, id_directorio_destino, usuario.username, directorio_actual)
 
-		return render(request, 'index.html', {'pagina_actual':'Documentos', 'usuario':usuario.username, 'directorio_actual':directorio_actual})
+		return render(request, 'index.html', {'pagina_actual':'Mis archivos', 'usuario':usuario.username, 'directorio_actual':directorio_actual})
 	elif pag_actual == "contenidoMultimedia.html":
 		d = DirectorioContenidoMultimediaForm()
 		d.copiarDirectorio(id_directorio_copiar, id_directorio_destino, usuario.username, directorio_actual)
@@ -692,7 +692,7 @@ def borrarDirectorio(request):
 	if pag_actual == "index.html":
 		d = DirectorioForm()
 		d.borrarDirectorio(id_directorio_eliminar, usuario.username)
-		return render(request, "index.html", {'pagina_actual':'Documentos', 'usuario':usuario, 'directorio_actual':directorio_actual})
+		return render(request, "index.html", {'pagina_actual':'Mis archivos', 'usuario':usuario, 'directorio_actual':directorio_actual})
 	elif pag_actual == "contenidoMultimedia.html":
 		d = DirectorioContenidoMultimediaForm()
 		d.borrarDirectorio(id_directorio_eliminar, usuario.username)
@@ -782,7 +782,7 @@ def addArchivoMiNube(request):
 
 	a.addArchivoMiNube(id_archivo, propietario, usuario.username)
 
-	return render(request, 'index.html', {'pagina_actual':'Documentos', 'usuario':usuario, 'directorio_actual':'0'})
+	return render(request, 'index.html', {'pagina_actual':'Mis archivos', 'usuario':usuario, 'directorio_actual':'0'})
 
 #Eliminar la cuenta de usuario
 @login_required(login_url='/accounts/login/')
